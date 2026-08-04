@@ -634,9 +634,41 @@ export default function GoaWeddingEditorial({ faqs }) {
                 </div>
               </Reveal>
             </section>
+          </div>
 
-            {/* -------- What you actually need (checklist grid) -------- */}
-            <section id="checklist" className="scroll-mt-28 py-12 md:py-20 border-t border-[#DBD4C6]">
+          {/* -------- Sticky TOC -------- */}
+          <aside className="hidden md:block">
+            <div className="sticky top-28 py-24">
+              <p className="eyebrow mb-6">On this page</p>
+              <nav className="relative">
+                <span className="absolute left-[5px] top-1 bottom-1 w-px bg-[#DBD4C6]" />
+                <ul className="space-y-1">
+                  {TOC.map((t) => {
+                    const on = active === t.id
+                    return (
+                      <li key={t.id} className="relative pl-6">
+                        <span className={`absolute left-0 top-[9px] w-[11px] h-[11px] rounded-full border-2 transition-colors ${on ? 'bg-[#FF5B22] border-[#FF5B22]' : 'bg-[#EEEAE1] border-[#CFC7B6]'}`} />
+                        <a
+                          href={`#${t.id}`}
+                          data-testid={`dw-toc-${t.id}`}
+                          className={`block py-1.5 text-sm transition-colors ${on ? 'text-[#161514] font-semibold' : 'text-[#8A857D] hover:text-[#161514]'}`}
+                        >
+                          {t.full}
+                        </a>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </nav>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      {/* ============ FULL-WIDTH CHAPTERS 2–4 ============ */}
+      <div className="container mx-auto max-w-[1400px] px-6 md:px-10">
+        {/* -------- What you actually need (checklist grid) -------- */}
+        <section id="checklist" className="scroll-mt-28 py-12 md:py-20 border-t border-[#DBD4C6]">
               <Reveal>
                 <div className="mb-10 md:mb-14 max-w-3xl">
                   <p className="eyebrow mb-3">Chapter 02 — The moving parts</p>
@@ -771,36 +803,7 @@ export default function GoaWeddingEditorial({ faqs }) {
             </section>
           </div>
 
-          {/* -------- Sticky TOC -------- */}
-          <aside className="hidden md:block">
-            <div className="sticky top-28 py-24">
-              <p className="eyebrow mb-6">On this page</p>
-              <nav className="relative">
-                <span className="absolute left-[5px] top-1 bottom-1 w-px bg-[#DBD4C6]" />
-                <ul className="space-y-1">
-                  {TOC.map((t) => {
-                    const on = active === t.id
-                    return (
-                      <li key={t.id} className="relative pl-6">
-                        <span className={`absolute left-0 top-[9px] w-[11px] h-[11px] rounded-full border-2 transition-colors ${on ? 'bg-[#FF5B22] border-[#FF5B22]' : 'bg-[#EEEAE1] border-[#CFC7B6]'}`} />
-                        <a
-                          href={`#${t.id}`}
-                          data-testid={`dw-toc-${t.id}`}
-                          className={`block py-1.5 text-sm transition-colors ${on ? 'text-[#161514] font-semibold' : 'text-[#8A857D] hover:text-[#161514]'}`}
-                        >
-                          {t.full}
-                        </a>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </nav>
-            </div>
-          </aside>
-        </div>
-      </div>
-
-      {/* ============ BUDGET SECTION (full-bleed) ============ */}
+          {/* ============ BUDGET SECTION (full-bleed) ============ */}
       <section id="budget" className="scroll-mt-28 py-16 md:py-24 bg-[#F3E4DC]/40 border-y border-[#DBD4C6]">
         <div className="container mx-auto max-w-[1400px] px-6 md:px-10">
           <Reveal>
