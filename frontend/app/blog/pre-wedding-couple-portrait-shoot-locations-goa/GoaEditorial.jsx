@@ -55,9 +55,9 @@ const SERVICES = [
     title: 'Pre-Wedding',
     tagline: 'Cinematic storytelling',
     image: '/wedding/preWedding.jpg',
-    alt: 'Pre-wedding shoot Goa \u2014 couple on a north Goa beach at golden hour by PK Photography',
+    alt: 'Pre-wedding shoot Goa — couple on a north Goa beach at golden hour by PK Photography',
     body: [
-      'A choreographed, laid-back edit of you two \u2014 beach walks, candid laughs, one hero portrait. Full-day and half-day formats, always paced around the light.',
+      'A choreographed, laid-back edit of you two — beach walks, candid laughs, one hero portrait. Full-day and half-day formats, always paced around the light.',
     ],
     included: [
       'Story-led shot list with hero portraits',
@@ -74,14 +74,14 @@ const SERVICES = [
     title: 'Couple & Private Couple',
     tagline: 'Just the two of you',
     image: '/wedding/engagement.jpg',
-    alt: 'Private couple shoot in Goa \u2014 intimate anniversary portrait by PK Photography',
+    alt: 'Private couple shoot in Goa — intimate anniversary portrait by PK Photography',
     body: [
-      'Anniversary, honeymoon, or \u201cno reason\u201d \u2014 a two-hour private session at a spot you love. Quiet, tender, unposed \u2014 the kind of frames you\u2019ll print.',
+      'Anniversary, honeymoon, or "no reason" — a two-hour private session at a spot you love. Quiet, tender, unposed — the kind of frames you’ll print.',
     ],
     included: [
-      '1\u20132 hour private session',
+      '1–2 hour private session',
       'Choice of beach, villa, or heritage location',
-      '20\u201330 hero frames, retouched',
+      '20–30 hero frames, retouched',
       'Two teaser reels (add-on)',
     ],
     link: '/services/weddings',
@@ -95,7 +95,7 @@ const SERVICES = [
     image: '/wedding/bridalPortrait.jpg',
     alt: 'Editorial portrait shoot in Goa by PK Photography',
     body: [
-      'For your book, your brand, your birthday. Studio-quality light on a beach or in a courtyard, framed like a magazine cover \u2014 no more awkward phone selfies.',
+      'For your book, your brand, your birthday. Studio-quality light on a beach or in a courtyard, framed like a magazine cover — no more awkward phone selfies.',
     ],
     included: [
       'Editorial direction + 3 wardrobe looks',
@@ -112,13 +112,13 @@ const SERVICES = [
     title: 'Outdoor Portfolio',
     tagline: 'Actor, model, creator',
     image: '/wedding/rituals.jpg',
-    alt: 'Outdoor model portfolio shoot in Goa \u2014 pre-wedding shoot Goa aesthetic reference',
+    alt: 'Outdoor model portfolio shoot in Goa — pre-wedding shoot Goa aesthetic reference',
     body: [
-      'A complete portfolio in a day \u2014 three looks, two locations, curated retouching. Deliverables sized for print, casting, and Instagram.',
+      'A complete portfolio in a day — three looks, two locations, curated retouching. Deliverables sized for print, casting, and Instagram.',
     ],
     included: [
       'Full-day, multi-location shoot',
-      'Retouched hero set (15\u201320 frames)',
+      'Retouched hero set (15–20 frames)',
       'Vertical + horizontal crops delivered',
       'Studio-quality light management',
     ],
@@ -131,9 +131,9 @@ const SERVICES = [
     title: 'Maternity & Baby',
     tagline: 'Soft, quiet, tender',
     image: '/wedding/emotions.jpg',
-    alt: 'Maternity and baby shoot Goa \u2014 golden hour session by PK Photography',
+    alt: 'Maternity and baby shoot Goa — golden hour session by PK Photography',
     body: [
-      'Golden-hour maternity on Ashvem\u2019s still water \u2014 floaty silks, held hands, one portrait you\u2019ll frame forever. For newborns, we bring the shoot to your villa: patient, quiet, natural light only.',
+      'Golden-hour maternity on Ashvem’s still water — floaty silks, held hands, one portrait you’ll frame forever. For newborns, we bring the shoot to your villa: patient, quiet, natural light only.',
     ],
     included: [
       'Golden-hour styling consult',
@@ -148,10 +148,10 @@ const SERVICES = [
 const REEL = {
   title: 'iPhone Reel Shoot',
   tagline: 'Cinematic, vertical, yours.',
-  body: 'A dedicated reel shooter armed with an iPhone Pro, gimbal & ND filters \u2014 designed to fit your feed the day of the shoot. Slow-mo, transitions, colour grade, delivered vertical-first.',
-  bullets: ['4\u20136 reels', 'Same-week delivery', 'Colour graded', 'Available as add-on'],
+  body: 'A dedicated reel shooter armed with an iPhone Pro, gimbal & ND filters — designed to fit your feed the day of the shoot. Slow-mo, transitions, colour grade, delivered vertical-first.',
+  bullets: ['4–6 reels', 'Same-week delivery', 'Colour graded', 'Available as add-on'],
   image: '/wedding/corousal/img7.jpg',
-  alt: 'iPhone reel shoot in Goa \u2014 cinematic vertical content by PK Photography',
+  alt: 'iPhone reel shoot in Goa — cinematic vertical content by PK Photography',
 }
 
 const LOCATIONS = [
@@ -162,14 +162,14 @@ const LOCATIONS = [
     subtitle: 'The quiet north',
     best: 'Best for: soft, floaty pre-weddings',
     body:
-      'Shallow tidal pools that mirror the sky, casuarina trees, and a beach that empties by 6:30 pm. Where we shoot our softest work \u2014 light dresses, bare feet, salt in your hair.',
+      'Shallow tidal pools that mirror the sky, casuarina trees, and a beach that empties by 6:30 pm. Where we shoot our softest work — light dresses, bare feet, salt in your hair.',
     icons: [
       { Icon: Sunset, label: 'Sunset' },
       { Icon: Compass, label: 'Drone-friendly' },
       { Icon: Home, label: 'Quiet & private' },
     ],
     image: '/outdoors/Out_1.jpg',
-    alt: 'Ashvem beach pre-wedding shoot Goa \u2014 golden hour photograph by PK Photography',
+    alt: 'Ashvem beach pre-wedding shoot Goa — golden hour photograph by PK Photography',
   },
   {
     id: 'arambol',
@@ -185,7 +185,7 @@ const LOCATIONS = [
       { Icon: Compass, label: 'Drone-friendly' },
     ],
     image: '/destination-weddings.jpg',
-    alt: 'Arambol pre-wedding shoot Goa \u2014 cliff coast portrait by PK Photography',
+    alt: 'Arambol pre-wedding shoot Goa — cliff coast portrait by PK Photography',
   },
   {
     id: 'vagator',
@@ -194,7 +194,7 @@ const LOCATIONS = [
     subtitle: 'Drama & silhouette',
     best: 'Best for: bold, cinematic frames',
     body:
-      'Black basalt at Vagator and Chapora Fort\u2019s red laterite walls give us frames that look painted. Come here when you want silhouettes, wide skies, and shots that feel epic.',
+      'Black basalt at Vagator and Chapora Fort’s red laterite walls give us frames that look painted. Come here when you want silhouettes, wide skies, and shots that feel epic.',
     icons: [
       { Icon: Mountain, label: 'Cliff views' },
       { Icon: Sunset, label: 'Sunset' },
@@ -210,14 +210,14 @@ const LOCATIONS = [
     subtitle: 'For the introverts',
     best: 'Best for: fully private couple & maternity',
     body:
-      'We scout an Assagao or Anjuna Portuguese villa \u2014 chequered floors, arched doorways, a pool \u2014 and shoot the whole day there. Total privacy, wardrobe changes on tap, catering optional.',
+      'We scout an Assagao or Anjuna Portuguese villa — chequered floors, arched doorways, a pool — and shoot the whole day there. Total privacy, wardrobe changes on tap, catering optional.',
     icons: [
       { Icon: Home, label: 'Quiet & private' },
       { Icon: Sunset, label: 'Golden hour' },
       { Icon: MapPin, label: 'Curated set' },
     ],
     image: '/wedding/corousal/img4.jpg',
-    alt: 'Private villa pre-wedding shoot Goa \u2014 Portuguese heritage villa by PK Photography',
+    alt: 'Private villa pre-wedding shoot Goa — Portuguese heritage villa by PK Photography',
   },
 ]
 
@@ -225,14 +225,14 @@ const PACKAGES = [
   {
     id: 'hourly',
     name: 'Hourly Session',
-    starting: '\u20b95,000',
+    starting: '₹5,000',
     unit: '/ hour',
     tag: 'Quick, focused couple or portrait shoot',
     inclusions: [
       '1 hour on location',
       '1 photographer',
       '1 location',
-      'All raw photos + 25\u201330 selected edited photos',
+      'All raw photos + 25–30 selected edited photos',
       'Private online gallery',
       'Photos delivered same day',
     ],
@@ -241,47 +241,47 @@ const PACKAGES = [
   {
     id: 'half-day',
     name: 'Half-Day',
-    starting: '\u20b910,000',
-    unit: '/ 3\u20134 hrs',
-    tag: 'Most-booked \u2014 stills, motion & aerials',
+    starting: '₹10,000',
+    unit: '/ 3–4 hrs',
+    tag: 'Most-booked — stills, motion & aerials',
     inclusions: [
-      '3\u20134 hours coverage',
+      '3–4 hours coverage',
       'Up to 2 locations',
       'Photography + Cinematography + Drone shoot',
-      'All raw photos + 60\u201380 selected edited photos',
+      'All raw photos + 60–80 selected edited photos',
       '1 short reel',
-      'Photos delivered same day, video in 1\u20132 days',
+      'Photos delivered same day, video in 1–2 days',
     ],
     highlighted: true,
   },
   {
     id: 'full-day',
     name: 'Full-Day',
-    starting: '\u20b915,000',
-    unit: '/ 6\u20137 hrs',
+    starting: '₹15,000',
+    unit: '/ 6–7 hrs',
     tag: 'The full editorial experience',
     inclusions: [
-      '6\u20137 hours coverage',
-      '2\u20133 locations',
+      '6–7 hours coverage',
+      '2–3 locations',
       'Photography + Cinematography + Drone shoot',
       'All raw photos + 120+ selected edited photos',
-      '2\u20133 reels',
+      '2–3 reels',
       'Outfit change support across locations',
-      'Photos delivered same day, video in 1\u20132 days',
+      'Photos delivered same day, video in 1–2 days',
     ],
     highlighted: false,
   },
 ]
 
 const ADDONS = [
-  { name: 'Extra Photographer', price: '\u20b98,000 / day' },
-  { name: 'Extra Videographer', price: '\u20b910,000 / day' },
-  { name: 'Drone Cinematographer', price: '\u20b910,000 / day' },
-  { name: 'Makeup / Hair Artist', price: '\u20b96,000 / day' },
-  { name: 'iPhone Reel & BTS Shooter', price: '\u20b95,000 / day' },
-  { name: 'Printed Luxury Album', price: '\u20b98,000' },
-  { name: 'Extra Hour Extension', price: '\u20b92,000 / hour' },
-  { name: 'Extra Reel Edit', price: '\u20b92,000 / reel' },
+  { name: 'Extra Photographer', price: '₹8,000 / day' },
+  { name: 'Extra Videographer', price: '₹10,000 / day' },
+  { name: 'Drone Cinematographer', price: '₹10,000 / day' },
+  { name: 'Makeup / Hair Artist', price: '₹6,000 / day' },
+  { name: 'iPhone Reel & BTS Shooter', price: '₹5,000 / day' },
+  { name: 'Printed Luxury Album', price: '₹8,000' },
+  { name: 'Extra Hour Extension', price: '₹2,000 / hour' },
+  { name: 'Extra Reel Edit', price: '₹2,000 / reel' },
 ]
 
 /* ---------------- Animated counter ---------------- */
@@ -611,7 +611,7 @@ export default function GoaEditorial({ faqs }) {
         <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0">
           <Image
             src="/wedding/preWedding.jpg"
-            alt="Pre-wedding shoot Goa \u2014 couple silhouette at golden hour by PK Photography"
+            alt="Pre-wedding shoot Goa — couple silhouette at golden hour by PK Photography"
             fill
             sizes="100vw"
             className="object-cover"

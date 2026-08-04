@@ -15,6 +15,13 @@ export const catColor = (slug) => CATEGORIES.find((c) => c.slug === slug)?.color
 
 export const POSTS = [
   {
+    id: 'headshots-mumbai', category: 'Mumbai', cats: ['mumbai', 'corporate', 'guides'],
+    title: 'Corporate Headshot Photography in Mumbai: Why Every Professional Needs One',
+    excerpt: 'Professional headshots get 21× more profile views. Inside our Andheri West studio — lighting, posing, packages, bulk pricing and the difference between a headshot and a portrait.',
+    image: '/headshot/Hed_1.jpg', date: 'Dec 4, 2025', read: '11 min read',
+    href: '/blog/corporate-headshot-photography-mumbai',
+  },
+  {
     id: 'pre-wedding-goa', category: 'Goa', cats: ['goa', 'weddings', 'guides'],
     title: 'Pre-Wedding, Couple & Portrait Shoots in Goa: The Complete Guide',
     excerpt: 'Ashvem, Mandrem, Arambol, Vagator & private villas — the locations, services and packages behind a PK Photography Goa shoot.',
