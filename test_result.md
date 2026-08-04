@@ -141,17 +141,28 @@ frontend:
       - working: true
         agent: "testing"
         comment: "Verified through FastAPI proxy. /api/root endpoint returns correct response. Next.js API routing working correctly."
+  
+  - task: "Footer Support section links bug fix"
+    implemented: true
+    working: true
+    file: "/app/frontend/components/site/Chrome.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Bug fix verified successfully. Footer 'Support' section links now correctly point to legal pages instead of '#'. All three policy links tested: Privacy Policy (/privacy-policy), Terms & Conditions (/terms-and-conditions), and Refund Policy (/refund-policy). Each link navigates correctly, loads the proper page with correct heading and 'Last updated: May 19, 2025' text. Client Login link also present and functional. Screenshots captured for all pages."
 
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 1
+  test_sequence: 2
   run_ui: false
 
 test_plan:
   current_focus:
-    - "FastAPI /health endpoint"
-    - "FastAPI proxy to Next.js API"
+    - "Footer Support section links bug fix"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -159,3 +170,5 @@ test_plan:
 agent_communication:
   - agent: "testing"
     message: "Completed smoke test after vercel.json addition. All tests passed (2/2). FastAPI /health endpoint and proxy to Next.js /api/root both working correctly. The vercel.json file (Vercel deployment config) does not affect local runtime as expected. No issues found."
+  - agent: "testing"
+    message: "Footer links bug fix verification completed successfully. All three policy page links (Privacy Policy, Terms & Conditions, Refund Policy) now work correctly with proper href attributes and page navigation. Bug fix is working as expected. No issues found."

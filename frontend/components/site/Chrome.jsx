@@ -278,9 +278,9 @@ export function Footer() {
             <div className="text-[11px] font-semibold uppercase tracking-widest text-[#161514] mb-4">Support</div>
             <ul className="space-y-3 text-sm text-[#8A857D]">
               <li><Link href="/client" className="link-underline hover:text-[#FF5B22]">Client Login</Link></li>
-              <li><Link href="#" className="link-underline hover:text-[#FF5B22]">Privacy Policy</Link></li>
-              <li><Link href="#" className="link-underline hover:text-[#FF5B22]">Terms & Conditions</Link></li>
-              <li><Link href="#" className="link-underline hover:text-[#FF5B22]">Refund Policy</Link></li>
+              <li><Link href="/privacy-policy" className="link-underline hover:text-[#FF5B22]">Privacy Policy</Link></li>
+              <li><Link href="/terms-and-conditions" className="link-underline hover:text-[#FF5B22]">Terms & Conditions</Link></li>
+              <li><Link href="/refund-policy" className="link-underline hover:text-[#FF5B22]">Refund Policy</Link></li>
             </ul>
           </div>
 
