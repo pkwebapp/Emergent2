@@ -541,20 +541,10 @@ function FAQItem({ q, a, i }) {
 
 export default function ServicePageClient({ slug }) {
   const service = SERVICES.find(s => s.slug === slug)
-  if (!service) return notFound()
-  const extra = { ...fallbackExtra(service), ...(SERVICE_ABOUT[slug] ? { about: SERVICE_ABOUT[slug] } : {}), ...(SERVICE_EXTRA[slug] || {}) }
-  const aboutHead = SERVICE_HEAD[slug] || ['The craft of', `${service.t.toLowerCase()}.`]
-  const seo = SERVICE_SEO[slug] || {}
-  const visibleFaqs = [
-    ...(seo.faqs || []),
-    ...(extra.faqs || []).filter((faq) => !(seo.faqs || []).some((s) => s.q === faq.q)),
-  ]
+  const extra = service ? { ...fallbackExtra(service), ...(SERVICE_ABOUT[slug] ? { about: SERVICE_ABOUT[slug] } : {}), ...(SERVICE_EXTRA[slug] || {}) } : {}
+  const portfolio = service ? (extra.portfolio || [service.img, ...SERVICES.filter(s => s.slug !== slug).slice(0, 7).map(s => s.img)]) : []
 
-  const shortTitle = service.t.replace(/ Photography.*| & Videography/g, '')
-  const portfolio = extra.portfolio || [service.img, ...SERVICES.filter(s => s.slug !== slug).slice(0, 7).map(s => s.img)]
-  const localAlt = (subject, setting = 'Mumbai and Goa', style = 'premium editorial') =>
-    imageAlt(subject, setting, style, 'Mumbai & Goa')
-
+  // Hooks must be called on every render (before any conditional return) to satisfy Rules of Hooks.
   const [activeCover, setActiveCover] = useState(0)
   const [lightbox, setLightbox] = useState(null)
   const [showStickyCTA, setShowStickyCTA] = useState(false)
@@ -572,6 +562,18 @@ export default function ServicePageClient({ slug }) {
     const onKey = (e) => { if (e.key === 'Escape') setLightbox(null); if (e.key === 'ArrowRight' && lightbox !== null) setLightbox(l => (l + 1) % portfolio.length); if (e.key === 'ArrowLeft' && lightbox !== null) setLightbox(l => (l - 1 + portfolio.length) % portfolio.length) }
     window.addEventListener('keydown', onKey); return () => window.removeEventListener('keydown', onKey)
   }, [lightbox, portfolio.length])
+
+  if (!service) return notFound()
+  const aboutHead = SERVICE_HEAD[slug] || ['The craft of', `${service.t.toLowerCase()}.`]
+  const seo = SERVICE_SEO[slug] || {}
+  const visibleFaqs = [
+    ...(seo.faqs || []),
+    ...(extra.faqs || []).filter((faq) => !(seo.faqs || []).some((s) => s.q === faq.q)),
+  ]
+
+  const shortTitle = service.t.replace(/ Photography.*| & Videography/g, '')
+  const localAlt = (subject, setting = 'Mumbai and Goa', style = 'premium editorial') =>
+    imageAlt(subject, setting, style, 'Mumbai & Goa')
 
   return (
     <main className="bg-[#EEEAE1]">

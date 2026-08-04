@@ -11,14 +11,14 @@ export const DEFAULT_OG_IMAGE =
 export const SITE_DETAILS = {
   name: BRAND,
   founder: 'Prabhakar Kumar',
-  phone: '+91 88887 66739',
+  phone: '+91 8888766739',
   phoneRaw: '+918888766739',
   email: 'prabhakar@pkphotography.in',
-  address: 'Andheri West, Mumbai 400058, Maharashtra',
-  streetAddress: 'Andheri West',
+  address: 'C1302, Evershine Cosmic, Andheri West, Mumbai 400053, Maharashtra',
+  streetAddress: 'C1302, Evershine Cosmic, Veera Desai Industrial Estate',
   locality: 'Mumbai',
   region: 'Maharashtra',
-  postalCode: '400058',
+  postalCode: '400053',
   country: 'IN',
 }
 

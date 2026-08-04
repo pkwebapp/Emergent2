@@ -1046,7 +1046,7 @@ function PricingTeaser() {
 const FAQS = [
   { q: 'What makes PK Photography different?', a: 'Over 12 years of experience combined with a small, dedicated in-house team means every shoot is handled personally by Prabhakar Kumar. From your first enquiry to final delivery, you work with the same crew, in the same studio.' },
   { q: 'Do you shoot destination weddings outside Mumbai?', a: 'Yes. We regularly shoot destination weddings in Goa and travel Pan India — Udaipur, Jaipur, Kerala, and beyond. Travel is included in most packages beyond 200 km on request.' },
-  { q: 'How can I book an event, wedding, or headshot session?', a: 'Book directly through the Booking page, or WhatsApp us at +91 88887 66739. We confirm your date and share a checklist within a few hours.' },
+  { q: 'How can I book an event, wedding, or headshot session?', a: 'Book directly through the Booking page, or WhatsApp us at +91 8888766739. We confirm your date and share a checklist within a few hours.' },
   { q: 'How soon do I receive edited photos and videos?', a: 'Headshot and portrait shoots are delivered in 5–7 working days. Weddings and larger productions typically take 3–5 weeks with a highlight teaser within 48 hours of the shoot.' },
   { q: 'Can I customize a package for my event or shoot?', a: 'Absolutely. Beyond the standard packages, we build custom scopes for weddings, multi-day corporate productions and destination shoots. Share the brief and we\u2019ll revert the same day.' },
 ]
@@ -1190,10 +1190,10 @@ function HomeJsonLd() {
     priceRange: '₹₹',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Andheri West',
+      streetAddress: 'C1302, Evershine Cosmic, Veera Desai Industrial Estate',
       addressLocality: 'Mumbai',
       addressRegion: 'Maharashtra',
-      postalCode: '400058',
+      postalCode: '400053',
       addressCountry: 'IN',
     },
     areaServed: ['Mumbai', 'Goa', 'India'],
