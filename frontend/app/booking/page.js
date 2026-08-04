@@ -162,10 +162,29 @@ export default function BookingPage() {
                       <span className="w-10 h-10 rounded-lg bg-[#161514] text-white grid place-content-center"><Phone size={16} /></span>
                       <div className="flex-1"><div className="text-[10px] uppercase tracking-widest text-[#8A857D]">Call</div><div className="font-semibold text-sm">{CONTACT.phone}</div></div>
                     </a>
-                    <div className="flex items-center gap-3 p-3 rounded-xl bg-[#EEEAE1] border border-[#DBD4C6]">
-                      <span className="w-10 h-10 rounded-lg bg-[#FF5B22]/10 text-[#FF5B22] grid place-content-center"><MapPin size={16} /></span>
-                      <div className="flex-1"><div className="text-[10px] uppercase tracking-widest text-[#8A857D]">Studio</div><div className="font-semibold text-sm">{CONTACT.address}</div></div>
-                    </div>
+                    {CONTACT.studios.map((s) => (
+                      <a
+                        key={s.city}
+                        href={s.mapsUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        data-testid={`booking-studio-${s.city.toLowerCase()}`}
+                        className="flex items-start gap-3 p-3 rounded-xl bg-[#EEEAE1] border border-[#DBD4C6] hover:border-[#FF5B22] transition"
+                      >
+                        <span className="w-10 h-10 rounded-lg bg-[#FF5B22]/10 text-[#FF5B22] grid place-content-center shrink-0"><MapPin size={16} /></span>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-[10px] uppercase tracking-widest text-[#8A857D]">{s.label}</div>
+                          <div className="font-semibold text-sm leading-snug">
+                            {s.addressLines.map((l, i) => (
+                              <span key={i} className="block">{l}</span>
+                            ))}
+                          </div>
+                          <div className="mt-1 inline-flex items-center gap-1.5 text-[12px] text-[#8A857D]">
+                            <Phone size={11} /> {s.phone}
+                          </div>
+                        </div>
+                      </a>
+                    ))}
                   </div>
                 </div>
                 <div className="rounded-3xl bg-[#161514] text-white p-7 relative overflow-hidden">

@@ -193,19 +193,34 @@ frontend:
         agent: "testing"
         comment: "Backend endpoint POST /api/auth/signup verified working correctly. Validates full_name (required), mobile (10 digits or 12 digits starting with 91), and email (optional but must be valid if provided). Stores records in MongoDB 'signups' collection. Returns 400 with error message for invalid data (tested with empty full_name and invalid mobile '123'). Returns 200 with {ok: true, id: uuid} for valid data (tested with full_name 'OK Person' and mobile '9999999999'). Endpoint implemented at lines 183-212 of route.js."
 
+  - task: "Mumbai + Goa studio address details update"
+    implemented: true
+    working: true
+    file: "/app/frontend/components/site/Chrome.jsx, /app/frontend/app/booking/page.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Comprehensive testing completed successfully. All test cases passed: (1) Footer verification - Both 'Mumbai Studio' and 'Goa Studio' labels present with complete addresses: Mumbai (C1302, Evershine Cosmic, / Opp. Infiniti Mall, Veera Desai Industrial Estate, / Andheri West, Mumbai, Maharashtra 400053) and Goa (House No. 1053 A, Madhlavaddo, / Morjim, Goa 403512). Both phones verified: Mumbai (+91 8888766739) and Goa (+91 81888 81165). (2) Footer phone links verified correct: Mumbai (tel:+918888766739) and Goa (tel:+918188881165). (3) Footer address Google Maps links verified: Both Mumbai and Goa addresses wrapped in anchor tags with target=_blank pointing to maps.google.com. (4) Booking page contact card verified - Both studios displayed with same content as footer: labels, full addresses (3 lines for Mumbai, 2 lines for Goa), and phones. (5) Booking page top 'Call' button verified - Shows Mumbai primary phone (+91 8888766739) with correct href (tel:+918888766739). (6) Booking page WhatsApp link verified - Correct href (https://wa.me/918888766739). (7) Booking page studio cards verified - Both Mumbai and Goa studio cards have data-testid attributes (booking-studio-mumbai, booking-studio-goa), clickable Google Maps links, correct labels, full addresses, and phones. (8) Mobile viewport (390x844) verified - Both footer and booking page display both studios in stacked layout with no horizontal scroll. All content visible and usable on mobile. (9) No console errors related to CONTACT.address or CONTACT.studios. Screenshots captured for desktop and mobile views of both footer and booking page. Implementation verified in CONTACT constant (Chrome.jsx lines 41-72), Footer component (lines 492-507), and booking page contact card (booking/page.js lines 165-187)."
+
+
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 5
+  test_sequence: 6
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Signup page hydration error fix"
-    - "Signup backend API endpoint"
+    - "Mumbai + Goa studio address details update"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
+  - agent: "testing"
+    message: "Mumbai + Goa studio address details update verification completed successfully. All test cases passed (9/9). Verified both site footer and /booking page display TWO studios (Mumbai + Goa) with complete address details. Footer: Both 'Mumbai Studio' and 'Goa Studio' labels present with full 3-line Mumbai address (C1302, Evershine Cosmic, / Opp. Infiniti Mall, Veera Desai Industrial Estate, / Andheri West, Mumbai, Maharashtra 400053) and 2-line Goa address (House No. 1053 A, Madhlavaddo, / Morjim, Goa 403512). Phone links verified: Mumbai (tel:+918888766739) and Goa (tel:+918188881165). Address links verified: Both wrapped in anchor tags with Google Maps URLs (target=_blank). Booking page: Contact card displays both studios with same content. Top 'Call' button shows Mumbai primary phone (+91 8888766739, href=tel:+918888766739). WhatsApp link correct (https://wa.me/918888766739). Studio cards have data-testid attributes (booking-studio-mumbai, booking-studio-goa) with clickable Google Maps links. Mobile viewport (390x844): Both footer and booking page display both studios in stacked layout with no horizontal scroll. No console errors related to CONTACT. Implementation verified in CONTACT constant (Chrome.jsx lines 41-72), Footer (lines 492-507), and booking page (booking/page.js lines 165-187). Screenshots captured for all scenarios."
+
 
 agent_communication:
   - agent: "testing"

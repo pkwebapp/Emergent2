@@ -39,11 +39,36 @@ export const NAV_LINKS = [
 ]
 
 export const CONTACT = {
-  phone: '+91 88887 66739',
+  phone: '+91 8888766739',
   phoneRaw: '+918888766739',
   email: 'prabhakar@pkphotography.in',
-  address: 'Andheri West, Mumbai 400058, Maharashtra',
-  whatsapp: 'https://wa.me/+918888766739',
+  address: 'Andheri West, Mumbai 400053, Maharashtra',
+  whatsapp: 'https://wa.me/918888766739',
+  studios: [
+    {
+      city: 'Mumbai',
+      label: 'Mumbai Studio',
+      addressLines: [
+        'C1302, Evershine Cosmic,',
+        'Opp. Infiniti Mall, Veera Desai Industrial Estate,',
+        'Andheri West, Mumbai, Maharashtra 400053',
+      ],
+      phone: '+91 8888766739',
+      phoneRaw: '+918888766739',
+      mapsUrl: 'https://maps.google.com/?q=Evershine+Cosmic+Andheri+West+Mumbai',
+    },
+    {
+      city: 'Goa',
+      label: 'Goa Studio',
+      addressLines: [
+        'House No. 1053 A, Madhlavaddo,',
+        'Morjim, Goa 403512',
+      ],
+      phone: '+91 81888 81165',
+      phoneRaw: '+918188881165',
+      mapsUrl: 'https://maps.google.com/?q=Madhlavaddo+Morjim+Goa',
+    },
+  ],
 }
 
 /* -------- Logo (MakeMePulse-inspired animated mark) -------- */
@@ -464,20 +489,22 @@ export function Footer() {
                   <div className="text-[#161514] font-medium">{CONTACT.email}</div>
                 </div>
               </a>
-              <a href={`tel:${CONTACT.phoneRaw}`} className="flex items-start gap-3 group">
-                <span className="w-9 h-9 rounded-full bg-[#F3E4DC] text-[#FF5B22] grid place-content-center shrink-0 group-hover:bg-[#FF5B22] group-hover:text-white transition-colors"><Phone size={14} /></span>
-                <div>
-                  <div className="text-[11px] uppercase tracking-widest text-[#8A857D]">Phone</div>
-                  <div className="text-[#161514] font-medium">{CONTACT.phone}</div>
+              {CONTACT.studios.map((s) => (
+                <div key={s.city} className="flex items-start gap-3">
+                  <span className="w-9 h-9 rounded-full bg-[#F3E4DC] text-[#FF5B22] grid place-content-center shrink-0"><MapPin size={14} /></span>
+                  <div className="min-w-0">
+                    <div className="text-[11px] uppercase tracking-widest text-[#8A857D]">{s.label}</div>
+                    <a href={s.mapsUrl} target="_blank" rel="noreferrer" className="block text-[#161514] font-medium leading-snug hover:text-[#FF5B22] transition-colors">
+                      {s.addressLines.map((l, i) => (
+                        <span key={i} className="block">{l}</span>
+                      ))}
+                    </a>
+                    <a href={`tel:${s.phoneRaw}`} className="mt-1 inline-flex items-center gap-1.5 text-[#8A857D] hover:text-[#FF5B22] transition-colors text-[13px]">
+                      <Phone size={12} /> {s.phone}
+                    </a>
+                  </div>
                 </div>
-              </a>
-              <div className="flex items-start gap-3">
-                <span className="w-9 h-9 rounded-full bg-[#F3E4DC] text-[#FF5B22] grid place-content-center shrink-0"><MapPin size={14} /></span>
-                <div>
-                  <div className="text-[11px] uppercase tracking-widest text-[#8A857D]">Based in</div>
-                  <div className="text-[#161514] font-medium">{CONTACT.address}</div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
