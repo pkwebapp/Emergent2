@@ -1,0 +1,236 @@
+import { MongoClient } from 'mongodb'
+import { v4 as uuidv4 } from 'uuid'
+import { NextResponse } from 'next/server'
+
+// MongoDB connection
+let client
+let db
+
+async function connectToMongo() {
+  if (!client) {
+    client = new MongoClient(process.env.MONGO_URL)
+    await client.connect()
+    db = client.db(process.env.DB_NAME)
+  }
+  return db
+}
+
+// Helper function to handle CORS
+function handleCORS(response) {
+  response.headers.set('Access-Control-Allow-Origin', process.env.CORS_ORIGINS)
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  response.headers.set('Access-Control-Allow-Credentials', 'true')
+  return response
+}
+
+// OPTIONS handler for CORS
+export async function OPTIONS() {
+  return handleCORS(new NextResponse(null, { status: 200 }))
+}
+
+// Route handler function
+async function handleRoute(request, { params }) {
+  const { path = [] } = await params
+  const route = `/${path.join('/')}`
+  const method = request.method
+
+  try {
+    const db = await connectToMongo()
+
+    // Root endpoint - GET /api/root (since /api/ is not accessible with catch-all)
+    if (route === '/root' && method === 'GET') {
+      return handleCORS(NextResponse.json({ message: "Hello World" }))
+    }
+    // Root endpoint - GET /api/root (since /api/ is not accessible with catch-all)
+    if (route === '/' && method === 'GET') {
+      return handleCORS(NextResponse.json({ message: "Hello World" }))
+    }
+
+    if (route === '/health' && method === 'GET') {
+      return handleCORS(NextResponse.json({ status: 'ok' }))
+    }
+
+    // Booking/contact enquiries - POST /api/contact
+    if (route === '/contact' && method === 'POST') {
+      const body = await request.json().catch(() => ({}))
+      const requiredFields = ['name', 'email', 'phone', 'date', 'service']
+      const missing = requiredFields.filter((field) => !String(body[field] || '').trim())
+
+      if (missing.length) {
+        return handleCORS(NextResponse.json(
+          { error: `Missing required fields: ${missing.join(', ')}` },
+          { status: 400 }
+        ))
+      }
+
+      const enquiry = {
+        id: uuidv4(),
+        name: String(body.name).trim(),
+        email: String(body.email).trim().toLowerCase(),
+        phone: String(body.phone).trim(),
+        date: String(body.date).trim(),
+        service: String(body.service).trim(),
+        message: String(body.message || '').trim(),
+        source: 'booking-page',
+        status: 'new',
+        created_at: new Date().toISOString(),
+      }
+
+      await db.collection('contact_enquiries').insertOne({ ...enquiry })
+      return handleCORS(NextResponse.json({ ok: true, enquiry }, { status: 201 }))
+    }
+
+    // Newsletter subscribe - POST /api/newsletter
+    if (route === '/newsletter' && method === 'POST') {
+      const body = await request.json().catch(() => ({}))
+      const email = String(body.email || '').trim().toLowerCase()
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return handleCORS(NextResponse.json(
+          { error: 'Please enter a valid email address.' },
+          { status: 400 }
+        ))
+      }
+      await db.collection('newsletter_subscribers').updateOne(
+        { email },
+        { $setOnInsert: { id: uuidv4(), email, source: 'blog-journal', created_at: new Date().toISOString() } },
+        { upsert: true }
+      )
+      return handleCORS(NextResponse.json({ ok: true }, { status: 201 }))
+    }
+
+    // Status endpoints - POST /api/status
+    if (route === '/status' && method === 'POST') {
+      const body = await request.json()
+      
+      if (!body.client_name) {
+        return handleCORS(NextResponse.json(
+          { error: "client_name is required" }, 
+          { status: 400 }
+        ))
+      }
+
+      const statusObj = {
+        id: uuidv4(),
+        client_name: body.client_name,
+        timestamp: new Date()
+      }
+
+      await db.collection('status_checks').insertOne(statusObj)
+      return handleCORS(NextResponse.json(statusObj))
+    }
+
+    // Status endpoints - GET /api/status
+    if (route === '/status' && method === 'GET') {
+      const statusChecks = await db.collection('status_checks')
+        .find({})
+        .limit(1000)
+        .toArray()
+
+      // Remove MongoDB's _id field from response
+      const cleanedStatusChecks = statusChecks.map(({ _id, ...rest }) => rest)
+      
+      return handleCORS(NextResponse.json(cleanedStatusChecks))
+    }
+
+    // ---------- Emergent-managed Google Auth ----------
+    // Exchange the one-time session_id (from URL fragment) for a persistent session.
+    if (route === '/auth/google-session' && method === 'POST') {
+      const body = await request.json().catch(() => ({}))
+      const sessionId = body.session_id
+      if (!sessionId) {
+        return handleCORS(NextResponse.json({ error: 'session_id required' }, { status: 400 }))
+      }
+      const sdResp = await fetch('https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data', {
+        headers: { 'X-Session-ID': sessionId },
+      })
+      if (!sdResp.ok) {
+        return handleCORS(NextResponse.json({ error: 'invalid session' }, { status: 401 }))
+      }
+      const data = await sdResp.json() // { id, email, name, picture, session_token }
+      const ownerEmail = (process.env.OWNER_EMAIL || '').toLowerCase()
+      let user = await db.collection('users').findOne({ email: data.email })
+      if (!user) {
+        user = {
+          user_id: `user_${uuidv4().replace(/-/g, '').slice(0, 12)}`,
+          email: data.email,
+          name: data.name,
+          picture: data.picture,
+          role: data.email && data.email.toLowerCase() === ownerEmail ? 'owner' : 'client',
+          created_at: new Date(),
+        }
+        await db.collection('users').insertOne(user)
+      } else {
+        await db.collection('users').updateOne({ email: data.email }, { $set: { name: data.name, picture: data.picture } })
+      }
+      const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+      await db.collection('user_sessions').insertOne({
+        user_id: user.user_id,
+        session_token: data.session_token,
+        expires_at: expiresAt,
+        created_at: new Date(),
+      })
+      const res = handleCORS(NextResponse.json({
+        user_id: user.user_id, email: user.email, name: user.name, picture: user.picture, role: user.role || 'client',
+      }))
+      res.cookies.set('session_token', data.session_token, {
+        httpOnly: true, secure: true, sameSite: 'none', path: '/', maxAge: 7 * 24 * 60 * 60,
+      })
+      return res
+    }
+
+    // Current authenticated user
+    if (route === '/auth/me' && method === 'GET') {
+      const token = request.cookies.get('session_token')?.value
+        || (request.headers.get('authorization') || '').replace(/^Bearer\s+/i, '')
+      if (!token) {
+        return handleCORS(NextResponse.json({ error: 'not authenticated' }, { status: 401 }))
+      }
+      const session = await db.collection('user_sessions').findOne({ session_token: token })
+      if (!session) {
+        return handleCORS(NextResponse.json({ error: 'not authenticated' }, { status: 401 }))
+      }
+      let exp = session.expires_at
+      if (typeof exp === 'string') exp = new Date(exp)
+      if (exp && exp < new Date()) {
+        return handleCORS(NextResponse.json({ error: 'session expired' }, { status: 401 }))
+      }
+      const user = await db.collection('users').findOne({ user_id: session.user_id }, { projection: { _id: 0 } })
+      if (!user) {
+        return handleCORS(NextResponse.json({ error: 'not authenticated' }, { status: 401 }))
+      }
+      return handleCORS(NextResponse.json(user))
+    }
+
+    // Logout
+    if (route === '/auth/logout' && method === 'POST') {
+      const token = request.cookies.get('session_token')?.value
+      if (token) await db.collection('user_sessions').deleteOne({ session_token: token })
+      const res = handleCORS(NextResponse.json({ ok: true }))
+      res.cookies.set('session_token', '', {
+        httpOnly: true, secure: true, sameSite: 'none', path: '/', maxAge: 0,
+      })
+      return res
+    }
+
+    // Route not found
+    return handleCORS(NextResponse.json(
+      { error: `Route ${route} not found` }, 
+      { status: 404 }
+    ))
+
+  } catch (error) {
+    console.error('API Error:', error)
+    return handleCORS(NextResponse.json(
+      { error: "Internal server error" }, 
+      { status: 500 }
+    ))
+  }
+}
+
+// Export all HTTP methods
+export const GET = handleRoute
+export const POST = handleRoute
+export const PUT = handleRoute
+export const DELETE = handleRoute
+export const PATCH = handleRoute

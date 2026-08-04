@@ -1,0 +1,353 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ArrowRight, Menu, X, Instagram, Facebook, Mail, Phone, MapPin, MessageCircle, User } from 'lucide-react'
+
+/* -------- Shared image URLs (from real pkphotography.in) -------- */
+export const IMG = {
+  studio: 'https://pkphotography.in/images/studio.jpeg',
+  p1: 'https://pkphotography.in/pricing/PKP_0763%20cover.jpg',
+  p2: 'https://pkphotography.in/pricing/PKP_7916l.jpg',
+  p3: 'https://pkphotography.in/pricing/PKP_2826.jpg',
+  p4: 'https://pkphotography.in/pricing/PKP_8780pl.jpg',
+  p5: 'https://pkphotography.in/pricing/0N3A7946.jpg',
+  p6: 'https://pkphotography.in/pricing/PKP_551.jpg',
+  p7: 'https://pkphotography.in/pricing/5S1A9900%20cover.jpg',
+  p8: 'https://pkphotography.in/pricing/Anushka%204.jpg',
+  v1: 'https://res.cloudinary.com/ddamvvrby/image/upload/v1736666653/carousel-images/zpxixg7zyaqkcmavjgv8.jpg',
+  v2: 'https://res.cloudinary.com/ddamvvrby/image/upload/v1736666630/carousel-images/kfyabpofxwwkkpnjw4am.jpg',
+  v3: 'https://res.cloudinary.com/ddamvvrby/image/upload/v1736666501/carousel-images/qtd79jti7nx02czxtpff.jpg',
+  v4: 'https://res.cloudinary.com/ddamvvrby/image/upload/v1736666141/carousel-images/sfopw2s4oas311spclp5.jpg',
+  v5: 'https://res.cloudinary.com/ddamvvrby/image/upload/v1736667169/carousel-images/ziiadg7ohyf5ffb2dyga.jpg',
+  v6: 'https://res.cloudinary.com/ddamvvrby/image/upload/v1736667130/carousel-images/ttbnpl9tavmcrwwh9zon.jpg',
+  v7: 'https://res.cloudinary.com/ddamvvrby/image/upload/v1736667087/carousel-images/zcy76zsihwohwgomqxx0.jpg',
+  v8: 'https://res.cloudinary.com/ddamvvrby/image/upload/v1736666853/carousel-images/jzm6vxnbgitc0jejgjga.jpg',
+}
+
+export const NAV_LINKS = [
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services' },
+  { label: 'Gallery', href: '/gallery' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'Blog', href: '/blogs' },
+  { label: 'Booking', href: '/booking' },
+  { label: 'Client', href: '/client' },
+]
+
+export const CONTACT = {
+  phone: '+91 88887 66739',
+  phoneRaw: '+918888766739',
+  email: 'prabhakar@pkphotography.in',
+  address: 'Andheri West, Mumbai 400058, Maharashtra',
+  whatsapp: 'https://wa.me/+918888766739',
+}
+
+/* -------- Logo (MakeMePulse-inspired animated mark) -------- */
+export function Logo({ dark = false, size = 'md' }) {
+  const sizeMap = {
+    sm: { mark: 26, txt: 'text-[12px]', sub: 'text-[8px]' },
+    md: { mark: 32, txt: 'text-[13px]', sub: 'text-[9px]' },
+    lg: { mark: 54, txt: 'text-lg',     sub: 'text-[10px]' },
+  }
+  const s = sizeMap[size]
+  const stroke = dark ? '#ffffff' : '#161514'
+  return (
+    <Link href="/" aria-label="PK Photography — Home" className="group relative flex items-center gap-2.5 select-none">
+      {/* Animated mark: three parallelograms + orange bar */}
+      <svg
+        width={s.mark * 1.35}
+        height={s.mark}
+        viewBox="0 0 54 40"
+        fill="none"
+        className="shrink-0"
+        aria-hidden
+      >
+        <defs>
+          <clipPath id="pk-mark-clip"><rect x="0" y="0" width="54" height="40" /></clipPath>
+        </defs>
+        <g clipPath="url(#pk-mark-clip)">
+          {/* three parallelograms, staggered */}
+          {[0, 1, 2].map(k => (
+            <motion.polygon
+              key={k}
+              points={`${4 + k * 9},4 ${16 + k * 9},4 ${12 + k * 9},36 ${0 + k * 9},36`}
+              fill={stroke}
+              initial={false}
+              animate={{
+                y: [0, -1.8, 0],
+                opacity: [0.92, 1, 0.92],
+              }}
+              transition={{
+                duration: 3.6,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: k * 0.35,
+              }}
+              className="origin-center group-hover:[transform:translateY(-1.5px)] transition-transform"
+            />
+          ))}
+          {/* signature orange accent bar */}
+          <motion.rect
+            x="30"
+            y="18"
+            width="24"
+            height="4"
+            fill="#FF5B22"
+            initial={{ scaleX: 0.6, originX: 0 }}
+            animate={{ scaleX: [0.6, 1, 0.6] }}
+            transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
+            className="group-hover:[transform:scaleX(1)]"
+          />
+        </g>
+      </svg>
+      {/* Wordmark */}
+      <div className="flex flex-col leading-none">
+        <span
+          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          className={`${s.txt} font-medium tracking-tight ${dark ? 'text-white' : 'text-[#161514]'} relative overflow-hidden inline-block`}
+        >
+          <span className="inline-block transition-transform duration-500 ease-out group-hover:-translate-y-full">PK Photography</span>
+          <span className="inline-block absolute inset-0 translate-y-full text-[#FF5B22] transition-transform duration-500 ease-out group-hover:translate-y-0" aria-hidden>PK Photography</span>
+        </span>
+        <span className={`${s.sub} tracking-[0.32em] uppercase mt-1 ${dark ? 'text-white/60' : 'text-[#8A857D]'}`}>
+          Mumbai · Goa · India
+        </span>
+      </div>
+    </Link>
+  )
+}
+
+/* -------- Preloader (disabled: caused stuck white overlay in production build) -------- */
+export function Preloader() {
+  return null
+}
+
+/* -------- Nav -------- */
+export function Nav() {
+  const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [overHero, setOverHero] = useState(false)
+  const [user, setUser] = useState(null)
+  const pathname = usePathname()
+  useEffect(() => {
+    const s = () => {
+      const y = window.scrollY
+      setScrolled(y > 30)
+      const hero = document.querySelector('[data-transparent-header="true"], [data-testid$="hero-section"], main > section:first-child')
+      const heroBottom = hero?.getBoundingClientRect?.().bottom ?? 0
+      // Keep header transparent while the visitor is still inside the page hero.
+      setOverHero(heroBottom > 84)
+    }
+    s(); window.addEventListener('scroll', s, { passive: true }); window.addEventListener('resize', s); return () => { window.removeEventListener('scroll', s); window.removeEventListener('resize', s) }
+  }, [pathname])
+  useEffect(() => { setOpen(false) }, [pathname])
+  useEffect(() => {
+    let active = true
+    fetch('/api/auth/me', { credentials: 'include' })
+      .then(r => (r.ok ? r.json() : null))
+      .then(u => { if (active) setUser(u) })
+      .catch(() => {})
+    return () => { active = false }
+  }, [pathname])
+  const firstName = (user?.name || user?.email || 'Account').split(' ')[0]
+  const avatarLetter = (user?.name || user?.email || 'U').slice(0, 1).toUpperCase()
+
+  const darkHero = pathname === '/' || pathname === '/wedding' || pathname === '/services' || pathname.startsWith('/services/') || pathname.startsWith('/blog')
+  const dark = overHero && darkHero // true = show light text over dark hero
+  const headerBg = overHero
+    ? 'bg-transparent py-5'
+    : (scrolled ? 'bg-[#EEEAE1]/85 border-b border-[#DBD4C6] backdrop-blur-lg py-3' : 'bg-[#EEEAE1]/60 backdrop-blur-sm py-5')
+  const linkBase = dark
+    ? 'text-white/85 hover:text-white'
+    : 'text-[#161514]/80 hover:text-[#FF5B22]'
+  const activeCls = dark ? 'text-white' : 'text-[#FF5B22]'
+
+  return (
+    <>
+      <header className={`fixed top-0 inset-x-0 z-[90] transition-[background-color,padding,border-color,backdrop-filter] duration-500 ${headerBg}`}>
+        <div className="container mx-auto max-w-[1400px] flex items-center justify-between px-6 md:px-10">
+          <Logo dark={dark} />
+          <nav className="hidden md:flex items-center gap-5 lg:gap-8">
+            {NAV_LINKS.map(l => {
+              const active = pathname === l.href
+              return (
+                <Link key={l.label} href={l.href} className={`relative text-[13px] font-medium whitespace-nowrap transition-colors ${active ? activeCls : linkBase}`}>
+                  {l.label}
+                  {active && <motion.span layoutId="nav-active" className={`absolute -bottom-1.5 left-0 right-0 h-0.5 rounded-full ${dark ? 'bg-white' : 'bg-[#FF5B22]'}`} />}
+                </Link>
+              )
+            })}
+          </nav>
+          <div className="flex items-center gap-3">
+            {user ? (
+              <Link href="/client" data-testid="nav-profile-btn" className={`hidden md:inline-flex items-center gap-2 text-[12px] font-semibold pl-1.5 pr-4 py-1.5 rounded-full transition-colors ${dark ? 'bg-white/15 backdrop-blur-md border border-white/25 text-white hover:bg-white hover:text-[#161514]' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`}>
+                {user.picture ? (
+                  <img src={user.picture} alt={user.name || 'Profile'} referrerPolicy="no-referrer" className="w-7 h-7 rounded-full object-cover ring-1 ring-white/30" />
+                ) : (
+                  <span className="w-7 h-7 rounded-full bg-[#FF5B22] grid place-content-center text-[11px] text-white">{avatarLetter}</span>
+                )}
+                {firstName}
+              </Link>
+            ) : (
+              <Link href="/client" data-testid="nav-login-btn" className={`hidden md:inline-flex items-center gap-2 text-[12px] font-semibold px-5 py-3 rounded-full transition-colors ${dark ? 'bg-white/15 backdrop-blur-md border border-white/25 text-white hover:bg-white hover:text-[#161514]' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`}>
+                Login <ArrowRight size={14} />
+              </Link>
+            )}
+            <button onClick={() => setOpen(true)} className={`md:hidden ${dark ? 'text-white' : 'text-[#161514]'}`} aria-label="Open menu"><Menu /></button>
+          </div>
+        </div>
+      </header>
+      <AnimatePresence>
+        {open && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[110] bg-[#EEEAE1] flex flex-col p-8">
+            <div className="flex justify-between items-center">
+              <Logo />
+              <button onClick={() => setOpen(false)} aria-label="Close menu"><X /></button>
+            </div>
+            <nav className="flex-1 flex flex-col justify-center gap-3">
+              {NAV_LINKS.map((l, i) => (
+                <motion.div key={l.label} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: i * 0.05 }}>
+                  <Link href={l.href} className="display text-5xl block">{l.label}</Link>
+                </motion.div>
+              ))}
+              {user ? (
+                <Link href="/client" data-testid="mobile-nav-profile-btn" className="mt-8 inline-flex w-fit items-center gap-3 bg-[#161514] text-white pl-2 pr-6 py-2 rounded-full font-semibold">
+                  {user.picture ? (
+                    <img src={user.picture} alt={user.name || 'Profile'} referrerPolicy="no-referrer" className="w-9 h-9 rounded-full object-cover" />
+                  ) : (
+                    <span className="w-9 h-9 rounded-full bg-[#FF5B22] grid place-content-center"><User size={16} /></span>
+                  )}
+                  {firstName}
+                </Link>
+              ) : (
+                <Link href="/client" className="mt-8 inline-flex w-fit items-center gap-2 bg-[#FF5B22] text-white px-6 py-3 rounded-full font-semibold">Login <ArrowRight size={16} /></Link>
+              )}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  )
+}
+
+/* -------- WhatsApp float -------- */
+export function WhatsAppFloat() {
+  return (
+    <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" aria-label="WhatsApp" className="fixed bottom-6 right-6 z-[80] w-14 h-14 rounded-full bg-[#25D366] text-white grid place-content-center shadow-2xl hover:scale-110 transition-transform">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.966-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </a>
+  )
+}
+
+/* -------- Footer (light theme, cyan accents, same content) -------- */
+export function Footer() {
+  return (
+    <footer className="relative bg-[#EEEAE1] border-t border-[#DBD4C6] pt-20 pb-8 overflow-hidden">
+      {/* Decorative cyan gradient blob */}
+      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[400px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(255,91,34,0.12), transparent 60%)' }} />
+
+      <div className="container mx-auto max-w-[1400px] px-6 md:px-10 relative">
+        {/* Main footer grid */}
+        <div className="grid grid-cols-12 gap-10">
+          <div className="col-span-12 md:col-span-4">
+            <Logo size="lg" />
+            <p className="mt-5 text-[#8A857D] leading-relaxed max-w-sm">Based in Andheri West, Mumbai, PK Photography provides professional photography and videography services across Mumbai, Goa and destination locations. From weddings and corporate events to commercial, product and real estate photography, we help people and brands create visuals that leave a lasting impression.</p>
+            <div className="flex items-center gap-3 mt-6">
+              <a href="#" aria-label="Instagram" className="w-10 h-10 rounded-full grid place-content-center border border-[#DBD4C6] text-[#161514] hover:bg-[#FF5B22] hover:border-[#FF5B22] hover:text-white transition-colors"><Instagram size={16} /></a>
+              <a href="#" aria-label="Facebook" className="w-10 h-10 rounded-full grid place-content-center border border-[#DBD4C6] text-[#161514] hover:bg-[#FF5B22] hover:border-[#FF5B22] hover:text-white transition-colors"><Facebook size={16} /></a>
+              <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" aria-label="WhatsApp" className="w-10 h-10 rounded-full grid place-content-center border border-[#DBD4C6] text-[#161514] hover:bg-[#FF5B22] hover:border-[#FF5B22] hover:text-white transition-colors"><MessageCircle size={16} /></a>
+              <a href={`mailto:${CONTACT.email}`} aria-label="Email" className="w-10 h-10 rounded-full grid place-content-center border border-[#DBD4C6] text-[#161514] hover:bg-[#FF5B22] hover:border-[#FF5B22] hover:text-white transition-colors"><Mail size={16} /></a>
+            </div>
+          </div>
+
+          <div className="col-span-6 md:col-span-2">
+            <div className="text-[11px] font-semibold uppercase tracking-widest text-[#161514] mb-4">Explore</div>
+            <ul className="space-y-3 text-sm text-[#8A857D]">
+              <li><Link href="/services" className="link-underline hover:text-[#FF5B22]">Services</Link></li>
+              <li><Link href="/gallery" className="link-underline hover:text-[#FF5B22]">Gallery</Link></li>
+              <li><Link href="/pricing" className="link-underline hover:text-[#FF5B22]">Pricing</Link></li>
+              <li><Link href="/booking" className="link-underline hover:text-[#FF5B22]">Booking</Link></li>
+            </ul>
+          </div>
+
+          <div className="col-span-6 md:col-span-2">
+            <div className="text-[11px] font-semibold uppercase tracking-widest text-[#161514] mb-4">Support</div>
+            <ul className="space-y-3 text-sm text-[#8A857D]">
+              <li><Link href="/client" className="link-underline hover:text-[#FF5B22]">Client Login</Link></li>
+              <li><Link href="#" className="link-underline hover:text-[#FF5B22]">Privacy Policy</Link></li>
+              <li><Link href="#" className="link-underline hover:text-[#FF5B22]">Terms & Conditions</Link></li>
+              <li><Link href="#" className="link-underline hover:text-[#FF5B22]">Refund Policy</Link></li>
+            </ul>
+          </div>
+
+          <div className="col-span-12 md:col-span-4">
+            <div className="text-[11px] font-semibold uppercase tracking-widest text-[#161514] mb-4">Contact</div>
+            <div className="space-y-4 text-sm">
+              <a href={`mailto:${CONTACT.email}`} className="flex items-start gap-3 group">
+                <span className="w-9 h-9 rounded-full bg-[#F3E4DC] text-[#FF5B22] grid place-content-center shrink-0 group-hover:bg-[#FF5B22] group-hover:text-white transition-colors"><Mail size={14} /></span>
+                <div>
+                  <div className="text-[11px] uppercase tracking-widest text-[#8A857D]">Email</div>
+                  <div className="text-[#161514] font-medium">{CONTACT.email}</div>
+                </div>
+              </a>
+              <a href={`tel:${CONTACT.phoneRaw}`} className="flex items-start gap-3 group">
+                <span className="w-9 h-9 rounded-full bg-[#F3E4DC] text-[#FF5B22] grid place-content-center shrink-0 group-hover:bg-[#FF5B22] group-hover:text-white transition-colors"><Phone size={14} /></span>
+                <div>
+                  <div className="text-[11px] uppercase tracking-widest text-[#8A857D]">Phone</div>
+                  <div className="text-[#161514] font-medium">{CONTACT.phone}</div>
+                </div>
+              </a>
+              <div className="flex items-start gap-3">
+                <span className="w-9 h-9 rounded-full bg-[#F3E4DC] text-[#FF5B22] grid place-content-center shrink-0"><MapPin size={14} /></span>
+                <div>
+                  <div className="text-[11px] uppercase tracking-widest text-[#8A857D]">Based in</div>
+                  <div className="text-[#161514] font-medium">{CONTACT.address}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom copyright bar */}
+        <div className="mt-16 pt-6 border-t border-[#DBD4C6] flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-[#8A857D]">
+          <span>© {new Date().getFullYear()} PK Photography. All rights reserved.</span>
+          <span className="flex items-center gap-2">Crafted with care in Mumbai <span className="w-1 h-1 rounded-full bg-[#FF5B22]" /></span>
+        </div>
+      </div>
+    </footer>
+  )
+}
+
+/* -------- Page section-header helper for inner pages -------- */
+export function PageHeader({ eyebrow, title, subtitle }) {
+  return (
+    <section className="relative pt-40 pb-16 md:pt-48 md:pb-20 bg-[#EEEAE1] overflow-hidden">
+      <div className="absolute -top-40 -right-20 w-[500px] h-[500px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(255,91,34,0.18), transparent 60%)' }} />
+      <div className="absolute -bottom-40 -left-20 w-[500px] h-[500px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(255,91,34,0.10), transparent 60%)' }} />
+      <div className="container mx-auto max-w-[1400px] px-6 md:px-10 relative">
+        <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="max-w-3xl">
+          <div className="eyebrow mb-4">{eyebrow}</div>
+          <h1 className="display text-5xl md:text-7xl leading-[0.95]">{title}</h1>
+          {subtitle && <p className="mt-6 text-lg text-[#8A857D] max-w-2xl leading-relaxed">{subtitle}</p>}
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
+/* -------- Site chrome wrapper -------- */
+export function SiteShell({ children }) {
+  return (
+    <>
+      <Preloader />
+      <Nav />
+      <div>{children}</div>
+      <Footer />
+      <WhatsAppFloat />
+    </>
+  )
+}

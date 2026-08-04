@@ -1,66 +1,26 @@
-# PK Photography — Editorial Blog Page
+# PK Photography — Emergent2 (Next.js) Site + Goa Editorial Blog
 
 ## Problem statement
-Add a new magazine-style blog article to the PK Photography site:
-`/blog/pre-wedding-couple-portrait-shoot-locations-goa` — long-form guide to
-pre-wedding, couple, and portrait shoots in Goa (locations, services,
-packages, FAQ, final CTA).
+Pull the full public repo `github.com/pkwebapp/Emergent2` into /app without changing anything, then add a new editorial blog article — "Pre-Wedding, Couple & Portrait Shoots in Goa" at `/blog/pre-wedding-couple-portrait-shoot-locations-goa` — as one of the posts on the existing blog index.
 
 ## Architecture
-- Frontend-only feature (React + CRACO). No backend/DB changes.
-- Route added in `App.js` under BrowserRouter → `/blog/pre-wedding-couple-portrait-shoot-locations-goa` (also default `/` for now).
-- Smooth momentum scrolling via `lenis` wrapper `SmoothScroll` component.
-- Scroll-reveal & parallax micro-interactions via `framer-motion`.
-- Shadcn Accordion used for FAQ; JSON-LD `FAQPage` and `Article` structured data emitted.
+- Next.js 15.5 (App Router) frontend, FastAPI reverse-proxy backend that forwards `/api/*` to Next.js API routes on port 3000, MongoDB.
+- Supervisor already runs `yarn start` (= `next dev`) in `/app/frontend`.
+- Existing blog posts live at `/app/frontend/app/blog/{slug}/page.js` and are indexed by `/app/frontend/app/blogs/posts.js` (rendered by `Journal.jsx`).
 
-## Design system
-- Palette (HSL variables in `index.css`): cream/sand base, charcoal ink,
-  sunset gold + gold-deep accent, ocean teal secondary.
-- Fonts: Fraunces + Cormorant Garamond for display headings; Inter for
-  body; JetBrains Mono for chapter numbers / labels.
-- Editorial touches: grain overlay, kinetic on-load line reveals,
-  numbered manifesto chapters, editorial marquee, sticky TOC (2xl+
-  left rail, pill-bar below).
+## What was added (untouched: everything else)
+- `/app/frontend/app/blog/pre-wedding-couple-portrait-shoot-locations-goa/page.js` — server component with metadata, OG, FAQPage & Article JSON-LD, keywords.
+- `/app/frontend/app/blog/pre-wedding-couple-portrait-shoot-locations-goa/GoaEditorial.jsx` — full client component (hero, sticky TOC + mobile pill bar, intro w/ animated stat counters, 5 zig-zag services, iPhone reel highlight, 4 parallax location cards, 3-package pricing w/ "Most Popular" badge, FAQ accordion, final CTA with Book / WhatsApp).
+- `/app/frontend/app/blogs/posts.js` — one new entry prepended for the Goa blog (Category = Goa, 9 min read, Dec 1 2025).
 
-## Sections
-1. Hero (parallax cinematic image, masked line-by-line headline)
-2. Sticky TOC (2xl left rail / mobile pill bar)
-3. Intro (two-column + trust stats: 12+ yrs · 2000+ · Mumbai · Goa · Delhi)
-4. Editorial location marquee
-5. Services zig-zag (Pre-Wedding, Couple, Portrait, Outdoor Portfolio,
-   Maternity, Baby) + highlighted iPhone Reel dark card
-6. Location Guide (Ashvem/Mandrem, Arambol, Vagator/Chapora, Villa) with
-   scroll-parallax hero images and icon rows
-7. Packages (Hourly / Half-Day / Full-Day with Most Popular badge on
-   Full-Day) + custom quote CTA
-8. FAQ Accordion (6 Qs) with FAQPage JSON-LD
-9. Final CTA (Book Now → /booking, WhatsApp → wa.me, email link)
-10. Footer
+## Design fit
+- Reused the exact same visual system as the wedding-package editorial: Cormorant Garamond headlines, `#EEEAE1` cream base, `#161514` ink, `#FF5B22`/`#FF7A4d` orange accents, `.eyebrow` / `.link-underline` / `.lift` utilities, framer-motion Reveal/ParallaxImage/Counter patterns.
+- Imagery pulled from the repo's existing `/public` assets (`/wedding/*`, `/outdoors/*`, `/destination-weddings.jpg`).
 
-## Files added / modified
-- `/app/frontend/public/index.html` — meta tags, OG, Google Fonts.
-- `/app/frontend/src/index.css` — palette, typography, marquee, grain, scroll indicator.
-- `/app/frontend/src/App.js` — router with new blog route.
-- `/app/frontend/src/App.css` — minimal baseline.
-- `/app/frontend/src/pages/BlogGoa.jsx` — page composition + Article JSON-LD.
-- `/app/frontend/src/components/blog/*` — SmoothScroll, Navbar, Hero, TOC, Intro, Marquee, Services, Locations, Packages, FAQ, CTA, Footer.
-- `/app/frontend/src/constants/testIds/blog.js` — data-testid registry.
-- `lenis@1.1.20` added to package.json.
+## SEO
+- Canonical URL, OG, Twitter, keyword list, article + FAQPage JSON-LD, semantic H1 → H2 → H3, alt text with location + "pre-wedding shoot Goa".
 
-## Implemented (Dec 2025)
-- Full editorial blog page live at
-  `/blog/pre-wedding-couple-portrait-shoot-locations-goa`
-- Responsive at 390 / 768 / 1440 / 1920+
-- FAQPage & Article structured data
-- Semantic H1 → H2 per section → H3 per service/location
-- Internal links to /services/weddings, /services/portraits,
-  /services/maternity-baby, /booking
-- Placeholder WhatsApp number (`+91 99999 99999`) — replace with real one
-- Placeholder starting prices — replace with real pricing
-
-## Backlog / next steps
-- P1: Client to supply real photos to replace stock Unsplash/Pexels imagery
-- P1: Replace placeholder WhatsApp number & pricing
-- P2: Additional blog articles reusing this component system
-- P2: MDX/CMS pipeline so content is editable without code changes
-- P2: Backend endpoint for the booking form & lead capture
+## Known caveats
+- Placeholder starting prices (₹18k / ₹42k / ₹75k) — swap for the real values.
+- WhatsApp number reuses the existing `+91 8888766739` from other pages.
+- Location images are drawn from the repo's existing wedding/outdoor folders as placeholders — swap once real Ashvem / Mandrem / Arambol / Vagator frames are ready.

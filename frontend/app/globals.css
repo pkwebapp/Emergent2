@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #EEEAE1;
+  --ink: #161514;
+  --muted: #8A857D;
+  --line: #DBD4C6;
+  --cyan: #FF5B22;
+  --cyan-2: #E24A12;
+  --cyan-soft: #F3E4DC;
+  --cyan-glow: rgba(255, 91, 34, 0.16);
+}
+
+* { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  scroll-behavior: smooth;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+body { margin: 0; overflow-x: hidden; }
+
+* { box-sizing: border-box; }
+
+img, video, canvas, svg {
+  max-width: 100%;
+}
+
+.font-inter { font-family: 'Inter', sans-serif; }
+.font-cormorant { font-family: 'Cormorant Garamond', 'Cormorant', Georgia, serif; }
+
+.display {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+}
+
+.eyebrow {
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--cyan-2);
+}
+
+/* Marquee */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee { animation: marquee 30s linear infinite; }
+.animate-marquee-slow { animation: marquee 60s linear infinite; }
+
+.link-underline { position: relative; }
+.link-underline::after {
+  content: '';
+  position: absolute; left: 0; bottom: -3px; height: 1.5px; width: 100%;
+  background: currentColor;
+  transform: scaleX(0); transform-origin: right center;
+  transition: transform 0.6s cubic-bezier(0.7,0,0.2,1);
+}
+.link-underline:hover::after { transform: scaleX(1); transform-origin: left center; }
+
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* Fluid blob background */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Grid overlay for editorial feel */
+.grid-lines::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(to right, rgba(22,21,20,0.05) 1px, transparent 1px);
+  background-size: 8.333% 100%;
+  pointer-events: none;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #E6E1D5; }
+::-webkit-scrollbar-thumb { background: #CFC7B6; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+
+::selection { background: var(--cyan); color: #fff; }
+
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+/* Card lift */
+.lift { transition: transform 0.5s cubic-bezier(0.7,0,0.2,1), box-shadow 0.5s; }
+.lift:hover { transform: translateY(-6px); box-shadow: 0 30px 60px -20px rgba(22,21,20,0.22); }
+
+/* SVG stroke animation for logo */
+@keyframes drawStroke {
+  0% { stroke-dashoffset: 400; opacity: 0; }
+  30% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+.logo-stroke {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: drawStroke 1.6s cubic-bezier(0.7,0,0.2,1) forwards;
+}
+.logo-stroke-2 { animation-delay: 0.3s; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up { animation: fadeInUp 0.9s cubic-bezier(0.22,1,0.36,1) both; }
+
+@layer base {
+  :root {
+    --background: 40 27% 91%;
+    --foreground: 40 5% 8%;
+    --primary: 40 5% 8%;
+    --primary-foreground: 40 27% 91%;
+    --secondary: 42 27% 87%;
+    --secondary-foreground: 40 5% 8%;
+    --muted: 42 27% 87%;
+    --muted-foreground: 37 5% 52%;
+    --accent: 15 100% 57%;
+    --accent-foreground: 0 0% 100%;
+    --border: 40 23% 82%;
+    --input: 40 23% 82%;
+    --ring: 15 100% 57%;
+    --card: 40 27% 91%;
+    --card-foreground: 40 5% 8%;
+    --radius: 0.75rem;
+  }
+}
+
+/* Hide scrollbar for mobile TOC pill bar */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

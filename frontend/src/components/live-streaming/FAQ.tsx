@@ -1,0 +1,195 @@
+"use client";
+
+import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+
+const faqManImg = "/live-streaming/faq_man.webp";
+
+interface FAQItem {
+  id: number;
+  question: string;
+  answer: React.ReactNode;
+  bgColor: string;
+}
+
+const FAQ: React.FC = () => {
+  const [activeQuestion, setActiveQuestion] = useState<number | null>(null);
+  const refs = useRef<{ [key: number]: HTMLDivElement | null }>({});
+
+  useEffect(() => {
+    setActiveQuestion(null);
+  }, []);
+
+  const faqData: FAQItem[] = [
+    {
+      id: 1,
+      question: "What makes PK Photography unique in Andheri, Mumbai?",
+      answer:
+        "At PK Photography, we combine technical expertise with a personalized touch to capture your true essence. Our Andheri studio offers a relaxed yet professional environment that reflects the vibrant energy of Mumbai.",
+      bgColor: "#f8d7d7",
+    },
+    {
+      id: 2,
+      question: "How can I book a photography or videography session?",
+      answer: (
+        <>
+          You can easily book a session by:
+          <ul className="list-disc list-inside mt-2">
+            <li>Calling us directly</li>
+            <li>Filling out the inquiry form on our website</li>
+            <li>Contacting us via Instagram</li>
+            <li>Using WhatsApp for quick queries</li>
+          </ul>
+        </>
+      ),
+      bgColor: "#f8e7d7",
+    },
+    {
+      id: 3,
+      question: "How soon do I receive the edited photos and videos?",
+      answer:
+        "Final deliverables are typically shared within 7 to 10 working days, depending on the project's scale and type. Files are delivered via a secure online gallery, with pen drive or printed albums available for an additional cost.",
+      bgColor: "#f8f2d7",
+    },
+    {
+      id: 4,
+      question: "Can I get a customized package for my event or shoot?",
+      answer:
+        "Absolutely! Contact us to create a custom photography or videography package tailored to your unique needs and budget.",
+      bgColor: "#d7f8dc",
+    },
+    {
+      id: 5,
+      question: "Where is your studio located in Mumbai?",
+      answer:
+        "Our studio is located in Andheri West, Mumbai. We offer indoor shoots at our professional setup and outdoor shoots throughout the city based on your preference.",
+      bgColor: "#d7e8f8",
+    },
+  ];
+
+  const handleQuestionClick = (id: number) => {
+    const newActive = id === activeQuestion ? null : id;
+    setActiveQuestion(newActive);
+
+    setTimeout(() => {
+      if (newActive !== null && refs.current[newActive]) {
+        refs.current[newActive]?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    }, 100);
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What makes PK Photography unique in Andheri, Mumbai?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "At PK Photography, we combine technical expertise with a personalized touch to capture your true essence. Our Andheri studio offers a relaxed yet professional environment that reflects the vibrant energy of Mumbai."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How can I book a photography or videography session?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can easily book a session by calling us directly, filling out the inquiry form on our website, contacting us via Instagram, or using WhatsApp for quick queries."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How soon do I receive the edited photos and videos?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Final deliverables are typically shared within 7 to 10 working days, depending on the project's scale and type. Files are delivered via a secure online gallery, with pen drive or printed albums available for an additional cost."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I get a customized package for my event or shoot?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Absolutely! Contact us to create a custom photography or videography package tailored to your unique needs and budget."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where is your studio located in Mumbai?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our studio is located in Andheri West, Mumbai. We offer indoor shoots at our professional setup and outdoor shoots throughout the city based on your preference."
+        }
+      }
+    ]
+  };
+
+  return (
+    <section className="bg-[#EEEAE1] px-4 py-16 sm:mx-auto   md:py-14 lg:py-16 ">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        {/* Left Illustration */}
+        <div className="relative hidden lg:flex justify-center">
+          <Image
+            src={faqManImg}
+            alt="FAQ Illustration"
+            width={170}
+            height={258}
+            className="max-w-full h-auto"
+            loading="lazy"
+          />
+        </div>
+
+        {/* Right Questions */}
+        <div className="max-w-xl sm:mx-auto w-full">
+          <h2 className="text-4xl font-light text-gray-800 mb-8 tracking-wide">
+            FAQs
+          </h2>
+
+          <div className="flex flex-col gap-4 max-h-[500px]  overflow-y-auto pr-4 sm:pr-0 lg:pr-1 custom-scrollbar">
+            {faqData.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => handleQuestionClick(item.id)}
+                ref={(el) => {
+                  refs.current[item.id] = el;
+                }}
+                className="rounded-lg p-5 cursor-pointer transition-all"
+                style={{
+                  backgroundColor:
+                    item.id === activeQuestion ? item.bgColor : "#f9f9f9",
+                }}
+                role="button"
+                aria-expanded={item.id === activeQuestion}
+                aria-controls={`faq-answer-${item.id}`}
+                tabIndex={0}
+              >
+                <h3
+                  className={`text-base sm:text-lg font-${
+                    item.id === activeQuestion ? "medium" : "normal"
+                  } text-gray-800`}
+                >
+                  {item.question}
+                </h3>
+                {item.id === activeQuestion && (
+                  <div id={`faq-answer-${item.id}`} className="text-sm sm:text-base text-gray-600 mt-3 leading-relaxed font-light">
+                    {item.answer}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default FAQ;

@@ -1,0 +1,1441 @@
+{
+    "placeholderImages": [
+      {
+        "id": "hero",
+        "description": "A professional photographer adjusting a camera on a tripod in a golden hour setting.",
+        "imageUrl": "https://images.unsplash.com/photo-1557587379-286dd2e7ac1a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwaG90b2dyYXBoZXIlMjBzdW5zZXR8ZW58MHx8fHwxNzYxMTU5Njg0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "photographer sunset"
+      },
+      {
+        "id": "portraiture-category",
+        "description": "A striking black and white portrait of a woman with compelling eyes.",
+        "imageUrl": "https://images.unsplash.com/photo-1615538785945-6625ccdb4b25?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxwb3J0cmFpdCUyMHdvbWFufGVufDB8fHx8MTc2MTE1MDkzNHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "portrait woman"
+      },
+      {
+        "id": "fashion-category",
+        "description": "A high-fashion model posing in a vibrant, artistic outfit against an urban backdrop.",
+        "imageUrl": "https://images.unsplash.com/photo-1619086303291-0ef7699e4b31?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8ZmFzaGlvbiUyMG1vZGVsfGVufDB8fHx8MTc2MTA5NjA3OXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "fashion model"
+      },
+      {
+        "id": "commercial-category",
+        "description": "A beautifully styled product shot of a luxury watch on a dark, textured surface.",
+        "imageUrl": "https://images.unsplash.com/photo-1594075378084-b3099febb55e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwcm9kdWN0JTIwd2F0Y2h8ZW58MHx8fHwxNzYxMTU4MzE3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "product watch"
+      },
+      {
+        "id": "events-category",
+        "description": "A newly married couple sharing a joyful, intimate moment during their wedding.",
+        "imageUrl": "https://images.unsplash.com/photo-1621801306185-8c0ccf9c8eb8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3ZWRkaW5nJTIwY291cGxlfGVufDB8fHx8MTc2MTEzMzkxOHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "wedding couple"
+      },
+      {
+        "id": "real-estate-category",
+        "description": "Interior of a modern, stylish living room.",
+        "imageUrl": "https://images.unsplash.com/photo-1648536474504-7bbf8a1ee3ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxtb2Rlcm4lMjBpbnRlcmlvcnxlbnwwfHx8fDE3NjEwODY3Nzl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "modern interior"
+      },
+      {
+        "id": "celebrity-category",
+        "description": "An influencer taking a selfie in a stylish location.",
+        "imageUrl": "https://images.unsplash.com/photo-1758273239228-04a19ba5a1b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxpbmZsdWVuY2VyJTIwc2VsZmllfGVufDB8fHx8MTc2MTE1ODM1NXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "influencer selfie"
+      },
+      {
+        "id": "additional-services-category",
+        "description": "A person editing a photo on a computer.",
+        "imageUrl": "https://images.unsplash.com/photo-1744948961024-66baaafbb5dc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwaG90byUyMGVkaXRpbmd8ZW58MHx8fHwxNzYxMTMwNTk2fDA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "photo editing"
+      },
+      {
+        "id": "personal-portrait-1",
+        "description": "A closeup portrait of a man with interesting facial features.",
+        "imageUrl": "https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwb3J0cmFpdCUyMG1hbnxlbnwwfHx8fDE3NjEwNjM2MTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "portrait man"
+      },
+      {
+        "id": "personal-portrait-2",
+        "description": "An environmental portrait of a woman in a sunlit field.",
+        "imageUrl": "https://images.unsplash.com/photo-1625832954356-6ddaffc45853?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3b21hbiUyMGZpZWxkfGVufDB8fHx8MTc2MTE1OTY4NHww&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "woman field"
+      },
+      {
+        "id": "family-portrait-1",
+        "description": "A happy family laughing together in a park.",
+        "imageUrl": "https://images.unsplash.com/photo-1460788150444-d9dc07fa9dba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxmYW1pbHklMjBwYXJrfGVufDB8fHx8MTc2MTA5NjcwN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "family park"
+      },
+      {
+        "id": "family-portrait-2",
+        "description": "A tender moment between a mother and her child.",
+        "imageUrl": "https://images.unsplash.com/photo-1658928785630-78f3cda48e58?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxtb3RoZXIlMjBjaGlsZHxlbnwwfHx8fDE3NjEwNzQ3Njh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "mother child"
+      },
+      {
+        "id": "baby-kids-1",
+        "description": "A cute baby smiling.",
+        "imageUrl": "https://images.unsplash.com/photo-1630304565761-d6f8d5a0facd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjdXRlJTIwYmFieXxlbnwwfHx8fDE3NjEwNjc1MTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "cute baby"
+      },
+      {
+        "id": "baby-kids-2",
+        "description": "Kids playing outdoors.",
+        "imageUrl": "https://images.unsplash.com/photo-1613794713137-a78aba4be84a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxraWRzJTIwcGxheWluZ3xlbnwwfHx8fDE3NjExMzc2Njl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "kids playing"
+      },
+      {
+        "id": "headshots-1",
+        "description": "Professional headshot of a businessman.",
+        "imageUrl": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwcm9mZXNzaW9uYWwlMjBoZWFkc2hvdHxlbnwwfHx8fDE3NjEwODY0MzR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "professional headshot"
+      },
+      {
+        "id": "headshots-2",
+        "description": "Creative headshot of an artist.",
+        "imageUrl": "https://images.unsplash.com/photo-1541293590517-e76751af59f1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhcnRpc3QlMjBoZWFkc2hvdHxlbnwwfHx8fDE3NjExNTk5ODZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "artist headshot"
+      },
+      {
+        "id": "fashion-shoots-1",
+        "description": "A model in avant-garde clothing in a studio setting.",
+        "imageUrl": "https://images.unsplash.com/photo-1474666488182-66ec723476c6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmYXNoaW9uJTIwc3R1ZGlvfGVufDB8fHx8MTc2MTE0NDE4OXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "fashion studio"
+      },
+      {
+        "id": "fashion-shoots-2",
+        "description": "A dynamic shot of a model walking down a city street.",
+        "imageUrl": "https://images.unsplash.com/photo-1696159976626-40c781858e04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmYXNoaW9uJTIwc3RyZWV0fGVufDB8fHx8MTc2MTE0MjY1M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "fashion street"
+      },
+      {
+        "id": "magazine-editorial-1",
+        "description": "A storytelling image for a magazine.",
+        "imageUrl": "https://images.unsplash.com/photo-1641137806473-5fe07dd62d63?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxtYWdhemluZSUyMGVkaXRvcmlhbHxlbnwwfHx8fDE3NjExNTk5ODZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "magazine editorial"
+      },
+      {
+        "id": "magazine-editorial-2",
+        "description": "High fashion concept shot.",
+        "imageUrl": "https://images.unsplash.com/photo-1485518882345-15568b007407?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxoaWdoJTIwZmFzaGlvbnxlbnwwfHx8fDE3NjExMjc0MDl8MA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "high fashion"
+      },
+      {
+        "id": "portfolio-creation-1",
+        "description": "A model's portfolio with diverse looks.",
+        "imageUrl": "https://images.unsplash.com/photo-1635420714630-39f59e9f4600?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxtb2RlbCUyMHBvcnRmb2xpb3xlbnwwfHx8fDE3NjExNTk5ODZ8MA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "model portfolio"
+      },
+      {
+        "id": "portfolio-creation-2",
+        "description": "Close up of a model's face.",
+        "imageUrl": "https://images.unsplash.com/photo-1567022449718-a5c02a1242fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bW9kZWwlMjBjbG9zZXVwfGVufDB8fHx8MTc2MTE1OTk4Nnww&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "model closeup"
+      },
+      {
+        "id": "boudoir-shoots-1",
+        "description": "An elegant boudoir photo.",
+        "imageUrl": "https://images.unsplash.com/photo-1728241965045-90b72c552d68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxlbGVnYW50JTIwYm91ZG9pcnxlbnwwfHx8fDE3NjExNTk5ODZ8MA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "elegant boudoir"
+      },
+      {
+        "id": "boudoir-shoots-2",
+        "description": "A sensual portrait.",
+        "imageUrl": "https://images.unsplash.com/photo-1637496046020-a4c1a03b870f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzZW5zdWFsJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzYxMTU0ODQ2fDA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "sensual portrait"
+      },
+      {
+        "id": "brand-shoots-1",
+        "description": "A lifestyle shot for a brand campaign.",
+        "imageUrl": "https://images.unsplash.com/photo-1544635350-0b6d55caf30e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxicmFuZCUyMGxpZmVzdHlsZXxlbnwwfHx8fDE3NjExNTk5ODZ8MA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "brand lifestyle"
+      },
+      {
+        "id": "brand-shoots-2",
+        "description": "Product in use by a model.",
+        "imageUrl": "https://images.unsplash.com/photo-1597695172083-277df5cedec3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwcm9kdWN0JTIwbW9kZWx8ZW58MHx8fHwxNzYxMTU5OTg2fDA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "product model"
+      },
+      {
+        "id": "product-photography-1",
+        "description": "A cosmetic product with a clean, white background.",
+        "imageUrl": "https://images.unsplash.com/photo-1758613655900-61957c2aca5d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb3NtZXRpY3MlMjBzdHVkaW98ZW58MHx8fHwxNzYxMTU5Njg0fDA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "cosmetics studio"
+      },
+      {
+        "id": "product-photography-2",
+        "description": "A piece of electronics shot with dramatic lighting.",
+        "imageUrl": "https://images.unsplash.com/photo-1636614223954-db6a663293ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxlbGVjdHJvbmljcyUyMHByb2R1Y3R8ZW58MHx8fHwxNzYxMTU5Njg0fDA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "electronics product"
+      },
+      {
+        "id": "ecommerce-photography-1",
+        "description": "Clothing on a mannequin for an e-commerce store.",
+        "imageUrl": "https://images.unsplash.com/photo-1558234200-3efd43232f08?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxlY29tbWVyY2UlMjBjbG90aGluZ3xlbnwwfHx8fDE3NjExNTk5ODZ8MA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "ecommerce clothing"
+      },
+      {
+        "id": "ecommerce-photography-2",
+        "description": "A collection of products for an online shop.",
+        "imageUrl": "https://images.unsplash.com/photo-1663061989677-8ca3b7fc2d16?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "product collection"
+      },
+      {
+        "id": "wedding-photography-1",
+        "description": "A bride and groom exchanging vows.",
+        "imageUrl": "/wedding-photography-1.jpg",
+        "imageHint": "wedding ceremony"
+      },
+      {
+        "id": "wedding-photography-2",
+        "description": "A detailed shot of wedding rings.",
+        "imageUrl": "/wedding-photography-1.jpg",
+        "imageHint": "wedding rings"
+      },
+      {
+        "id": "pre-wedding-shoots-1",
+        "description": "A couple on a pre-wedding photoshoot.",
+        "imageUrl": "https://images.unsplash.com/photo-1671531776382-f32dff368120?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwcmUtd2VkZGluZyUyMGNvdXBsZXxlbnwwfHx8fDE3NjExNTk5ODZ8MA&ixlibrb-4.1.0&q=80&w=1080",
+        "imageHint": "pre-wedding couple"
+      },
+      {
+        "id": "pre-wedding-shoots-2",
+        "description": "An engagement photo session in a scenic location.",
+        "imageUrl": "https://images.unsplash.com/photo-1669789756658-af7c567eb658?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxlbmdhZ2VtZW50JTIwc2Vzc2lvbnxlbnwwfHx8fDE3NjExNTk5ODZ8MA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "engagement session"
+      },
+      {
+        "id": "event-photography-1",
+        "description": "Guests at a corporate event.",
+        "imageUrl": "https://images.unsplash.com/photo-1523580494863-6f3031224c94?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxjb3Jwb3JhdGUlMjBldmVudHxlbnwwfHx8fDE3NjExNDI2MjF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "corporate event"
+      },
+      {
+        "id": "event-photography-2",
+        "description": "A birthday party celebration.",
+        "imageUrl": "https://images.unsplash.com/photo-1650584997985-e713a869ee77?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "birthday party"
+      },
+      {
+        "id": "live-streaming-1",
+        "description": "A live streaming setup for an event.",
+        "imageUrl": "https://images.unsplash.com/photo-1522327646852-4e28586a40dd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bGl2ZSUyMHN0cmVhbWluZ3xlbnwwfHx8fDE3NjExNTk5ODZ8MA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "live streaming"
+      },
+      {
+        "id": "live-streaming-2",
+        "description": "A camera broadcasting a live event.",
+        "imageUrl": "https://images.unsplash.com/photo-1760895223972-57b1d858d77e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxsaXZlJTIwYnJvYWRjYXN0fGVufDB8fHx8MTc2MTA3MDAyMXww&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "live broadcast"
+      },
+      {
+        "id": "real-estate-1",
+        "description": "The exterior of a modern house.",
+        "imageUrl": "https://images.unsplash.com/photo-1613977257363-707ba9348227?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxtb2Rlcm4lMjBob3VzZXxlbnwwfHx8fDE3NjEwNzA3NDR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "modern house"
+      },
+      {
+        "id": "real-estate-2",
+        "description": "A bright and airy kitchen in a home for sale.",
+        "imageUrl": "https://images.unsplash.com/photo-1635321350281-e2a91ecffd00?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxraXRjaGVuJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzYxMTUwNTM0fDA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "kitchen interior"
+      },
+      {
+        "id": "architectural-1",
+        "description": "A stunning architectural detail of a building.",
+        "imageUrl": "https://images.unsplash.com/photo-1671632991795-3a5990ab5d1e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhcmNoaXRlY3R1cmFsJTIwZGV0YWlsfGVufDB8fHx8MTc2MTEyMTQxMXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "architectural detail"
+      },
+      {
+        "id": "architectural-2",
+        "description": "The facade of a skyscraper.",
+        "imageUrl": "https://images.unsplash.com/photo-1566478400307-97e695ff2c1f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxza3lzY3JhcGVyJTIwZmFjYWRlfGVufDB8fHx8MTc2MTEyNDYyNXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "skyscraper facade"
+      },
+      {
+        "id": "celebrity-shoots-1",
+        "description": "A celebrity posing for a magazine cover.",
+        "imageUrl": "https://images.unsplash.com/photo-1615229334052-94fc1f7e2482?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y2VsZWJyaXR5JTIwcGhvdG9zaG9vdHxlbnwwfHx8fDE3NjExNTk5ODd8MA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "celebrity photoshoot"
+      },
+      {
+        "id": "celebrity-shoots-2",
+        "description": "A candid shot of a famous actor.",
+        "imageUrl": "https://images.unsplash.com/photo-1758525589410-d0a824b7d59c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYW5kaWQlMjBjZWxlYnJpdHl8ZW58MHx8fHwxNzYxMTU5OTg2fDA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "candid celebrity"
+      },
+      {
+        "id": "influencer-content-1",
+        "description": "An influencer creating content for social media.",
+        "imageUrl": "https://images.unsplash.com/photo-1759393852314-59dc00faeed3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxpbmZsdWVuY2VyJTIwY29udGVudHxlbnwwfHx8fDE3NjExNTk5ODZ8MA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "influencer content"
+      },
+      {
+        "id": "influencer-content-2",
+        "description": "Flatlay of products for an influencer post.",
+        "imageUrl": "https://images.unsplash.com/photo-1629640013132-30943b2cf15b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwcm9kdWN0JTIwZmxhdGxheXxlbnwwfHx8fDE3NjExNTk5ODZ8MA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "product flatlay"
+      },
+      {
+        "id": "photo-editing-1",
+        "description": "Before and after photo retouching.",
+        "imageUrl": "https://images.unsplash.com/photo-1651245009905-a771d3b487cc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwaG90byUyMHJldG91Y2hpbmd8ZW58MHx8fHwxNzYxMTU5OTg2fDA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "photo retouching"
+      },
+      {
+        "id": "photo-editing-2",
+        "description": "A color grading example.",
+        "imageUrl": "https://images.unsplash.com/photo-1604073536770-8a33e332f830?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxjb2xvciUyMGdyYWRpbmd8ZW58MHx8fHwxNzYxMTU5OTg2fDA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "color grading"
+      },
+      {
+        "id": "video-editing-1",
+        "description": "A cinematic video edit.",
+        "imageUrl": "https://images.unsplash.com/photo-1706300896496-9f8744e10455?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxjaW5lbWF0aWMlMjB2aWRlb3xlbnwwfHx8fDE3NjExNTk5ODZ8MA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "cinematic video"
+      },
+      {
+        "id": "video-editing-2",
+        "description": "A social media reel.",
+        "imageUrl": "https://images.unsplash.com/photo-1724862936518-ae7fcfc052c1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxzb2NpYWwlMjBtZWRpYXxlbnwwfHx8fDE3NjEwNzE4MDZ8MA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "social media"
+      },
+      {
+        "id": "album-design-1",
+        "description": "A beautifully designed photo album.",
+        "imageUrl": "https://images.unsplash.com/photo-1676883344237-a99061339b06?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwaG90byUyMGFsYnVtfGVufDB8fHx8MTc2MTE1OTk4N3ww&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "photo album"
+      },
+      {
+        "id": "discreet",
+        "description": "A beautifully designed photo album.",
+        "imageUrl": "/discreet.jpeg",
+        "imageHint": "photo album"
+      },
+      {
+        "id": "album-design-2",
+        "description": "A wedding album layout.",
+        "imageUrl": "https://images.unsplash.com/photo-1675186253268-d37cf7f95719?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx3ZWRkaW5nJTIwYWxidW18ZW58MHx8fHwxNzYxMTMzOTE4fDA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "wedding album"
+      },
+      {
+        "id": "drone-photography-1",
+        "description": "An aerial view of a landscape.",
+        "imageUrl": "https://images.unsplash.com/photo-1617121062439-0a9a1f41f080?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxhZXJpYWwlMjBsYW5kc2NhcGV8ZW58MHx8fHwxNzYxMTIyMDU2fDA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "aerial landscape"
+      },
+      {
+        "id": "drone-photography-2",
+        "description": "A drone shot of a property.",
+        "imageUrl": "https://images.unsplash.com/photo-1641441371947-47dd2f4a4276?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxkcm9uZSUyMHByb3BlcnR5fGVufDB8fHx8MTc2MTE1OTk4Nnww&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "drone property"
+      },
+      {
+        "id": "food-photography-1",
+        "description": "A vibrant and delicious-looking plate of food, professionally styled and photographed.",
+        "imageUrl": "https://images.unsplash.com/photo-1702827677450-211231129988?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1990",
+        "imageHint": "food photography"
+      },
+      {
+        "id": "food-photography-2",
+        "description": "A close-up shot of a chef meticulously plating a dish.",
+        "imageUrl": "https://images.unsplash.com/photo-1551218808-94e220e084d2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjaGVmJTIwcGxhdGluZ3xlbnwwfHx8fDE3MTYyODA0MDV8MA&ixlib=rb-4.0.3&q=80&w=1080",
+        "imageHint": "chef plating"
+      },
+      {
+        "id": "food-portfolio-1",
+        "description": "Dark and moody shot of a rustic pizza.",
+        "imageUrl": "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwaXp6YSUyMGZvb2R8ZW58MHx8fHwxNzE2MjgwNDQyfDA&ixlib=rb-4.0.3&q=80&w=1080",
+        "imageHint": "pizza food"
+      },
+      {
+        "id": "food-portfolio-2",
+        "description": "Bright and colorful image of a fresh salad.",
+        "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxmcmVzaCUyMHNhbGFkfGVufDB8fHx8MTcxNjI4MDQ4N3ww&ixlib-rb-4.0.3&q=80&w=1080",
+        "imageHint": "fresh salad"
+      },
+      {
+        "id": "food-portfolio-3",
+        "description": "Action shot of syrup being poured over pancakes.",
+        "imageUrl": "https://images.unsplash.com/photo-1649750207771-51c0e9901234?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "pancakes syrup"
+      },
+      {
+        "id": "food-portfolio-4",
+        "description": "A flat lay of various Indian dishes.",
+        "imageUrl": "https://images.unsplash.com/photo-1742281257687-092746ad6021?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1974",
+        "imageHint": "indian food"
+      },
+      {
+        "id": "podcast-recording",
+        "description": "Two people talking into microphones in a professional podcast recording studio.",
+        "imageUrl": "https://images.unsplash.com/photo-1668609045837-5e2de3b006c6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "podcast recording"
+      },
+      {
+        "id": "podcast-editing",
+        "description": "A person editing audio waveforms on a computer screen for a podcast.",
+        "imageUrl": "https://images.unsplash.com/photo-1617540702506-89475a91c171?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2064",
+        "imageHint": "podcast editing"
+      },
+      {
+        "id": "podcast-setup",
+        "description": "A professional podcast studio setup with microphones, headphones, and acoustic panels.",
+        "imageUrl": "https://images.unsplash.com/photo-1645548979753-8fd5fd389aa2?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1371",
+        "imageHint": "podcast studio"
+      },
+      {
+        "id": "podcast-gear",
+        "description": "Close-up of a professional podcasting microphone and headphones.",
+        "imageUrl": "https://images.unsplash.com/photo-1619190324856-af3f6eb55601?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "podcast microphone"
+      },
+      {
+        "id": "sensual-portrait",
+        "description": "A sensual portrait focusing on mood and shadow.",
+        "imageUrl": "https://images.unsplash.com/photo-1594094876221-030b925ae6ef?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "sensual portrait"
+      },
+      {
+        "id": "portrait-woman",
+        "description": "A classic portrait of a woman.",
+        "imageUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdCUyMHdvbWFufGVufDB8fHx8MTc2MTE1MDkzNHww&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "portrait woman"
+      },
+      {
+        "id": "elegant-boudoir",
+        "description": "Elegant boudoir shot with soft lighting.",
+        "imageUrl": "https://images.unsplash.com/photo-1641851962154-c3ec4aa07ede?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "elegant boudoir"
+      },
+      {
+        "id": "modern-interior",
+        "description": "A modern and sleek living room interior.",
+        "imageUrl": "https://images.unsplash.com/photo-1600121848594-d8644e57abab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBpbnRlcmlvcnxlbnwwfHx8fDE3NjEwODY3Nzl8MA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "modern interior"
+      },
+      {
+        "id": "kitchen-interior",
+        "description": "A stylish and modern kitchen interior design.",
+        "imageUrl": "https://images.unsplash.com/photo-1556911220-bff31c812dba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxraXRjaGVuJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzYxMTUwNTM0fDA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "kitchen interior"
+      },
+      {
+        "id": "drone-property",
+        "description": "Aerial drone shot of a residential property.",
+        "imageUrl": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkcm9uZSUyMHByb3BlcnR5fGVufDB8fHx8MTc2MTE1OTk4Nnww&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "drone property"
+      },
+      {
+        "id": "candid-celebrity",
+        "description": "A candid-style shot of a celebrity.",
+        "imageUrl": "https://images.unsplash.com/photo-1720084025937-eb47b2d2be06?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2076",
+        "imageHint": "candid celebrity"
+      },
+      {
+        "id": "color-grading",
+        "description": "A sample image showing professional color grading.",
+        "imageUrl": "https://images.unsplash.com/photo-1716471330459-063b3baf247e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "color grading"
+      },
+      {
+        "id": "wedding-album",
+        "description": "An open wedding album displaying beautiful photos.",
+        "imageUrl": "https://images.unsplash.com/photo-1571502189597-d7d3a0f114fd?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2069",
+        "imageHint": "wedding album"
+      },
+      {
+        "id": "aerial-landscape",
+        "description": "A stunning aerial drone shot of a beautiful landscape.",
+        "imageUrl": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxhZXJpYWwlMjBsYW5kc2NhcGV8ZW58MHx8fHwxNzYxMTIyMDU2fDA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "aerial landscape"
+      },
+      {
+        "id": "corporate-event",
+        "description": "People networking at a corporate event.",
+        "imageUrl": "https://images.unsplash.com/photo-1762158008280-3dcb1d1cbd99?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2071",
+        "imageHint": "corporate event"
+      },
+      {
+        "id": "birthday-party",
+        "description": "Decorations and cake at a birthday party.",
+        "imageUrl": "https://images.unsplash.com/photo-1741969494307-55394e3e4071?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "birthday party"
+      },
+      {
+        "id": "design-service-1",
+        "description": "A designer's desk with a laptop showing graphic design software.",
+        "imageUrl": "https://images.unsplash.com/photo-1626785774573-4b799315345d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxncmFwaGljJTIwZGVzaWdufGVufDB8fHx8MTc2MTU4MTkyMXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "graphic design"
+      },
+      {
+        "id": "design-service-2",
+        "description": "A mood board with color swatches, images, and fonts.",
+        "imageUrl": "https://images.unsplash.com/photo-1541462608143-67571c6738dd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxtb29kJTIwYm9hcmR8ZW58MHx8fHwxNzYxNTgxOTYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "mood board"
+      },
+      {
+        "id": "social-media-kit",
+        "description": "A person scrolling through an Instagram feed on a smartphone.",
+        "imageUrl": "https://images.unsplash.com/photo-1611162617474-5b21e879e113?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzb2NpYWwlMjBtZWRpYSUyMGZlZWR8ZW58MHx8fHwxNzYxNTgyMDAxfDA&ixlib-rb-4.1.0&q=80&w=1080",
+        "imageHint": "social media"
+      },
+      {
+        "id": "brand-collateral",
+        "description": "A collection of branded items like business cards, letterheads, and notebooks.",
+        "imageUrl": "https://images.unsplash.com/photo-1654481414716-2f4ab5fe0fbe?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1932",
+        "imageHint": "brand collateral"
+      },
+      {
+        "id": "lookbook-design",
+        "description": "An open page of a high-fashion lookbook magazine.",
+        "imageUrl": "https://images.unsplash.com/photo-1652992322820-4fb6f06898d7?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2100",
+        "imageHint": "fashion magazine"
+      },
+      {
+        "id": "marketing-material",
+        "description": "A stack of professionally designed brochures or flyers.",
+        "imageUrl": "https://images.unsplash.com/photo-1714876275718-1e87cc3a2087?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1925",
+        "imageHint": "marketing materials"
+      },
+      {
+        "id": "corporate-industrial-thumb",
+        "description": "A professional videographer filming in a modern corporate office.",
+        "imageUrl": "https://images.unsplash.com/photo-1752170080773-fed7758395c3?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1351",
+        "imageHint": "corporate video"
+      },
+      {
+        "id": "corporate-ad",
+        "description": "A behind-the-scenes shot of a corporate advertisement being filmed.",
+        "imageUrl": "https://images.unsplash.com/photo-1637250096679-c10f2751def8?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "corporate ad"
+      },
+      {
+        "id": "office-tour",
+        "description": "A wide shot of a modern, bustling office environment, perfect for an office tour video.",
+        "imageUrl": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBvZmZpY2V8ZW58MHx8fHwxNzE4MjU1OTQxfDA&ixlib=rb-4.0.3&q=80&w=1080",
+        "imageHint": "modern office"
+      },
+      {
+        "id": "factory-tour",
+        "description": "A wide-angle shot of a clean, modern factory floor with machinery in operation.",
+        "imageUrl": "https://images.unsplash.com/photo-1747085040719-55282cc206b9?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "factory interior"
+      },
+      {
+        "id": "manufacturing-process",
+        "description": "A close-up, detailed shot of a robotic arm working on an assembly line.",
+        "imageUrl": "https://images.unsplash.com/photo-1707948952416-67f9dd252265?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "manufacturing robot"
+      },
+      {
+        "id": "construction-timelapse",
+        "description": "A long-exposure shot of a construction site at dusk, showing light trails and progress.",
+        "imageUrl": "https://images.unsplash.com/photo-1531973576160-7125cd663d86?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjb25zdHJ1Y3Rpb24lMjBzaXRlfGVufDB8fHx8MTcxODI1NjEwN3ww&ixlib=rb-4.0.3&q=80&w=1080",
+        "imageHint": "construction site"
+      },
+      {
+        "id": "wedding-engagement",
+        "description": "Joyful couple celebrating their engagement at a party.",
+        "imageUrl": "https://images.unsplash.com/photo-1638623144308-446d2b097345?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "engagement party"
+      },
+      {
+        "id": "wedding-prewedding",
+        "description": "A romantic couple during a pre-wedding photoshoot in a scenic location.",
+        "imageUrl": "https://images.unsplash.com/photo-1758221943117-6e1f900b957a?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2069",
+        "imageHint": "indian prewedding"
+      },
+      {
+        "id": "wedding-bridal",
+        "description": "A stunning portrait of an Indian bride in full traditional attire.",
+        "imageUrl": "https://images.unsplash.com/photo-1645856049085-47672ad2c043?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "indian bridal"
+      },
+      {
+        "id": "wedding-rituals",
+        "description": "An Indian wedding ceremony showing sacred couple rituals.",
+        "imageUrl": "https://images.unsplash.com/photo-1588336135074-fbd6baec5493?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "wedding rituals"
+      },
+      {
+        "id": "wedding-family",
+        "description": "A happy family posing for a group photo at an Indian wedding.",
+        "imageUrl": "https://images.unsplash.com/photo-1645856052484-2e5506e20942?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "wedding family"
+      },
+      {
+        "id": "wedding-reception",
+        "description": "A bride and groom at their wedding reception party.",
+        "imageUrl": "https://images.unsplash.com/photo-1627580356426-c3b2c0cd53fc?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "wedding reception"
+      },
+      {
+        "id": "wedding-category-prewedding",
+        "description": "A joyful Haldi ceremony in progress.",
+        "imageUrl": "https://images.unsplash.com/photo-1741441033545-24408e2308d3?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1973",
+        "imageHint": "haldi ceremony"
+      },
+      {
+        "id": "wedding-category-day",
+        "description": "Close up of bride and groom's hands during a wedding ritual.",
+        "imageUrl": "https://images.unsplash.com/photo-1611105672452-1db1501c528e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "wedding rituals"
+      },
+      {
+        "id": "wedding-category-family",
+        "description": "A candid emotional moment between a bride and her mother.",
+        "imageUrl": "https://images.unsplash.com/photo-1612872642947-931dc3bcb5ac?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "wedding emotions"
+      },
+      {
+        "id": "wedding-category-post",
+        "description": "A newly married couple walking on a beach at sunset.",
+        "imageUrl": "https://images.unsplash.com/photo-1723603016905-db4293271fec?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "post-wedding couple"
+      },
+      {
+        "id": "wedding-category-creative",
+        "description": "A drone shot overlooking a grand wedding venue.",
+        "imageUrl": "https://images.unsplash.com/photo-1587271407850-8d438ca9fdf2?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "wedding drone"
+      },
+      {
+        "id": "wedding-services-bg",
+        "description": "Close-up of a traditionally dressed Indian bride's hands and jewelry.",
+        "imageUrl": "https://images.unsplash.com/photo-1661877574666-c6574f69fa9d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1932",
+        "imageHint": "indian bride"
+      },
+      {
+        "id": "wedding-live-stream",
+        "description": "A professional camera setup for live streaming a wedding ceremony.",
+        "imageUrl": "https://images.unsplash.com/photo-1738851952441-2a7d17487545?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "wedding live"
+      },
+      {
+        "id": "corporate-live-stream",
+        "description": "A speaker presenting at a corporate event being live-streamed.",
+        "imageUrl": "https://images.unsplash.com/photo-1543269865-cbf427effbad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjb3Jwb3JhdGUlMjB3ZWJpbmFyfGVufDB8fHx8MTc5MTA0MTIxM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "imageHint": "corporate webinar"
+      },
+      {
+        "id": "equipment-lighting",
+        "description": "A professional video lighting setup with softboxes and LED panels around a person being interviewed.",
+        "imageUrl": "https://images.unsplash.com/photo-1652200179648-fa872b03a7b5?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "lighting setup"
+      },
+      {
+        "id": "equipment-cameras",
+        "description": "A multi-camera production setup with video cameras on tripods pointed towards a stage.",
+        "imageUrl": "https://images.unsplash.com/photo-1762028894947-427157955fea?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
+        "imageHint": "multi camera"
+      },
+      {
+        "id": "equipment-audio",
+        "description": "A professional audio mixer with many channels, faders, and knobs.",
+        "imageUrl": "https://images.unsplash.com/photo-1651838644572-0a42d740d902?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1974",
+        "imageHint": "audio mixer"
+      },
+      {
+        "id": "wedding-gear",
+        "description": "A flat lay of professional wedding photography gear, including a full-frame camera, lenses, and flash.",
+        "imageUrl": "https://images.unsplash.com/photo-1664786496885-2bc564aa002f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2071",
+        "imageHint": "wedding gear"
+      },
+      {
+        "id": "cinematic-video-aerials",
+        "description": "Cinematic aerial and ground video captures showcasing sweeping wedding scenes and storytelling moments.",
+        "imageUrl": "/cinematic-video-aerials.jpg",
+        "imageHint": "cinematic video & aerials"
+      },
+      {
+        "id": "cultural-ceremonies",
+        "description": "Traditional and cultural wedding ceremonies highlighting heritage, rituals, and timeless customs.",
+        "imageUrl": "/cultural-ceremonies.png",
+        "imageHint": "cultural ceremonies"
+      },
+      {
+        "id": "destination-weddings",
+        "description": "Scenic destination wedding captures blending breathtaking landscapes with intimate celebrations.",
+        "imageUrl": "/destination-weddings.jpg",
+        "imageHint": "destination weddings"
+      },
+      {
+        "id": "engaged-couples",
+        "description": "Portraits and lifestyle shoots of engaged couples that capture connection, warmth, and anticipation.",
+        "imageUrl": "/engaged-couples.jpg",
+        "imageHint": "engaged couples"
+      },
+      {
+        "id": "event-planners",
+        "description": "Behind-the-scenes imagery and coordination moments with event planners bringing celebrations to life.",
+        "imageUrl": "/event-planners.jpg",
+        "imageHint": "event planners"
+      },
+      {
+        "id": "creative-add-ons",
+        "description": "Unique creative add-ons that elevate your wedding storytelling through innovative visual elements.",
+        "imageUrl": "/creative-add-ons.jpg",
+        "imageHint": "creative add ons"
+      },
+      {
+        "id": "family-emotional",
+        "description": "Candid emotional moments shared between family members — raw, heartfelt, and genuine.",
+        "imageUrl": "/family-emotional.jpg",
+        "imageHint": "family emotional"
+      },
+      {
+        "id": "post-delivery",
+        "description": "The final stage of our work — timely delivery, refined edits, and stunning presentation packages.",
+        "imageUrl": "/post-delivery.jpg",
+        "imageHint": "post delivery"
+      },
+      {
+        "id": "post-wedding",
+        "description": "Elegant post-wedding sessions capturing relaxed, joyful, and intimate newlywed moments.",
+        "imageUrl": "/wedding-16.jpg",
+        "imageHint": "post wedding"
+      },
+      {
+        "id": "pre-wedding",
+        "description": "Stylized pre-wedding shoots blending cinematic flair with genuine chemistry and emotion.",
+        "imageUrl": "/pre-wedding.jpg",
+        "imageHint": "pre wedding"
+      },
+      {
+        "id": "wedding-coverage",
+        "description": "Comprehensive wedding-day coverage from every angle — ensuring no moment goes unseen.",
+        "imageUrl": "/wedding-coverage.jpg",
+        "imageHint": "wedding coverage"
+      },
+      {
+        "id": "high-resolution-camera-systems",
+        "description": "Advanced high-resolution camera systems designed for unmatched clarity and detail in every frame.",
+        "imageUrl": "/high-resolution-camera-systems.jpg",
+        "imageHint": "high resolution camera systems"
+      },
+      {
+        "id": "luxury-album",
+        "description": "Elegant, handcrafted luxury albums that preserve your memories in timeless sophistication.",
+        "imageUrl": "/luxury-album.jpg",
+        "imageHint": "luxury wedding album"
+      },
+      {
+        "id": "creative-post-production",
+        "description": "Expert editing and color grading to bring cinematic polish and emotional depth to every frame.",
+        "imageUrl": "/creative-post-production.png",
+        "imageHint": "creative photo and video post production"
+      },
+      {
+        "id": "meet-and-plan",
+        "description": "Collaborative pre-shoot consultation to align on themes, locations, and creative direction for your event.",
+        "imageUrl": "/meet-and-plan.jpg",
+        "imageHint": "photography planning meeting"
+      },
+      {
+        "id": "the-big-days",
+        "description": "Full coverage of your main event days — capturing every emotion, detail, and unforgettable moment.",
+        "imageUrl": "/the-big-days.jpg",
+        "imageHint": "wedding day photography coverage"
+      },
+      {
+        "id": "wedding-17",
+        "description": "Full coverage of your main event days — capturing every emotion, detail, and unforgettable moment.",
+        "imageUrl": "/wedding-17.jpg",
+        "imageHint": "wedding day photography coverage"
+      },
+      {
+        "id": "wedding-2",
+        "description": "Intimate candid moments captured with authenticity and warmth.",
+        "imageUrl": "/wedding-2.jpg",
+        "imageHint": "wedding candid photography"
+      },
+      {
+        "id": "wedding-3",
+        "description": "Beautifully composed portraits that reflect your connection and story.",
+        "imageUrl": "/wedding-3.jpg",
+        "imageHint": "wedding portrait photography"
+      },
+      {
+        "id": "wedding-4",
+        "description": "Cinematic wide shots showcasing the ambience and décor of your celebration.",
+        "imageUrl": "/wedding-4.jpg",
+        "imageHint": "wedding venue decor photography"
+      },
+      {
+        "id": "wedding-5",
+        "description": "Joyful candid frames highlighting family and friends in celebration.",
+        "imageUrl": "/wedding-5.jpg",
+        "imageHint": "wedding guests candid moments"
+      },
+      {
+        "id": "wedding-6",
+        "description": "Emotional exchanges frozen in time — the vows, the laughter, the tears.",
+        "imageUrl": "/wedding-6.jpg",
+        "imageHint": "emotional wedding moments"
+      },
+      {
+        "id": "wedding-7",
+        "description": "Artistic captures with creative lighting and composition for timeless memories.",
+        "imageUrl": "/wedding-7.jpg",
+        "imageHint": "artistic wedding photography"
+      },
+      {
+        "id": "wedding-8",
+        "description": "Capturing every ritual and tradition with attention to cultural detail.",
+        "imageUrl": "/wedding-8.jpg",
+        "imageHint": "traditional wedding photography"
+      },
+      {
+        "id": "wedding-9",
+        "description": "Elegant couple portraits blending emotion and sophistication.",
+        "imageUrl": "/wedding-9.jpg",
+        "imageHint": "elegant couple portraits"
+      },
+      {
+        "id": "wedding-10",
+        "description": "Vibrant images that showcase the energy and colors of your ceremony.",
+        "imageUrl": "/wedding-10.jpg",
+        "imageHint": "colorful wedding photography"
+      },
+      {
+        "id": "wedding-11",
+        "description": "Tender interactions and subtle gestures that tell a deeper story.",
+        "imageUrl": "/wedding-11.jpg",
+        "imageHint": "intimate wedding moments"
+      },
+      {
+        "id": "wedding-12",
+        "description": "Stunning bridal portraits that capture elegance and grace.",
+        "imageUrl": "/wedding-12.jpg",
+        "imageHint": "bridal portrait photography"
+      },
+      {
+        "id": "wedding-13",
+        "description": "The grandeur of your ceremony preserved in cinematic frames.",
+        "imageUrl": "/wedding-13.jpg",
+        "imageHint": "ceremony photography"
+      },
+      {
+        "id": "wedding-14",
+        "description": "Reception highlights filled with laughter, dance, and emotion.",
+        "imageUrl": "/wedding-14.jpg",
+        "imageHint": "wedding reception photography"
+      },
+      {
+        "id": "wedding-15",
+        "description": "Groom and family moments — stylish, candid, and full of charm.",
+        "imageUrl": "/wedding-15.jpg",
+        "imageHint": "groom wedding portraits"
+      },
+      {
+        "id": "wedding-16",
+        "description": "The perfect finale — cinematic closing shots to conclude your love story.",
+        "imageUrl": "/wedding-16.jpg",
+        "imageHint": "wedding closing moments photography"
+      },
+
+      {
+        "id": "wedding-18",
+        "description": "The perfect finale — cinematic closing shots to conclude your love story.",
+        "imageUrl": "/wedding-18.jpg",
+        "imageHint": "wedding closing moments photography"
+      },
+      {
+        "id": "wedding-19",
+        "description": "The perfect finale — cinematic closing shots to conclude your love story.",
+        "imageUrl": "/wedding-19.jpg",
+        "imageHint": "wedding closing moments photography"
+      },
+      {
+        "id": "wedding-20",
+        "description": "The perfect finale — cinematic closing shots to conclude your love story.",
+        "imageUrl": "/wedding-20.jpg",
+        "imageHint": "wedding closing moments photography"
+      },
+      {
+        "id": "wedding-21",
+        "description": "The perfect finale — cinematic closing shots to conclude your love story.",
+        "imageUrl": "/wedding-21.jpg",
+        "imageHint": "wedding closing moments photography"
+      },
+      {
+        "id": "wedding-22",
+        "description": "The perfect finale — cinematic closing shots to conclude your love story.",
+        "imageUrl": "/wedding-22.jpg",
+        "imageHint": "wedding closing moments photography"
+      },
+      {
+        "id": "wedding-23",
+        "description": "The perfect finale — cinematic closing shots to conclude your love story.",
+        "imageUrl": "/wedding-23.jpg",
+        "imageHint": "wedding closing moments photography"
+      },
+      {
+        "id": "wedding-24",
+        "description": "The perfect finale — cinematic closing shots to conclude your love story.",
+        "imageUrl": "/wedding-24.jpg",
+        "imageHint": "wedding closing moments photography"
+      },
+      {
+        "id": "event-photography-cover",
+        "description": "Dynamic event coverage capturing key highlights, energy, and atmosphere — from grand openings to intimate gatherings.",
+        "imageUrl": "/event-photography-cover.jpg",
+        "imageHint": "event photography cover image showcasing lively atmosphere"
+      },
+
+      {
+        "id": "event-photography-5",
+        "description": "Engaging candid captures that showcase the spirit and emotion of your event’s attendees.",
+        "imageUrl": "/event-photography-5.jpg",
+        "imageHint": "event photography candid guest moments"
+      },
+      {
+        "id": "event-photography-6",
+        "description": "Professional coverage of stage moments and performances that define the evening.",
+        "imageUrl": "/event-photography-6.jpg",
+        "imageHint": "event stage photography performance coverage"
+      },
+      {
+        "id": "event-photography-7",
+        "description": "Vibrant photos of décor, lighting, and ambiance — preserving every creative detail.",
+        "imageUrl": "/event-photography-7.jpg",
+        "imageHint": "event decor and ambience photography"
+      },
+      {
+        "id": "event-photography-8",
+        "description": "Networking and corporate interaction shots that highlight meaningful connections.",
+        "imageUrl": "/event-photography-8.jpg",
+        "imageHint": "corporate networking event photography"
+      },
+      {
+        "id": "event-photography-9",
+        "description": "Wide-angle views capturing the scale and energy of the event crowd.",
+        "imageUrl": "/event-photography-9.jpg",
+        "imageHint": "wide angle crowd photography at events"
+      },
+      {
+        "id": "event-photography-10",
+        "description": "Behind-the-scenes storytelling through spontaneous, authentic moments.",
+        "imageUrl": "/event-photography-10.jpg",
+        "imageHint": "behind the scenes event photography"
+      },
+      {
+        "id": "event-photography-11",
+        "description": "Elegant portraits of speakers, performers, and VIP guests in natural lighting.",
+        "imageUrl": "/event-photography-11.jpg",
+        "imageHint": "event portrait photography of speakers and guests"
+      },
+      {
+        "id": "event-photography-12",
+        "description": "Closing moments and finale shots that encapsulate the success and joy of your event.",
+        "imageUrl": "/event-photography-12.jpg",
+        "imageHint": "event finale photography closing moments"
+      },
+      {
+        "id": "headshots-portraits",
+        "description": "Professional headshots and portrait photography that capture personality, confidence, and authenticity — perfect for business, creative, or personal use.",
+        "imageUrl": "/headshots-portraits.jpg",
+        "imageHint": "professional headshots and portrait photography"
+      },
+      {
+        "id": "personal-portrait",
+        "description": "Elegant personal portrait sessions designed to capture your individuality, style, and story through refined composition and natural expression.",
+        "imageUrl": "/personal-portrait.jpg",
+        "imageHint": "personal portrait photography session"
+      },
+
+      {
+        "id": "personal-portraits-1",
+        "description": "Natural light portraits that reflect genuine confidence and warmth.",
+        "imageUrl": "/personal-portraits-1.jpg",
+        "imageHint": "natural light personal portrait photography"
+      },
+      {
+        "id": "personal-portraits-2",
+        "description": "Studio portraits crafted to showcase individuality with clean, modern aesthetics.",
+        "imageUrl": "/personal-portraits-2.jpg",
+        "imageHint": "studio personal portrait photography"
+      },
+      {
+        "id": "personal-portraits-3",
+        "description": "Artistic compositions blending shadow, tone, and expression for timeless appeal.",
+        "imageUrl": "/personal-portraits-3.jpg",
+        "imageHint": "artistic personal portrait photography"
+      },
+      {
+        "id": "personal-portraits-4",
+        "description": "Candid lifestyle portraits that capture authentic personality and emotion.",
+        "imageUrl": "/personal-portraits-4.jpg",
+        "imageHint": "lifestyle portrait photography"
+      },
+      {
+        "id": "personal-portraits-5",
+        "description": "Black-and-white portraits emphasizing emotion, depth, and fine detail.",
+        "imageUrl": "/personal-portraits-5.jpg",
+        "imageHint": "black and white portrait photography"
+      },
+      {
+        "id": "personal-portraits-6",
+        "description": "Outdoor portraits with natural backdrops and soft ambient lighting.",
+        "imageUrl": "/personal-portraits-6.jpg",
+        "imageHint": "outdoor personal portrait photography"
+      },
+      {
+        "id": "personal-portraits-7",
+        "description": "Creative editorial-style portraits that express individuality and story.",
+        "imageUrl": "/personal-portraits-7.jpg",
+        "imageHint": "editorial style portrait photography"
+      },
+      {
+        "id": "personal-portraits-8",
+        "description": "Minimalist portraits focused on emotion, texture, and composition.",
+        "imageUrl": "/personal-portraits-8.jpg",
+        "imageHint": "minimalist portrait photography"
+      },
+      {
+        "id": "personal-portraits-9",
+        "description": "Environmental portraits that blend subject and surroundings harmoniously.",
+        "imageUrl": "/personal-portraits-9.jpg",
+        "imageHint": "environmental portrait photography"
+      },
+      {
+        "id": "personal-portraits-10",
+        "description": "Modern lifestyle portraits perfect for personal branding and creatives.",
+        "imageUrl": "/personal-portraits-10.jpg",
+        "imageHint": "personal branding portrait photography"
+      },
+      {
+        "id": "personal-portraits-11",
+        "description": "Elegant close-up portraits highlighting personality through subtle detail and lighting.",
+        "imageUrl": "/personal-portraits-11.jpg",
+        "imageHint": "close-up portrait photography"
+      },
+
+      {
+        "id": "personal-portraits-12",
+        "description": "Golden hour portraits filled with warmth, glow, and natural radiance.",
+        "imageUrl": "/personal-portraits-12.jpg",
+        "imageHint": "golden hour outdoor portrait photography"
+      },
+      {
+        "id": "personal-portraits-13",
+        "description": "Soft indoor portraits with gentle tones and intimate expressions.",
+        "imageUrl": "/personal-portraits-13.jpg",
+        "imageHint": "indoor portrait photography soft lighting"
+      },
+      {
+        "id": "personal-portraits-14",
+        "description": "Cinematic portraits inspired by film aesthetics and storytelling.",
+        "imageUrl": "/personal-portraits-14.jpg",
+        "imageHint": "cinematic portrait photography"
+      },
+      {
+        "id": "personal-portraits-15",
+        "description": "Urban portraits blending personality with modern architecture and textures.",
+        "imageUrl": "/personal-portraits-15.jpg",
+        "imageHint": "urban portrait photography city backdrop"
+      },
+      {
+        "id": "personal-portraits-16",
+        "description": "Playful and expressive portraits capturing real moments of joy.",
+        "imageUrl": "/personal-portraits-16.jpg",
+        "imageHint": "expressive candid portrait photography"
+      },
+      {
+        "id": "personal-portraits-17",
+        "description": "Dramatic portraits emphasizing contrast, form, and fine lighting.",
+        "imageUrl": "/personal-portraits-17.jpg",
+        "imageHint": "dramatic lighting portrait photography"
+      },
+      {
+        "id": "personal-portraits-18",
+        "description": "Soft pastel-toned portraits exuding calmness and modern elegance.",
+        "imageUrl": "/personal-portraits-18.jpg",
+        "imageHint": "pastel tone portrait photography"
+      },
+      {
+        "id": "personal-portraits-19",
+        "description": "Creative concept portraits blending fashion, art, and storytelling.",
+        "imageUrl": "/personal-portraits-19.jpg",
+        "imageHint": "conceptual portrait photography"
+      },
+      {
+        "id": "personal-portraits-20",
+        "description": "Refined editorial portraits ideal for magazines, campaigns, and profiles.",
+        "imageUrl": "/personal-portraits-20.jpg",
+        "imageHint": "editorial fashion portrait photography"
+      },
+      {
+        "id": "personal-portraits-21",
+        "description": "Emotive close-ups that capture genuine personality and timeless character.",
+        "imageUrl": "/personal-portraits-21.jpg",
+        "imageHint": "emotive close-up portrait photography"
+      },
+      {
+        "id": "portfolio-creations",
+        "description": "Showcasing powerful portfolio creations designed to highlight talent, personality, and professionalism across every frame.",
+        "imageUrl": "/portfolio-creations.jpg",
+        "imageHint": "portfolio photography showcasing creative professional portraits"
+      },
+      {
+        "id": "magazine-editorial",
+        "description": "High-fashion and magazine-style editorial photography that blends storytelling, creativity, and sophistication in every frame.",
+        "imageUrl": "/magazine-editorial.jpg",
+        "imageHint": "magazine editorial fashion photography"
+      },
+
+      {
+        "id": "magazine-editorials-1",
+        "description": "Striking editorial portrait featuring bold lighting and couture styling for a high-fashion magazine spread.",
+        "imageUrl": "/magazine-editorials-1.jpg",
+        "imageHint": "high fashion editorial portrait with dramatic lighting"
+      },
+      {
+        "id": "magazine-editorials-2",
+        "description": "A creative outdoor shoot blending natural textures with avant-garde fashion aesthetics.",
+        "imageUrl": "/magazine-editorials-2.jpg",
+        "imageHint": "outdoor magazine editorial with avant garde fashion"
+      },
+      {
+        "id": "magazine-editorials-3",
+        "description": "Studio editorial capturing clean lines, poise, and luxury-inspired elegance in every pose.",
+        "imageUrl": "/magazine-editorials-3.jpg",
+        "imageHint": "studio editorial with minimalist luxury fashion theme"
+      },
+      {
+        "id": "magazine-editorials-4",
+        "description": "A moody black-and-white editorial shoot focusing on expression and contrast-driven storytelling.",
+        "imageUrl": "/magazine-editorials-4.jpg",
+        "imageHint": "black and white editorial portrait photography"
+      },
+      {
+        "id": "magazine-editorials-5",
+        "description": "Fashion-forward editorial showcasing statement accessories and expressive character shots.",
+        "imageUrl": "/magazine-editorials-5.jpg",
+        "imageHint": "editorial fashion shoot with accessories focus"
+      },
+      {
+        "id": "magazine-editorials-6",
+        "description": "A cinematic editorial narrative inspired by vintage film aesthetics and timeless charm.",
+        "imageUrl": "/magazine-editorials-6.jpg",
+        "imageHint": "vintage inspired magazine editorial photography"
+      },
+      {
+        "id": "magazine-editorials-7",
+        "description": "Editorial series emphasizing powerful silhouettes and contemporary art direction.",
+        "imageUrl": "/magazine-editorials-7.jpg",
+        "imageHint": "fashion editorial highlighting silhouettes and contrast"
+      },
+      {
+        "id": "magazine-editorials-8",
+        "description": "An urban-inspired fashion editorial capturing city energy and street couture vibrance.",
+        "imageUrl": "/magazine-editorials-8.jpg",
+        "imageHint": "urban fashion editorial with city backdrop"
+      },
+      {
+        "id": "magazine-editorials-9",
+        "description": "Luxury-inspired editorial shoot blending refined wardrobe styling with soft cinematic tones.",
+        "imageUrl": "/magazine-editorials-9.jpg",
+        "imageHint": "luxury editorial portrait photography"
+      },
+      {
+        "id": "magazine-editorials-10",
+        "description": "Creative magazine shoot exploring color play, movement, and expressive editorial posing.",
+        "imageUrl": "/magazine-editorials-10.jpg",
+        "imageHint": "colorful editorial fashion photography"
+      },
+      {
+        "id": "magazine-editorials-11",
+        "description": "Avant-garde editorial inspired by art and form, focusing on bold shapes and textures.",
+        "imageUrl": "/magazine-editorials-11.jpg",
+        "imageHint": "art inspired editorial photography"
+      },
+      {
+        "id": "magazine-editorials-12",
+        "description": "Editorial portrait celebrating individuality, strength, and emotion through visual storytelling.",
+        "imageUrl": "/magazine-editorials-12.jpg",
+        "imageHint": "editorial portrait photography capturing emotion"
+      },
+      {
+        "id": "baby-kids",
+        "description": "Adorable baby and kids photography that captures pure joy, innocence, and every delightful expression with a warm, natural touch.",
+        "imageUrl": "/baby-kids.jpg",
+        "imageHint": "baby and kids photography capturing joyful candid moments"
+      },
+      {
+        "id": "family-cover",
+        "description": "Heartwarming family portraits that celebrate love, connection, and togetherness — beautifully captured across generations.",
+        "imageUrl": "/family-cover.jpg",
+        "imageHint": "family photography cover image showing love and connection"
+      },
+
+    
+      {
+        "id": "baby-kids-photo-1",
+        "description": "A tender newborn portrait capturing peaceful sleep and delicate innocence.",
+        "imageUrl": "/baby-kids-photo-1.jpg",
+        "imageHint": "newborn baby portrait sleeping peacefully"
+      },
+      {
+        "id": "baby-kids-photo-2",
+        "description": "Joyful candid shot of a toddler’s laughter during a sunny outdoor play session.",
+        "imageUrl": "/baby-kids-photo-2.jpg",
+        "imageHint": "toddler laughing during outdoor kids photoshoot"
+      },
+      {
+        "id": "baby-kids-photo-3",
+        "description": "Sibling portrait celebrating love and connection with bright, natural light.",
+        "imageUrl": "/baby-kids-photo-3.jpg",
+        "imageHint": "siblings portrait photography with warm lighting"
+      },
+      {
+        "id": "baby-kids-photo-4",
+        "description": "Playful moment captured mid-laughter — a celebration of pure childhood joy.",
+        "imageUrl": "/baby-kids-photo-4.jpg",
+        "imageHint": "candid baby laughing during playtime photography"
+      },
+      {
+        "id": "baby-kids-photo-5",
+        "description": "Soft-lit studio session showcasing a baby’s expressive eyes and sweet smile.",
+        "imageUrl": "/baby-kids-photo-5.jpg",
+        "imageHint": "studio baby portrait with soft natural lighting"
+      },
+      {
+        "id": "baby-kids-photo-6",
+        "description": "Whimsical birthday shoot filled with balloons, laughter, and vibrant colors.",
+        "imageUrl": "/baby-kids-photo-6.jpg",
+        "imageHint": "baby birthday photoshoot with colorful balloons"
+      },
+      {
+        "id": "baby-kids-photo-7",
+        "description": "Gentle black-and-white portrait highlighting the timeless bond between parent and child.",
+        "imageUrl": "/baby-kids-photo-7.jpg",
+        "imageHint": "black and white parent and baby portrait"
+      },
+      {
+        "id": "baby-kids-photo-8",
+        "description": "Playful sibling duo captured mid-jump — full of motion and contagious laughter.",
+        "imageUrl": "/baby-kids-photo-8.jpg",
+        "imageHint": "kids jumping outdoors in joyful sibling photoshoot"
+      },
+      {
+        "id": "baby-kids-photo-9",
+        "description": "A cozy at-home moment featuring soft blankets and genuine smiles.",
+        "imageUrl": "/baby-kids-photo-9.jpg",
+        "imageHint": "baby lifestyle photography at home with soft light"
+      },
+      {
+        "id": "baby-kids-photo-10",
+        "description": "Beautiful golden-hour portrait highlighting curiosity and wonder in a child’s eyes.",
+        "imageUrl": "/baby-kids-photo-10.jpg",
+        "imageHint": "golden hour kids photography portrait outdoors"
+      },
+      {
+        "id": "baby-kids-photo-11",
+        "description": "Playful close-up capturing the delight of discovery during a garden shoot.",
+        "imageUrl": "/baby-kids-photo-11.jpg",
+        "imageHint": "baby exploring nature during outdoor photography"
+      },
+      {
+        "id": "baby-kids-photo-12",
+        "description": "Classic milestone portrait marking baby’s first year — full of joy and growth.",
+        "imageUrl": "/baby-kids-photo-12.jpg",
+        "imageHint": "baby first birthday milestone photoshoot"
+      },
+      {
+        "id": "baby-kids-photo-13",
+        "description": "Soft, pastel-toned studio setup perfect for a calm and dreamy baby shoot.",
+        "imageUrl": "/baby-kids-photo-13.jpg",
+        "imageHint": "pastel themed baby studio portrait"
+      },
+      {
+        "id": "baby-kids-photo-14",
+        "description": "Candid shot of a little artist at play — capturing creativity and innocence.",
+        "imageUrl": "/baby-kids-photo-14.jpg",
+        "imageHint": "kids creative art themed photoshoot"
+      },
+      {
+        "id": "baby-kids-photo-15",
+        "description": "Family moment frozen in time — laughter, hugs, and genuine connection.",
+        "imageUrl": "/baby-kids-photo-15.jpg",
+        "imageHint": "family portrait with baby and parents smiling together"
+      },
+      {
+        "id": "fashion-shoots-about",
+        "description": "Elegant studio portrait showcasing timeless couture and refined lighting.",
+        "imageUrl": "/fashion-shoots-about.jpg",
+        "imageHint": "studio fashion portrait classic couture lighting"
+      },
+
+    
+      {
+        "id": "fashion-shoots-about-1",
+        "description": "Elegant studio portrait showcasing timeless couture and refined lighting.",
+        "imageUrl": "/fashion-shoots-about-1.jpg",
+        "imageHint": "studio fashion portrait classic couture lighting"
+      },
+      {
+        "id": "fashion-shoots-about-2",
+        "description": "Dynamic runway-inspired pose capturing the essence of motion and style.",
+        "imageUrl": "/fashion-shoots-about-2.jpg",
+        "imageHint": "runway editorial photography dynamic model pose"
+      },
+      {
+        "id": "fashion-shoots-about-3",
+        "description": "Minimalist monochrome editorial emphasizing form, attitude, and grace.",
+        "imageUrl": "/fashion-shoots-about-3.jpg",
+        "imageHint": "black and white fashion editorial photography"
+      },
+      {
+        "id": "fashion-shoots-about-4",
+        "description": "High-fashion lookbook setup with dramatic lighting and textured fabrics.",
+        "imageUrl": "/fashion-shoots-about-4.jpg",
+        "imageHint": "lookbook photography dramatic fashion lighting"
+      },
+      {
+        "id": "fashion-shoots-about-5",
+        "description": "Urban fashion editorial blending modern streetwear with architectural lines.",
+        "imageUrl": "/fashion-shoots-about-5.jpg",
+        "imageHint": "urban fashion shoot street style architecture"
+      },
+      {
+        "id": "fashion-shoots-about-6",
+        "description": "Vibrant color-blocked outfit captured under creative studio lighting.",
+        "imageUrl": "/fashion-shoots-about-6.jpg",
+        "imageHint": "colorful studio fashion portrait"
+      },
+      {
+        "id": "fashion-shoots-about-7",
+        "description": "Outdoor editorial shoot at golden hour highlighting natural elegance.",
+        "imageUrl": "/fashion-shoots-about-7.jpg",
+        "imageHint": "outdoor fashion photography golden hour"
+      },
+      {
+        "id": "fashion-shoots-about-8",
+        "description": "Avant-garde concept shoot emphasizing bold textures and dramatic mood.",
+        "imageUrl": "/fashion-shoots-about-8.jpg",
+        "imageHint": "avant garde fashion photography creative concept"
+      },
+      {
+        "id": "fashion-shoots-about-9",
+        "description": "Detailed close-up showcasing intricate accessories and styling finesse.",
+        "imageUrl": "/fashion-shoots-about-9.jpg",
+        "imageHint": "fashion accessories close up editorial detail"
+      },
+      {
+        "id": "fashion-shoots-about-10",
+        "description": "Editorial duo shot with contrasting tones and synchronized energy.",
+        "imageUrl": "/fashion-shoots-about-10.jpg",
+        "imageHint": "editorial duo fashion photography contrast lighting"
+      },
+      {
+        "id": "fashion-shoots-about-11",
+        "description": "Soft-lit portrait emphasizing texture, emotion, and sophisticated simplicity.",
+        "imageUrl": "/fashion-shoots-about-11.jpg",
+        "imageHint": "soft light studio fashion portrait simplicity"
+      },
+      {
+        "id": "fashion-shoots-about-12",
+        "description": "Conceptual editorial representing bold individuality and modern glamour.",
+        "imageUrl": "/fashion-shoots-about-12.jpg",
+        "imageHint": "conceptual editorial fashion modern glamour"
+      },
+
+    
+      {
+        "id": "boudoir-shoots-image-1",
+        "description": "Softly lit silhouette capturing elegance, confidence, and subtle allure.",
+        "imageUrl": "/boudoir-shoots-image-1.jpg",
+        "imageHint": "boudoir photography silhouette soft lighting confidence"
+      },
+      {
+        "id": "boudoir-shoots-image-2",
+        "description": "A delicate composition blending light, texture, and poise with artistic intimacy.",
+        "imageUrl": "/boudoir-shoots-image-2.jpg",
+        "imageHint": "artistic boudoir portrait soft tones elegance"
+      },
+      {
+        "id": "boudoir-shoots-image-3",
+        "description": "Natural daylight portrait that balances vulnerability with empowerment.",
+        "imageUrl": "/boudoir-shoots-image-3.jpg",
+        "imageHint": "natural light boudoir portrait empowering style"
+      },
+      {
+        "id": "boudoir-shoots-image-4",
+        "description": "Black-and-white moment showcasing timeless beauty and quiet confidence.",
+        "imageUrl": "/boudoir-shoots-image-4.jpg",
+        "imageHint": "black and white boudoir photography timeless elegance"
+      },
+      {
+        "id": "boudoir-shoots-image-5",
+        "description": "Intimate window-lit frame with soft focus and cinematic atmosphere.",
+        "imageUrl": "/boudoir-shoots-image-5.jpg",
+        "imageHint": "window light boudoir cinematic soft focus"
+      },
+      {
+        "id": "boudoir-shoots-image-6",
+        "description": "Lace and linen textures meeting soft natural tones in an elegant setup.",
+        "imageUrl": "/boudoir-shoots-image-6.jpg",
+        "imageHint": "boudoir textures lace fabric warm tones"
+      },
+      {
+        "id": "boudoir-shoots-image-7",
+        "description": "Artful low-key lighting emphasizing form, mood, and confidence.",
+        "imageUrl": "/boudoir-shoots-image-7.jpg",
+        "imageHint": "low light boudoir photography moody portrait"
+      },
+      {
+        "id": "boudoir-shoots-image-8",
+        "description": "Fine-art boudoir portrait evoking grace and quiet sophistication.",
+        "imageUrl": "/boudoir-shoots-image-8.jpg",
+        "imageHint": "fine art boudoir graceful pose artistic photo"
+      },
+      {
+        "id": "boudoir-shoots-image-9",
+        "description": "Delicate interplay of shadows and curves that celebrates body positivity.",
+        "imageUrl": "/boudoir-shoots-image-9.jpg",
+        "imageHint": "shadow play boudoir body positivity"
+      },
+      {
+        "id": "boudoir-shoots-image-10",
+        "description": "A cozy indoor scene that merges softness, intimacy, and authenticity.",
+        "imageUrl": "/boudoir-shoots-image-10.jpg",
+        "imageHint": "indoor boudoir cozy natural light setting"
+      },
+      {
+        "id": "boudoir-shoots-image-11",
+        "description": "Dramatic composition using contrast and posture to convey inner strength.",
+        "imageUrl": "/boudoir-shoots-image-11.jpg",
+        "imageHint": "dramatic boudoir portrait confident composition"
+      },
+      {
+        "id": "boudoir-shoots-image-12",
+        "description": "Editorial-style boudoir frame balancing fashion and intimacy effortlessly.",
+        "imageUrl": "/boudoir-shoots-image-12.jpg",
+        "imageHint": "editorial boudoir photography fashion inspired"
+      },
+
+      {
+        "id": "boudoir-shoots-cover",
+        "description": "An intimate yet powerful portrait that captures confidence and poise in soft light.",
+        "imageUrl": "/boudoir-shoots-cover.jpg",
+        "imageHint": "boudoir cover portrait confidence soft lighting"
+      },
+
+      {
+        "id": "boudoir-shoots-about",
+        "description": "An intimate yet powerful portrait that captures confidence and poise in soft light.",
+        "imageUrl": "/boudoir-shoots-about.jpg",
+        "imageHint": "boudoir cover portrait confidence soft lighting"
+      },
+
+      {
+        "id": "boudoir-shoots-thumbnail",
+        "description": "An intimate yet powerful portrait that captures confidence and poise in soft light.",
+        "imageUrl": "/boudoir-shoots-thumbnail.jpg",
+        "imageHint": "boudoir cover portrait confidence soft lighting"
+      }
+      
+    ]
+  }

@@ -1,5 +1,0 @@
-/* App-level baseline. Component styles live in Tailwind or index.css */
-.App {
-    min-height: 100vh;
-    background: hsl(var(--cream));
-}
