@@ -471,7 +471,7 @@ export default function GoaWeddingEditorial({ faqs }) {
 
   return (
     <main data-testid="dw-blog-page" className="bg-[#EEEAE1] text-[#161514]">
-      <motion.div style={{ scaleX: pageProgress }} className="fixed top-0 left-0 right-0 h-[3px] bg-[#FF5B22] z-[95] origin-left" />
+      <motion.div style={{ scaleX: pageProgress }} className="hidden" />
 
       {/* ============ HERO ============ */}
       <section

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useScroll } from 'framer-motion'
 import { ArrowRight, Menu, X, Instagram, Facebook, Mail, Phone, MapPin, MessageCircle, User } from 'lucide-react'
 
 /* -------- Shared image URLs (from real pkphotography.in) -------- */
@@ -339,10 +339,24 @@ export function PageHeader({ eyebrow, title, subtitle }) {
   )
 }
 
+/* -------- Reading progress bar (site-wide) -------- */
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll()
+  return (
+    <motion.div
+      aria-hidden="true"
+      data-testid="site-scroll-progress"
+      style={{ scaleX: scrollYProgress }}
+      className="fixed top-0 left-0 right-0 h-[3px] bg-[#FF5B22] z-[95] origin-left pointer-events-none"
+    />
+  )
+}
+
 /* -------- Site chrome wrapper -------- */
 export function SiteShell({ children }) {
   return (
     <>
+      <ScrollProgress />
       <Preloader />
       <Nav />
       <div>{children}</div>

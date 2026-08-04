@@ -595,12 +595,6 @@ export default function GoaEditorial({ faqs }) {
 
   return (
     <main data-testid="goa-blog-page" className="bg-[#EEEAE1] text-[#161514]">
-      {/* Top scroll progress */}
-      <motion.div
-        style={{ scaleX: pageProgress }}
-        className="fixed top-0 left-0 right-0 h-[3px] bg-[#FF5B22] z-[95] origin-left"
-      />
-
       {/* ---------------- HERO ---------------- */}
       <section
         ref={heroRef}

@@ -451,12 +451,6 @@ export default function HeadshotsEditorial({ faqs }) {
       data-testid="headshots-blog-page"
       className="bg-[#EEEAE1] text-[#161514]"
     >
-      {/* scroll progress bar */}
-      <motion.div
-        style={{ scaleX: pageProgress }}
-        className="fixed top-0 left-0 right-0 h-[3px] bg-[#161514] z-[95] origin-left"
-      />
-
       {/* ---------------- HERO ---------------- */}
       <section
         ref={heroRef}
