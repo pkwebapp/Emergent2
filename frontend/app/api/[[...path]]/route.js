@@ -179,6 +179,67 @@ async function handleRoute(request, { params }) {
       return res
     }
 
+    // ---- Talents ----------------------------------------------------
+    if (route === '/talents' && method === 'GET') {
+      const url = new URL(request.url)
+      const category = (url.searchParams.get('category') || '').trim().toLowerCase()
+      const search = (url.searchParams.get('search') || '').trim()
+      const q = { approved: true }
+      if (category && category !== 'all') q.category = category
+      if (search) {
+        const re = new RegExp(search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i')
+        q.$or = [{ name: re }, { city: re }, { skills: re }, { category: re }]
+      }
+      const items = await db.collection('talents').find(q, { projection: { _id: 0 } })
+        .sort({ featured: -1, created_at: -1 }).limit(60).toArray()
+      return handleCORS(NextResponse.json({ items }))
+    }
+
+    if (route === '/talents/apply' && method === 'POST') {
+      const body = await request.json().catch(() => ({}))
+      const name = String(body.name || '').trim()
+      const email = String(body.email || '').trim().toLowerCase()
+      const phone = String(body.phone || '').replace(/\D/g, '')
+      const category = String(body.category || '').trim().toLowerCase()
+      const city = String(body.city || '').trim()
+
+      if (!name || name.length < 2) {
+        return handleCORS(NextResponse.json({ error: 'Please enter your full name.' }, { status: 400 }))
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return handleCORS(NextResponse.json({ error: 'Please enter a valid email.' }, { status: 400 }))
+      }
+      if (phone.length !== 10 && !(phone.startsWith('91') && phone.length === 12)) {
+        return handleCORS(NextResponse.json({ error: 'Enter a valid 10-digit mobile.' }, { status: 400 }))
+      }
+      if (!category) {
+        return handleCORS(NextResponse.json({ error: 'Please choose a talent category.' }, { status: 400 }))
+      }
+      if (!city) {
+        return handleCORS(NextResponse.json({ error: 'Please share your base city.' }, { status: 400 }))
+      }
+
+      const application = {
+        id: uuidv4(),
+        name,
+        email,
+        phone: phone.length === 10 ? phone : phone.slice(-10),
+        category,
+        city,
+        experience: String(body.experience || '').trim() || null,
+        portfolio_url: String(body.portfolio_url || '').trim() || null,
+        instagram: String(body.instagram || '').trim() || null,
+        message: String(body.message || '').trim() || null,
+        approved: false,
+        featured: false,
+        status: 'pending',
+        source: 'talents-page',
+        created_at: new Date().toISOString(),
+      }
+      await db.collection('talent_applications').insertOne({ ...application })
+      return handleCORS(NextResponse.json({ ok: true, id: application.id }))
+    }
+
     // Signup — collects early access details (name + optional email + mobile)
     if (route === '/auth/signup' && method === 'POST') {
       const body = await request.json().catch(() => ({}))
