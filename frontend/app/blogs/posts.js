@@ -15,6 +15,13 @@ export const catColor = (slug) => CATEGORIES.find((c) => c.slug === slug)?.color
 
 export const POSTS = [
   {
+    id: 'goa-wedding-guide', category: 'Goa', cats: ['goa', 'weddings', 'planning'],
+    title: 'Planning a Destination Wedding in Goa: The Complete Field Guide',
+    excerpt: 'North Goa vs South Goa, honest 2026 budgets from ₹15L to ₹1Cr+, venues, vendors and permits — plus why a local team usually saves you 20–35%.',
+    image: '/destination-weddings.jpg', date: 'Dec 6, 2025', read: '14 min read',
+    href: '/blog/destination-wedding-goa-complete-field-guide',
+  },
+  {
     id: 'headshots-mumbai', category: 'Mumbai', cats: ['mumbai', 'corporate', 'guides'],
     title: 'Corporate Headshot Photography in Mumbai: Why Every Professional Needs One',
     excerpt: 'Professional headshots get 21× more profile views. Inside our Andheri West studio — lighting, posing, packages, bulk pricing and the difference between a headshot and a portrait.',
