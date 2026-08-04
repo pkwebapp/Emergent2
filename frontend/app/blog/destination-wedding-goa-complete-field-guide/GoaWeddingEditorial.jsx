@@ -506,11 +506,11 @@ export default function GoaWeddingEditorial({ faqs }) {
             </nav>
 
             <p className="eyebrow !text-[#FF7A4d] mb-5">A Goa Field Guide · Vol. 08</p>
-            <h1 className="font-cormorant text-white text-[2.6rem] leading-[0.98] sm:text-5xl md:text-6xl lg:text-[6rem] max-w-5xl">
+            <h1 className="font-cormorant text-white text-[2.6rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-[6rem] max-w-5xl">
               {headline.map((line, i) => (
-                <span key={i} className="block overflow-hidden">
+                <span key={i} className="block overflow-hidden pb-[0.12em]">
                   <motion.span
-                    className={`block ${i === 1 ? 'italic text-[#FF7A4d]' : ''}`}
+                    className={`block pb-[0.06em] ${i === 1 ? 'italic text-[#FF7A4d]' : ''}`}
                     initial={{ y: '110%' }}
                     animate={{ y: '0%' }}
                     transition={{ duration: 1, delay: 0.15 + i * 0.14, ease: [0.22, 1, 0.36, 1] }}

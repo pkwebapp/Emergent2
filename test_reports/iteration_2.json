@@ -1,0 +1,62 @@
+{
+  "summary": "Frontend-only visual verification of the hero H1 descender-clip fix on the /blogs listing page and individual blog pages. Loaded each page in Playwright (desktop 1440x900 and mobile 390x844), waited for reveal animation + font load, measured the h1 + reveal-mask/motion-span box metrics, and captured tight bounding-box screenshots of just the H1 area. Compared to Home hero as reference. The 4 pages the main agent edited render descenders (J, g, y, p, f) fully visible in both viewports and the masked reveal animation still runs. Two additional blog pages (whats-included-wedding-photography-package, corporate-tour-offsite-events-goa-photography-package) were also spot-checked and appear to use the same reveal-mask pattern WITHOUT the padding fix, showing marginal-to-visible descender clipping (notably the 'p' in 'Corporate' on the corp-tour page).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "CorporateTourEditorial hero H1 (/blog/corporate-tour-offsite-events-goa-photography-package)",
+        "issue": "Same descender-clip pattern as the four pages just fixed. Computed styles show outer mask span has overflow:hidden with padding-bottom:0px and inner motion span padding-bottom:0px, line-height:96px equal to font-size:96px (leading 1.0). Screenshot shows the 'p' descender in 'Corporate' is visibly clipped by the mask edge. Not authored by main agent in this task but user asked us to flag it.",
+        "selector": "h1 > span (reveal-mask) on that route",
+        "priority": "MEDIUM"
+      },
+      {
+        "component": "WhatsIncludedPackage hero H1 (/blog/whats-included-wedding-photography-package)",
+        "issue": "Same reveal-mask pattern without descender padding: outer span padding-bottom:0px, inner span padding-bottom:0px, line-height 104px = font-size 104px. Descenders of 'g'/'y' in 'Photography' and 'g' in 'Package' sit right on the mask baseline; marginal clip visible on the loop of 'g'. Not part of the four files main agent edited but same root cause.",
+        "selector": "h1 > span (reveal-mask) on that route",
+        "priority": "LOW"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "verified_fixes": [
+    {"page": "/blogs (Journal.jsx)", "text": "The PK Photography Journal", "desktop_1440": "PASS — J descender in 'Journal' fully visible with breathing room", "mobile_390": "PASS — J descender visible"},
+    {"page": "/blog/pre-wedding-couple-portrait-shoot-locations-goa (GoaEditorial.jsx)", "text": "Salt, silk, & slow golden hours.", "desktop_1440": "PASS — g in 'golden' and tails in 'hours.' visible", "mobile_390": "PASS"},
+    {"page": "/blog/destination-wedding-goa-complete-field-guide (GoaWeddingEditorial.jsx)", "text": "Two coastlines, one long wedding weekend.", "desktop_1440": "PASS — g in 'long' and 'wedding' visible; period on 'weekend.' visible", "mobile_390": "PASS"},
+    {"page": "/blog/corporate-headshot-photography-mumbai (HeadshotsEditorial.jsx)", "text": "A face that earns the benefit of the doubt.", "desktop_1440": "PASS — 'f' descender in 'face'/'benefit'/'of' visible", "mobile_390": "PASS (after full font load; first-paint pre-hydration snapshot briefly showed Times New Roman fallback but final rendered state is Cormorant with descenders visible)"},
+    {"page": "/ (Home hero, reference)", "text": "Professional photography & videography in Mumbai & Goa.", "desktop_1440": "PASS — reference behavior, matches"}
+  ],
+  "computed_style_evidence": {
+    "note": "Tailwind `leading-[1.05]` applies at mobile breakpoint (mobile computed line-height/font-size ratio = 1.05). At larger breakpoints another responsive class overrides to line-height == font-size (1.0), but the outer reveal-mask `pb-[0.12em]` (=11.52px at 96px, 12.48px at 104px) plus inner motion span `pb-[0.06em]` correctly extend the visible mask area past the Cormorant Garamond descender line, so descenders render un-clipped on all four authored pages.",
+    "reveal_animation": "Still functional — inspecting inner span computed transform confirms motion.span settles at translate(0,0) after the initial y:110% -> 0% reveal."
+  },
+  "test_report_links": [
+    "/app/.screenshots/h1_blogs_listing_1440.png",
+    "/app/.screenshots/h1_prewedding_1440.png",
+    "/app/.screenshots/h1_destwedding_1440.png",
+    "/app/.screenshots/h1_headshots_1440.png",
+    "/app/.screenshots/h1_package_1440.png",
+    "/app/.screenshots/h1_corp_tour_1440.png",
+    "/app/.screenshots/h1_home_1440.png",
+    "/app/.screenshots/h1_blogs_listing_390.png",
+    "/app/.screenshots/h1_prewedding_390.png",
+    "/app/.screenshots/h1_destwedding_390.png",
+    "/app/.screenshots/headshots_390_full.png"
+  ],
+  "action_items": [
+    "Apply the same reveal-mask padding fix (outer `pb-[0.12em]`, inner motion.span `pb-[0.06em]`, `leading-[1.05]`) to the hero H1 in /app/frontend/app/blog/corporate-tour-offsite-events-goa-photography-package/*.jsx — the 'p' in 'Corporate' descender is visibly clipped.",
+    "Apply the same fix to the hero H1 in /app/frontend/app/blog/whats-included-wedding-photography-package/*.jsx — marginal descender clip on 'g' in 'Photography'/'Package'."
+  ],
+  "critical_code_review_comments": [
+    "The four fixed hero H1 blocks each duplicate an identical reveal-mask + motion.span pattern (~15 lines per line-of-text). This has been copy-pasted across at least 6 blog editorials. Extract into a shared component like <RevealHeadline lines={[...]} /> in /app/frontend/components — one central place to own the descender-safe leading + padding contract, and future blog pages will get it for free.",
+    "The `leading-[1.05]` utility only takes effect at the mobile breakpoint; at md/lg the responsive font-size classes ship with their own line-height (=1.0). This works today because pb-[0.12em]/pb-[0.06em] absorb the descender, but it's fragile — if someone later removes the pb, the clip returns silently. Consider tagging leading explicitly per breakpoint (e.g., md:leading-[1.05] lg:leading-[1.05]) so intent is expressed in the class list rather than relying on padding to mask a too-tight line-height."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend-only requested)", "frontend": "100% of the 4 files main agent edited pass; 2 additional un-edited blog pages still exhibit the original clip issue"},
+  "test_credentials": "N/A",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Screenshots of each hero H1 area saved under /app/.screenshots/. Use `page.evaluate` on `document.querySelector('h1')` + child spans and read computed `overflow`, `paddingBottom`, `lineHeight`, `fontSize` to verify the mask contract (outer span overflow:hidden with pb ≈ 0.12em, inner motion span pb ≈ 0.06em). Always wait ~3s after domcontentloaded for the reveal animation (initial y:110% -> 0% translate) and Cormorant Garamond web-font swap to settle before screenshotting, otherwise you may capture the pre-hydration Times New Roman fallback (happened once on the headshots mobile viewport).",
+  "rca of the issue": "Root cause: Cormorant Garamond has descenders (~18-22% of em) that extend below the baseline. The four hero H1s wrap each visual line in a `<span class='overflow-hidden'>` (mask) containing a `<motion.span>` that animates from y:110% to 0. When line-height was set to 0.98em (<1) the mask's line-box bottom sat above the descender bottom, so overflow:hidden clipped the tails of J/g/y/p/f. Mitigation applied by main agent: added `pb-[0.12em]` to the outer mask (extends the visible area past the baseline) and `pb-[0.06em]` to the inner motion span (keeps content within its own metrics on animate), plus bumped leading to 1.05 at the mobile breakpoint. Verified un-clipped on both viewports. Reveal animation preserved."
+}

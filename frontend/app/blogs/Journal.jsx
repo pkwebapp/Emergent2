@@ -245,9 +245,9 @@ export default function Journal() {
             <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.7 }} className="eyebrow !text-[#FF7A4d] mb-4">
               Mumbai · Goa · Delhi
             </motion.p>
-            <h1 className="font-cormorant text-white leading-[0.98] text-[2.8rem] sm:text-6xl md:text-7xl lg:text-[6rem]">
-              <span className="block overflow-hidden"><motion.span className="block" initial={{ y: '110%' }} animate={{ y: '0%' }} transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>The PK Photography</motion.span></span>
-              <span className="block overflow-hidden"><motion.span className="block" initial={{ y: '110%' }} animate={{ y: '0%' }} transition={{ duration: 0.9, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}>Journal</motion.span></span>
+            <h1 className="font-cormorant text-white leading-[1.05] text-[2.8rem] sm:text-6xl md:text-7xl lg:text-[6rem]">
+              <span className="block overflow-hidden pb-[0.12em]"><motion.span className="block pb-[0.06em]" initial={{ y: '110%' }} animate={{ y: '0%' }} transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>The PK Photography</motion.span></span>
+              <span className="block overflow-hidden pb-[0.12em]"><motion.span className="block pb-[0.06em]" initial={{ y: '110%' }} animate={{ y: '0%' }} transition={{ duration: 0.9, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}>Journal</motion.span></span>
             </h1>
             <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7, duration: 0.7 }} className="mt-6 text-lg md:text-xl text-white/80 max-w-2xl leading-relaxed">
               Wedding guides, event insights, and behind-the-lens stories — from Mumbai’s studios to Goa’s beaches.

@@ -504,11 +504,11 @@ export default function HeadshotsEditorial({ faqs }) {
             <p className="eyebrow !text-[#FF7A4d] mb-5">
               Mumbai · Andheri West Studio
             </p>
-            <h1 className="font-cormorant text-white text-[2.6rem] leading-[1] sm:text-5xl md:text-6xl lg:text-[5.5rem]">
+            <h1 className="font-cormorant text-white text-[2.6rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-[5.5rem]">
               {headline.map((line, i) => (
-                <span key={i} className="block overflow-hidden">
+                <span key={i} className="block overflow-hidden pb-[0.12em]">
                   <motion.span
-                    className={`block ${i === 1 ? 'italic text-[#FF7A4d]' : ''}`}
+                    className={`block pb-[0.06em] ${i === 1 ? 'italic text-[#FF7A4d]' : ''}`}
                     initial={{ y: '110%' }}
                     animate={{ y: '0%' }}
                     transition={{

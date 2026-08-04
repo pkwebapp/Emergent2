@@ -636,11 +636,11 @@ export default function GoaEditorial({ faqs }) {
             </nav>
 
             <p className="eyebrow !text-[#FF7A4d] mb-5">A Goa Editorial &middot; Vol. 07</p>
-            <h1 className="font-cormorant text-white text-[3rem] leading-[0.98] sm:text-6xl md:text-7xl lg:text-[6.5rem] max-w-5xl">
+            <h1 className="font-cormorant text-white text-[3rem] leading-[1.05] sm:text-6xl md:text-7xl lg:text-[6.5rem] max-w-5xl">
               {headline.map((line, i) => (
-                <span key={i} className="block overflow-hidden">
+                <span key={i} className="block overflow-hidden pb-[0.12em]">
                   <motion.span
-                    className={`block ${i === 1 ? 'italic text-[#FF7A4d]' : ''}`}
+                    className={`block pb-[0.06em] ${i === 1 ? 'italic text-[#FF7A4d]' : ''}`}
                     initial={{ y: '110%' }}
                     animate={{ y: '0%' }}
                     transition={{
