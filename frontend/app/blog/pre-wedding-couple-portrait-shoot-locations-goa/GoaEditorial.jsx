@@ -273,6 +273,17 @@ const PACKAGES = [
   },
 ]
 
+const ADDONS = [
+  { name: 'Extra Photographer', price: '\u20b98,000 / day' },
+  { name: 'Extra Videographer', price: '\u20b910,000 / day' },
+  { name: 'Drone Cinematographer', price: '\u20b910,000 / day' },
+  { name: 'Makeup / Hair Artist', price: '\u20b96,000 / day' },
+  { name: 'iPhone Reel & BTS Shooter', price: '\u20b95,000 / day' },
+  { name: 'Printed Luxury Album', price: '\u20b98,000' },
+  { name: 'Extra Hour Extension', price: '\u20b92,000 / hour' },
+  { name: 'Extra Reel Edit', price: '\u20b92,000 / reel' },
+]
+
 /* ---------------- Animated counter ---------------- */
 function Counter({ value, suffix }) {
   const ref = useRef(null)
@@ -854,12 +865,23 @@ export default function GoaEditorial({ faqs }) {
             <div className="mb-12 md:mb-16 max-w-3xl">
               <p className="eyebrow mb-3">Chapter 04 &mdash; The invest</p>
               <h2 className="font-cormorant text-4xl md:text-5xl lg:text-[3.4rem] leading-[1.02] text-[#161514]">
-                Three ways to work with us <em className="text-[#E24A12] not-italic font-normal">&mdash; or hand us a brief.</em>
+                Packages &amp; <em className="text-[#E24A12] not-italic font-normal">Pricing Structure</em>
               </h2>
-              <p className="mt-5 text-[#4a463f] text-base md:text-lg leading-relaxed max-w-xl">
-                Starting points for shoots in Goa. All packages include travel
-                within North Goa. Custom itineraries, multi-day and wedding
-                coverage are always available on request.
+              <p className="mt-5 text-[#4a463f] text-base md:text-lg leading-relaxed">
+                Here&rsquo;s what most couples actually want to know before booking:
+                how many hours, how many locations, how many photos (and do
+                you get the raw files or just a curated set), and &mdash; most
+                importantly &mdash; how long delivery actually takes.
+              </p>
+              <p className="mt-4 text-[#4a463f] text-base md:text-lg leading-relaxed">
+                Industry-wide, pre-wedding photo delivery typically takes{' '}
+                <strong className="text-[#161514]">3&ndash;8 weeks</strong>, and
+                most studios only hand over a small edited selection, never the
+                originals.{' '}
+                <strong className="text-[#161514]">We do it differently:</strong>{' '}
+                you get all your raw photos plus a fully edited selection, with
+                photos delivered <em className="text-[#E24A12] not-italic">the same day</em>{' '}
+                and full video edits following in 1&ndash;2 days.
               </p>
             </div>
           </Reveal>
@@ -916,6 +938,58 @@ export default function GoaEditorial({ faqs }) {
               </Reveal>
             ))}
           </div>
+
+          {/* Add-Ons */}
+          <Reveal>
+            <div className="mt-16 md:mt-20">
+              <div className="flex items-end justify-between gap-6 mb-8">
+                <div>
+                  <p className="eyebrow mb-3">Add-Ons</p>
+                  <h3 className="font-cormorant text-3xl md:text-4xl leading-tight text-[#161514] max-w-2xl">
+                    Want to extend or customize any package? Here&rsquo;s what
+                    we offer on top of the base plans.
+                  </h3>
+                </div>
+              </div>
+
+              <div
+                data-testid="goa-addons-table"
+                className="rounded-[4px] border border-[#DBD4C6] bg-white overflow-hidden"
+              >
+                <div className="hidden md:grid md:grid-cols-[1fr_auto] px-6 py-4 bg-[#F3E4DC]/60 border-b border-[#DBD4C6]">
+                  <span className="eyebrow !text-[#4a463f]">Add-On</span>
+                  <span className="eyebrow !text-[#4a463f]">Price</span>
+                </div>
+                <ul className="divide-y divide-[#DBD4C6]">
+                  {ADDONS.map((a) => (
+                    <li
+                      key={a.name}
+                      data-testid={`goa-addon-${a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+                      className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-1 md:gap-8 px-6 py-5 hover:bg-[#F3E4DC]/40 transition-colors"
+                    >
+                      <span className="font-cormorant text-xl md:text-2xl leading-snug text-[#161514]">
+                        {a.name}
+                      </span>
+                      <span className="text-sm md:text-base font-semibold text-[#E24A12] md:text-right tabular whitespace-nowrap">
+                        {a.price}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <p className="mt-6 text-[#4a463f] text-base md:text-lg leading-relaxed max-w-2xl">
+                Add-ons can be combined with any package.{' '}
+                <Link
+                  href="/booking"
+                  data-testid="goa-addons-inline-cta"
+                  className="link-underline text-[#161514] font-semibold hover:text-[#FF5B22]"
+                >
+                  Get in touch to build a custom quote for your shoot.
+                </Link>
+              </p>
+            </div>
+          </Reveal>
 
           <Reveal>
             <div className="mt-14 border-t border-[#DBD4C6] pt-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
