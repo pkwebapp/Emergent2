@@ -224,51 +224,52 @@ const LOCATIONS = [
 const PACKAGES = [
   {
     id: 'hourly',
-    name: 'Hourly',
-    starting: '\u20b918,000',
-    unit: '/ hr',
-    tag: 'Testing the waters',
+    name: 'Hourly Session',
+    starting: '\u20b95,000',
+    unit: '/ hour',
+    tag: 'Quick, focused couple or portrait shoot',
     inclusions: [
-      '1 lead photographer',
-      '60 minutes on location',
-      '40+ edited hero frames',
+      '1 hour on location',
+      '1 photographer',
+      '1 location',
+      'All raw photos + 25\u201330 selected edited photos',
       'Private online gallery',
-      'Delivery in 10 days',
+      'Photos delivered same day',
     ],
     highlighted: false,
   },
   {
     id: 'half-day',
     name: 'Half-Day',
-    starting: '\u20b942,000',
-    unit: '/ 4 hrs',
-    tag: 'Most-booked couple session',
+    starting: '\u20b910,000',
+    unit: '/ 3\u20134 hrs',
+    tag: 'Most-booked \u2014 stills, motion & aerials',
     inclusions: [
-      'Lead photographer + assistant',
-      '4 hours, up to 2 locations',
-      '120+ edited frames',
-      '3 short reels (add-on)',
-      'Wardrobe consult over call',
-      'Delivery in 14 days',
+      '3\u20134 hours coverage',
+      'Up to 2 locations',
+      'Photography + Cinematography + Drone shoot',
+      'All raw photos + 60\u201380 selected edited photos',
+      '1 short reel',
+      'Photos delivered same day, video in 1\u20132 days',
     ],
-    highlighted: false,
+    highlighted: true,
   },
   {
     id: 'full-day',
     name: 'Full-Day',
-    starting: '\u20b975,000',
-    unit: '/ 8 hrs',
-    tag: 'The full editorial',
+    starting: '\u20b915,000',
+    unit: '/ 6\u20137 hrs',
+    tag: 'The full editorial experience',
     inclusions: [
-      'Photo + reel team (3 people)',
-      '8 hours, up to 3 locations',
-      '250+ edited frames',
-      '6 cinematic reels included',
-      'Drone coverage included',
-      '10 hero prints (A4)',
-      'Same-week teaser reel',
+      '6\u20137 hours coverage',
+      '2\u20133 locations',
+      'Photography + Cinematography + Drone shoot',
+      'All raw photos + 120+ selected edited photos',
+      '2\u20133 reels',
+      'Outfit change support across locations',
+      'Photos delivered same day, video in 1\u20132 days',
     ],
-    highlighted: true,
+    highlighted: false,
   },
 ]
 
@@ -919,10 +920,10 @@ export default function GoaEditorial({ faqs }) {
           <Reveal>
             <div className="mt-14 border-t border-[#DBD4C6] pt-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
               <div className="max-w-xl">
-                <p className="eyebrow">Something bespoke?</p>
+                <p className="eyebrow">Note</p>
                 <h4 className="mt-2 font-cormorant text-2xl md:text-3xl leading-tight text-[#161514]">
-                  Multi-day itineraries, destination weddings, brand campaigns
-                  &mdash; tell us the story, we&rsquo;ll draft the plan.
+                  Packages can be customized based on your preferred locations,
+                  outfit changes, and add-ons. Get in touch for a tailored quote.
                 </h4>
               </div>
               <Link
@@ -930,7 +931,7 @@ export default function GoaEditorial({ faqs }) {
                 data-testid="goa-package-cta-custom"
                 className="self-start inline-flex items-center gap-2 bg-[#161514] text-white hover:bg-[#E24A12] transition-colors font-semibold px-6 py-3 rounded-full text-[11px] uppercase tracking-[0.22em]"
               >
-                Request a custom quote <ArrowUpRight size={14} />
+                Request a tailored quote <ArrowUpRight size={14} />
               </Link>
             </div>
           </Reveal>
@@ -1017,3 +1018,4 @@ export default function GoaEditorial({ faqs }) {
     </main>
   )
 }
+
