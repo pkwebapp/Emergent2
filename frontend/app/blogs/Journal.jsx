@@ -253,25 +253,6 @@ export default function Journal() {
               Wedding guides, event insights, and behind-the-lens stories — from Mumbai’s studios to Goa’s beaches.
             </motion.p>
           </div>
-
-          {/* Featured spotlight */}
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.85, duration: 0.8 }} className="mt-10">
-            <Link
-              href={POSTS[0].href}
-              data-testid="hero-featured"
-              className="group flex flex-col sm:flex-row items-stretch gap-0 sm:gap-6 max-w-3xl bg-white/[0.08] hover:bg-white/[0.12] border border-white/15 backdrop-blur-md rounded-[8px] overflow-hidden transition-colors"
-            >
-              <div className="relative w-full sm:w-56 h-44 sm:h-auto shrink-0 overflow-hidden">
-                <Image src={POSTS[0].image} alt={POSTS[0].title} fill sizes="240px" className="object-cover transition-transform duration-700 group-hover:scale-105" />
-              </div>
-              <div className="p-6 sm:py-6 sm:pr-7 flex flex-col justify-center">
-                <Tag label="Weddings · Featured" color={catColor('weddings')} className="w-fit mb-3" />
-                <h2 className="font-cormorant text-2xl md:text-[1.7rem] leading-snug text-white mb-2">{POSTS[0].title}</h2>
-                <p className="text-white/70 text-sm leading-relaxed mb-4 line-clamp-2">{POSTS[0].excerpt}</p>
-                <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#FF7A4d]">Read the Full Guide <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" /></span>
-              </div>
-            </Link>
-          </motion.div>
         </motion.div>
 
         <motion.div style={{ opacity: heroFade }} className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 text-white/70">
