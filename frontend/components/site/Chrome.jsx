@@ -201,12 +201,11 @@ export function Nav() {
               onClick={() => setOpen(true)}
               data-testid="hamburger-btn"
               aria-label="Open menu"
-              className={`inline-flex items-center gap-2 group ${dark ? 'text-white' : 'text-[#161514]'}`}
+              className={`inline-flex items-center justify-center group ${dark ? 'text-white' : 'text-[#161514]'}`}
             >
-              <span className="hidden sm:inline text-[11px] font-semibold uppercase tracking-[0.2em]">Menu</span>
-              <span className="flex flex-col justify-center items-end gap-1.5 w-7 h-7">
-                <span className={`block h-[2px] w-6 ${dark ? 'bg-white' : 'bg-[#161514]'} transition-transform`} />
-                <span className={`block h-[2px] w-4 ${dark ? 'bg-white' : 'bg-[#161514]'} transition-all group-hover:w-6`} />
+              <span className="flex flex-col justify-center items-end gap-1.5 w-8 h-8">
+                <span className={`block h-[2px] w-7 ${dark ? 'bg-white' : 'bg-[#161514]'} transition-all group-hover:w-5`} />
+                <span className={`block h-[2px] w-5 ${dark ? 'bg-white' : 'bg-[#161514]'} transition-all group-hover:w-7`} />
               </span>
             </button>
           </div>
@@ -219,25 +218,27 @@ export function Nav() {
 
 /* -------- Fullscreen hamburger overlay (pkphotography.in style) -------- */
 const OVERLAY_PRIMARY = [
-  { label: 'Clients',   href: '/client' },
-  { label: 'Services',  href: '/services' },
-  { label: 'Bookings',  href: '/booking' },
-  { label: 'Gallery',   href: '/gallery' },
-  { label: 'Weddings',  href: '/services/weddings' },
-  { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Pricing',   href: '/pricing' },
+  { label: 'Home',    href: '/' },
+  { label: 'Services', href: '/services' },
+  { label: 'Gallery', href: '/gallery' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'Blog',    href: '/blogs' },
+  { label: 'Booking', href: '/booking' },
+  { label: 'Client',  href: '/client' },
 ]
 const OVERLAY_SECONDARY = [
-  { label: 'Talents', href: '/talents' },
-  { label: 'Blogs',   href: '/blogs' },
-  { label: 'Careers', href: '/careers' },
-  { label: 'Signup',  href: '/signup' },
+  { label: 'Portfolio', href: '/portfolio' },
+  { label: 'Talents',   href: '/talents' },
+  { label: 'Careers',   href: '/careers' },
+  { label: 'Signup',    href: '/signup' },
+  { label: 'Privacy Policy',     href: '/privacy-policy' },
+  { label: 'Terms & Conditions', href: '/terms-and-conditions' },
 ]
 const OVERLAY_STATS = [
-  { n: '500+', t: 'Happy Clients' },
-  { n: '10+',  t: 'Years of Experience' },
-  { n: '1M+',  t: 'Photos Captured' },
-  { n: '100+', t: 'Artists Onboard' },
+  { n: '500+',  t: 'Weddings & Events' },
+  { n: '700+',  t: 'Corporate Clients' },
+  { n: '1000+', t: 'Portfolios Shot' },
+  { n: '10+',   t: 'Years of Craft' },
 ]
 
 function FullscreenMenu({ open, onClose, user, firstName, avatarLetter }) {
@@ -360,6 +361,7 @@ function FullscreenMenu({ open, onClose, user, firstName, avatarLetter }) {
                 <a href={`mailto:${CONTACT.email}`} className="block text-base md:text-lg hover:text-[#FF5B22] transition-colors mt-1 break-all">
                   {CONTACT.email}
                 </a>
+                <div className="mt-3 text-sm text-white/60">Mumbai · Goa · Pan India</div>
               </motion.div>
 
               {/* Stats */}
