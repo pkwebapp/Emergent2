@@ -179,6 +179,38 @@ async function handleRoute(request, { params }) {
       return res
     }
 
+    // Signup — collects early access details (name + optional email + mobile)
+    if (route === '/auth/signup' && method === 'POST') {
+      const body = await request.json().catch(() => ({}))
+      const fullName = String(body.full_name || '').trim()
+      const email = body.email ? String(body.email).trim().toLowerCase() : null
+      const mobileDigits = String(body.mobile || '').replace(/\D/g, '')
+
+      if (!fullName) {
+        return handleCORS(NextResponse.json({ error: 'Full name is required.' }, { status: 400 }))
+      }
+      const isValidMobile = mobileDigits.length === 10
+        || (mobileDigits.startsWith('91') && mobileDigits.length === 12)
+      if (!isValidMobile) {
+        return handleCORS(NextResponse.json({ error: 'Enter a valid 10-digit mobile number.' }, { status: 400 }))
+      }
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return handleCORS(NextResponse.json({ error: 'Enter a valid email.' }, { status: 400 }))
+      }
+
+      const record = {
+        id: uuidv4(),
+        full_name: fullName,
+        email: email || null,
+        mobile: mobileDigits.length === 10 ? mobileDigits : mobileDigits.slice(-10),
+        source: 'signup-page',
+        status: 'pending',
+        created_at: new Date().toISOString(),
+      }
+      await db.collection('signups').insertOne({ ...record })
+      return handleCORS(NextResponse.json({ ok: true, id: record.id }))
+    }
+
     // Current authenticated user
     if (route === '/auth/me' && method === 'GET') {
       const token = request.cookies.get('session_token')?.value
