@@ -342,10 +342,10 @@ export default function CorporateEditorial({ faqs }) {
               </ol>
             </nav>
             <p className="eyebrow !text-[#E7C67A] mb-5">MICE &amp; Corporate Events · Goa</p>
-            <h1 className="font-cormorant text-white text-[2.8rem] leading-[1.0] sm:text-6xl md:text-7xl lg:text-[6rem] max-w-5xl">
+            <h1 className="font-cormorant text-white text-[2.8rem] leading-[1.05] sm:text-6xl md:text-7xl lg:text-[6rem] max-w-5xl">
               {headline.map((line, i) => (
-                <span key={i} className="block overflow-hidden">
-                  <motion.span className="block" initial={{ y: '110%' }} animate={{ y: '0%' }} transition={{ duration: 1, delay: 0.15 + i * 0.14, ease: [0.22, 1, 0.36, 1] }}>{line}</motion.span>
+                <span key={i} className="block overflow-hidden pb-[0.12em]">
+                  <motion.span className="block pb-[0.06em]" initial={{ y: '110%' }} animate={{ y: '0%' }} transition={{ duration: 1, delay: 0.15 + i * 0.14, ease: [0.22, 1, 0.36, 1] }}>{line}</motion.span>
                 </span>
               ))}
             </h1>
