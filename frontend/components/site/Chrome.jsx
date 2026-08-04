@@ -197,40 +197,208 @@ export function Nav() {
                 Login <ArrowRight size={14} />
               </Link>
             )}
-            <button onClick={() => setOpen(true)} className={`md:hidden ${dark ? 'text-white' : 'text-[#161514]'}`} aria-label="Open menu"><Menu /></button>
+            <button
+              onClick={() => setOpen(true)}
+              data-testid="hamburger-btn"
+              aria-label="Open menu"
+              className={`inline-flex items-center gap-2 group ${dark ? 'text-white' : 'text-[#161514]'}`}
+            >
+              <span className="hidden sm:inline text-[11px] font-semibold uppercase tracking-[0.2em]">Menu</span>
+              <span className="flex flex-col justify-center items-end gap-1.5 w-7 h-7">
+                <span className={`block h-[2px] w-6 ${dark ? 'bg-white' : 'bg-[#161514]'} transition-transform`} />
+                <span className={`block h-[2px] w-4 ${dark ? 'bg-white' : 'bg-[#161514]'} transition-all group-hover:w-6`} />
+              </span>
+            </button>
           </div>
         </div>
       </header>
-      <AnimatePresence>
-        {open && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[110] bg-[#EEEAE1] flex flex-col p-8">
-            <div className="flex justify-between items-center">
-              <Logo />
-              <button onClick={() => setOpen(false)} aria-label="Close menu"><X /></button>
-            </div>
-            <nav className="flex-1 flex flex-col justify-center gap-3">
-              {NAV_LINKS.map((l, i) => (
-                <motion.div key={l.label} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: i * 0.05 }}>
-                  <Link href={l.href} className="display text-5xl block">{l.label}</Link>
-                </motion.div>
-              ))}
-              {user ? (
-                <Link href="/client" data-testid="mobile-nav-profile-btn" className="mt-8 inline-flex w-fit items-center gap-3 bg-[#161514] text-white pl-2 pr-6 py-2 rounded-full font-semibold">
-                  {user.picture ? (
-                    <img src={user.picture} alt={user.name || 'Profile'} referrerPolicy="no-referrer" className="w-9 h-9 rounded-full object-cover" />
-                  ) : (
-                    <span className="w-9 h-9 rounded-full bg-[#FF5B22] grid place-content-center"><User size={16} /></span>
-                  )}
-                  {firstName}
-                </Link>
-              ) : (
-                <Link href="/client" className="mt-8 inline-flex w-fit items-center gap-2 bg-[#FF5B22] text-white px-6 py-3 rounded-full font-semibold">Login <ArrowRight size={16} /></Link>
-              )}
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <FullscreenMenu open={open} onClose={() => setOpen(false)} user={user} firstName={firstName} avatarLetter={avatarLetter} />
     </>
+  )
+}
+
+/* -------- Fullscreen hamburger overlay (pkphotography.in style) -------- */
+const OVERLAY_PRIMARY = [
+  { label: 'Clients',   href: '/client' },
+  { label: 'Services',  href: '/services' },
+  { label: 'Bookings',  href: '/booking' },
+  { label: 'Gallery',   href: '/gallery' },
+  { label: 'Weddings',  href: '/services/weddings' },
+  { label: 'Portfolio', href: '/portfolio' },
+  { label: 'Pricing',   href: '/pricing' },
+]
+const OVERLAY_SECONDARY = [
+  { label: 'Talents', href: '/talents' },
+  { label: 'Blogs',   href: '/blogs' },
+  { label: 'Careers', href: '/careers' },
+  { label: 'Signup',  href: '/signup' },
+]
+const OVERLAY_STATS = [
+  { n: '500+', t: 'Happy Clients' },
+  { n: '10+',  t: 'Years of Experience' },
+  { n: '1M+',  t: 'Photos Captured' },
+  { n: '100+', t: 'Artists Onboard' },
+]
+
+function FullscreenMenu({ open, onClose, user, firstName, avatarLetter }) {
+  const pathname = usePathname()
+
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prev
+    }
+  }, [open, onClose])
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed inset-0 z-[110] bg-[#0b0b0b] text-white overflow-y-auto"
+          data-testid="fullscreen-menu"
+          role="dialog"
+          aria-modal="true"
+        >
+          {/* Header row */}
+          <div className="flex items-center justify-between px-6 md:px-14 pt-6 md:pt-10">
+            <Link href="/" onClick={onClose} aria-label="PK Photography — Home" className="flex items-center gap-2.5">
+              <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden>
+                <g stroke="#ffffff" strokeWidth="2" fill="none">
+                  <rect x="3" y="12"  width="12" height="12" transform="rotate(-15 9 18)" />
+                  <rect x="13" y="12" width="12" height="12" transform="rotate(-15 19 18)" />
+                  <rect x="23" y="12" width="12" height="12" transform="rotate(-15 29 18)" />
+                </g>
+              </svg>
+              <div className="leading-tight">
+                <div className="text-[12px] font-semibold tracking-wide">PK</div>
+                <div className="text-[10px] uppercase tracking-[0.2em] text-white/70">Photography</div>
+              </div>
+            </Link>
+            <button
+              onClick={onClose}
+              data-testid="menu-close-btn"
+              aria-label="Close menu"
+              className="w-11 h-11 grid place-content-center rounded-full border border-white/15 hover:bg-white hover:text-black transition-colors"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Body grid */}
+          <div className="px-6 md:px-14 pt-10 md:pt-16 pb-14 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
+            {/* Left: primary nav */}
+            <nav className="lg:col-span-8">
+              <ul>
+                {OVERLAY_PRIMARY.map((l, i) => {
+                  const active = pathname === l.href
+                  return (
+                    <motion.li
+                      key={l.label}
+                      initial={{ y: 24, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.05 + i * 0.05, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                      className="border-b border-white/15 group"
+                    >
+                      <Link
+                        href={l.href}
+                        onClick={onClose}
+                        className={`block py-4 md:py-6 text-[44px] md:text-[76px] leading-[1.05] tracking-tight font-light transition-colors ${active ? 'text-white/40' : 'text-white group-hover:text-white/70'}`}
+                      >
+                        {l.label}
+                      </Link>
+                    </motion.li>
+                  )
+                })}
+              </ul>
+            </nav>
+
+            {/* Right column */}
+            <aside className="lg:col-span-4 flex flex-col gap-10">
+              {/* Secondary links */}
+              <motion.ul
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15, duration: 0.5 }}
+                className="space-y-3 text-lg md:text-xl text-white/90"
+              >
+                {OVERLAY_SECONDARY.map((l) => (
+                  <li key={l.label}>
+                    <Link href={l.href} onClick={onClose} className="inline-block hover:text-[#FF5B22] transition-colors">
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+                {user && (
+                  <li>
+                    <Link href="/client" onClick={onClose} className="inline-flex items-center gap-2 hover:text-[#FF5B22] transition-colors">
+                      <span className="w-6 h-6 rounded-full bg-[#FF5B22] grid place-content-center text-[10px] text-white">{avatarLetter}</span>
+                      {firstName}
+                    </Link>
+                  </li>
+                )}
+              </motion.ul>
+
+              {/* Say hello */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25, duration: 0.5 }}
+              >
+                <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/60 mb-3">Say Hello</div>
+                <a href={`tel:${CONTACT.phoneRaw}`} className="block text-base md:text-lg hover:text-[#FF5B22] transition-colors">
+                  {CONTACT.phone}
+                </a>
+                <a href={`mailto:${CONTACT.email}`} className="block text-base md:text-lg hover:text-[#FF5B22] transition-colors mt-1 break-all">
+                  {CONTACT.email}
+                </a>
+              </motion.div>
+
+              {/* Stats */}
+              <motion.ul
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35, duration: 0.5 }}
+                className="space-y-2 text-sm md:text-base"
+              >
+                {OVERLAY_STATS.map((s) => (
+                  <li key={s.t} className="text-white/80">
+                    <span className="font-semibold text-white mr-2">{s.n}</span>{s.t}
+                  </li>
+                ))}
+              </motion.ul>
+            </aside>
+          </div>
+
+          {/* Footer socials */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="px-6 md:px-14 pb-8 md:pb-10 pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-sm text-white/70"
+          >
+            <div className="flex items-center gap-6">
+              <a href="https://www.instagram.com/itspkphotography.in/" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">Instagram</a>
+              <a href="https://x.com/pkphotographym?lang=en" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">Twitter</a>
+              <a href="https://www.linkedin.com/company/pkphotography/" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
+              <a href="https://www.facebook.com/pkfashionphotography" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">Facebook</a>
+              <a href="https://www.youtube.com/@itspkphotography" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">YouTube</a>
+            </div>
+            <div className="text-white/40 text-[11px] uppercase tracking-[0.2em]">
+              &copy; {new Date().getFullYear()} PK Photography
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }
 
