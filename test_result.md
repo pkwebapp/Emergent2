@@ -101,3 +101,61 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "PK Photography website with Next.js 15 frontend and FastAPI proxy backend"
+
+backend:
+  - task: "FastAPI /health endpoint"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Smoke test after vercel.json addition. GET /health returns 200 with {status: ok}. Working correctly."
+  
+  - task: "FastAPI proxy to Next.js API"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Smoke test after vercel.json addition. GET /api/root proxies correctly to Next.js and returns 200 with {message: Hello World}. Proxy functionality working correctly."
+
+frontend:
+  - task: "Next.js API catch-all route"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Verified through FastAPI proxy. /api/root endpoint returns correct response. Next.js API routing working correctly."
+
+metadata:
+  created_by: "testing_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "FastAPI /health endpoint"
+    - "FastAPI proxy to Next.js API"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "testing"
+    message: "Completed smoke test after vercel.json addition. All tests passed (2/2). FastAPI /health endpoint and proxy to Next.js /api/root both working correctly. The vercel.json file (Vercel deployment config) does not affect local runtime as expected. No issues found."
