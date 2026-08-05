@@ -17,29 +17,53 @@ const GALLERY_CATEGORIES = [
 ]
 
 const HOME_SLOTS = [
-  { slot: 'hero-slides', title: 'Hero slides (rotating)', description: 'Big rotating photos in the home hero.', multiple: true, acceptVideo: true },
+  { slot: 'hero-slides', title: 'Hero slides (rotating — images or videos)', description: 'Big rotating photos/videos in the home hero. Videos autoplay muted and loop.', multiple: true, acceptVideo: true },
   { slot: 'home-about-portrait', title: 'About section portrait', description: 'The portrait shown in the "About the studio" section on Home.', multiple: false },
   { slot: 'home-portfolio-featured', title: 'Featured portfolio strip', description: 'Photos in the Featured Portfolio strip on the home page.', multiple: true },
   { slot: 'home-clients', title: 'Client logos', description: 'Logo images for the "trusted by" client strip.', multiple: true },
 ]
 
+// Aligned with the OFFICIAL /services listing (lib/services.js).
+// Each entry: { slug: matches /services/{slug} on the site, label }
 const SERVICE_PAGES = [
-  { key: 'wedding', label: 'Wedding' },
-  { key: 'headshots', label: 'Headshots' },
-  { key: 'portrait', label: 'Portrait' },
-  { key: 'boudoir', label: 'Boudoir' },
-  { key: 'brandshoot', label: 'Brand shoot' },
-  { key: 'editorial', label: 'Editorial' },
+  { key: 'weddings', label: 'Weddings' },
+  { key: 'events', label: 'Events' },
+  { key: 'portraits-headshots', label: 'Portraits & Headshots' },
+  { key: 'editorial-portfolio', label: 'Editorial & Portfolio' },
+  { key: 'live-streaming', label: 'Live Streaming' },
+  { key: 'family-kids', label: 'Family & Kids' },
+  { key: 'fashion-shoots', label: 'Fashion Shoots' },
+  { key: 'boudoir-shoots', label: 'Boudoir' },
+  { key: 'brand-content', label: 'Brand & Content' },
+  { key: 'product-ecommerce', label: 'Product & E-Commerce' },
+  { key: 'food-photography', label: 'Food' },
+  { key: 'corporate-industrial', label: 'Corporate & Industrial' },
+  { key: 'real-estate-architectural', label: 'Real Estate & Architectural' },
+  { key: 'influencer-celebrity', label: 'Influencer & Celebrity' },
+  { key: 'podcast-production', label: 'Podcast Production' },
+  { key: 'editing-retouching', label: 'Photo & Video Editing' },
+  { key: 'album-design', label: 'Album Design & Printing' },
+  { key: 'drone-services', label: 'Drone Photography' },
+  { key: 'design-services', label: 'Design Services' },
+]
+
+// Legacy pages (older direct URLs like /wedding, /headshots — still exist on site)
+const LEGACY_PAGES = [
+  { key: 'wedding', label: 'Wedding (legacy /wedding)' },
+  { key: 'headshots', label: 'Headshots (legacy)' },
+  { key: 'portrait', label: 'Portrait (legacy)' },
+  { key: 'boudoir', label: 'Boudoir (legacy)' },
+  { key: 'brandshoot', label: 'Brand shoot (legacy)' },
+  { key: 'editorial', label: 'Editorial (legacy)' },
   { key: 'festival', label: 'Festival' },
-  { key: 'food', label: 'Food' },
-  { key: 'celebrity', label: 'Celebrity' },
-  { key: 'realestate', label: 'Real estate' },
+  { key: 'food', label: 'Food (legacy)' },
+  { key: 'celebrity', label: 'Celebrity (legacy)' },
+  { key: 'realestate', label: 'Real estate (legacy)' },
   { key: 'outdoor', label: 'Outdoor' },
   { key: 'baby', label: 'Baby' },
   { key: 'ads', label: 'Ads' },
-  { key: 'ecommerce', label: 'E-commerce' },
-  { key: 'design', label: 'Design' },
-  { key: 'live-streaming', label: 'Live streaming' },
+  { key: 'ecommerce', label: 'E-commerce (legacy)' },
+  { key: 'design', label: 'Design (legacy)' },
   { key: 'wgoa', label: 'Weddings Goa' },
 ]
 
@@ -207,16 +231,30 @@ function HomeTab({ adminToken }) {
 
 /* ================= Service Pages tab ================= */
 function ServicesTab({ adminToken }) {
-  const [page, setPage] = useState(SERVICE_PAGES[0].key)
-  const active = SERVICE_PAGES.find((p) => p.key === page)
-  const bannerSlot = `${page}-banner`
-  const gallerySlot = `${page}-gallery`
+  const [group, setGroup] = useState('official') // 'official' | 'legacy'
+  const list = group === 'official' ? SERVICE_PAGES : LEGACY_PAGES
+  const [page, setPage] = useState(list[0].key)
+  const active = list.find((p) => p.key === page) || list[0]
+  const bannerSlot = `${active.key}-banner`
+  const gallerySlot = `${active.key}-gallery`
+
+  // Keep page valid when switching groups
+  useEffect(() => { setPage(list[0].key) /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [group])
+
   return (
     <div>
       <h2 className="text-xl font-semibold text-neutral-100">Service Pages</h2>
       <p className="mt-1 text-sm text-neutral-400">Every service page has a banner strip (top of page) and a gallery. Upload images or videos.</p>
+      <div className="mt-4 inline-flex rounded-full border border-neutral-800 p-1 bg-neutral-950">
+        <button onClick={() => setGroup('official')}
+          className={`text-xs px-4 py-1.5 rounded-full ${group === 'official' ? 'bg-orange-500 text-white' : 'text-neutral-400 hover:text-white'}`}
+        >Official services (/services/…)</button>
+        <button onClick={() => setGroup('legacy')}
+          className={`text-xs px-4 py-1.5 rounded-full ${group === 'legacy' ? 'bg-orange-500 text-white' : 'text-neutral-400 hover:text-white'}`}
+        >Legacy pages (/wedding, /headshots…)</button>
+      </div>
       <div className="mt-4 flex flex-wrap gap-2">
-        {SERVICE_PAGES.map((p) => (
+        {list.map((p) => (
           <button key={p.key} onClick={() => setPage(p.key)}
             className={`text-sm rounded-full px-3 py-1 border ${page === p.key ? 'bg-orange-500 border-orange-500 text-white' : 'border-neutral-700 text-neutral-300 hover:border-neutral-500'}`}
           >{p.label}</button>
@@ -229,7 +267,7 @@ function ServicesTab({ adminToken }) {
         description={`Renders as a full-width banner at the top of the ${active.label} page. First item is the big hero (image or video). Remaining items form a marquee strip.`}
         multiple
         acceptVideo
-        category={page}
+        category={active.key}
       />
       <SlotSection
         adminToken={adminToken}
@@ -237,7 +275,7 @@ function ServicesTab({ adminToken }) {
         title={`${active.label} — Gallery`}
         description={`Renders as an image grid on the ${active.label} page.`}
         multiple
-        category={page}
+        category={active.key}
       />
     </div>
   )

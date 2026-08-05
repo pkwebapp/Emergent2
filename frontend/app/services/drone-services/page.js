@@ -1,3 +1,4 @@
+import PageBanner from '@/components/media/PageBanner'
 import DroneServicesPageClient from './DroneServicesPageClient'
 import { SERVICE_SEO, buildMetadata, pageJsonLd } from '@/lib/seo'
 
@@ -24,6 +25,7 @@ export default function DroneServicesPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <PageBanner slot="drone-services-banner" />
       <DroneServicesPageClient />
     </>
   )

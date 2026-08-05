@@ -67,7 +67,11 @@ function Hero() {
       .then((data) => {
         const items = (data?.items || [])
           .filter((it) => it.secure_url)
-          .map((it) => ({ src: it.secure_url, alt: it.alt || 'PK Photography' }))
+          .map((it) => ({
+            src: it.secure_url,
+            alt: it.alt || 'PK Photography',
+            type: it.resource_type === 'video' ? 'video' : 'image',
+          }))
         if (items.length) setHeroPhotos(items)
       })
       .catch(() => { /* keep defaults */ })
@@ -97,7 +101,7 @@ function Hero() {
       className="relative h-[100svh] overflow-hidden bg-[#0e0d0c]"
       data-testid="hero-section"
     >
-      {/* Photo montage — Ken Burns crossfade */}
+      {/* Photo montage — Ken Burns crossfade (supports videos) */}
       <motion.div style={{ y }} className="absolute inset-0">
         {heroPhotos.map((p, k) => (
           <motion.div
@@ -113,14 +117,26 @@ function Hero() {
             }}
             className="absolute inset-0 will-change-[opacity,transform]"
           >
-            <Image
-              src={p.src}
-              alt={p.alt}
-              fill
-              priority={k === 0}
-              sizes="100vw"
-              className="object-cover"
-            />
+            {p.type === 'video' ? (
+              <video
+                src={p.src}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            ) : (
+              <Image
+                src={p.src}
+                alt={p.alt}
+                fill
+                priority={k === 0}
+                sizes="100vw"
+                className="object-cover"
+              />
+            )}
           </motion.div>
         ))}
         {/* Cinematic overlays */}

@@ -1,3 +1,4 @@
+import PageBanner from '@/components/media/PageBanner'
 import LiveStreamingPageClient from './LiveStreamingPageClient'
 import { SERVICE_SEO, buildMetadata, pageJsonLd } from '@/lib/seo'
 
@@ -51,6 +52,7 @@ export default function LiveStreamingPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <PageBanner slot="live-streaming-banner" />
       <LiveStreamingPageClient faqs={faqs} />
     </>
   )

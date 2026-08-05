@@ -1,3 +1,4 @@
+import PageBanner from '@/components/media/PageBanner'
 import HeadshotsPageClient from './HeadshotsPageClient'
 import { SERVICE_SEO, buildMetadata, pageJsonLd } from '@/lib/seo'
 
@@ -24,6 +25,7 @@ export default function HeadshotsPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <PageBanner slot="portraits-headshots-banner" />
       <HeadshotsPageClient />
     </>
   )

@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { SERVICES } from '@/lib/services'
 import { SERVICE_SEO, buildMetadata, pageJsonLd } from '@/lib/seo'
 import ServicePageClient from './ServicePageClient'
+import PageBanner from '@/components/media/PageBanner'
 
 // Pre-render generic service slugs at build-time.
 // Custom handcrafted pages (currently /services/events and /services/weddings) live in their own folders.
@@ -46,6 +47,7 @@ export default async function ServicePage({ params }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <PageBanner slot={`${slug}-banner`} />
       <ServicePageClient slug={slug} />
     </>
   )

@@ -1,4 +1,5 @@
 'use client'
+import PageBanner from '@/components/media/PageBanner'
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
@@ -894,6 +895,7 @@ export default function WeddingsPage() {
   const [videoOpen, setVideoOpen] = useState(false)
   return (
     <main className="bg-[#EEEAE1]">
+      <PageBanner slot="weddings-banner" />
       <ReadingProgress />
       <Hero onPlayFilm={() => setVideoOpen(true)} />
       <Storytelling />
