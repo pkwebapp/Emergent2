@@ -306,6 +306,150 @@ async function handleRoute(request, { params }) {
       return res
     }
 
+    // ---------- Admin token gate ----------
+    function requireAdmin() {
+      const token = (request.headers.get('authorization') || '').replace(/^Bearer\s+/i, '').trim()
+        || (request.headers.get('x-admin-token') || '').trim()
+      const expected = process.env.ADMIN_TOKEN || ''
+      if (!expected || token !== expected) return false
+      return true
+    }
+
+    // POST /api/admin/login  { token }
+    if (route === '/admin/login' && method === 'POST') {
+      const body = await request.json().catch(() => ({}))
+      const token = String(body.token || '').trim()
+      const expected = process.env.ADMIN_TOKEN || ''
+      if (!expected || token !== expected) {
+        return handleCORS(NextResponse.json({ error: 'Invalid admin token' }, { status: 401 }))
+      }
+      return handleCORS(NextResponse.json({ ok: true, token }))
+    }
+
+    // GET /api/admin/verify
+    if (route === '/admin/verify' && method === 'GET') {
+      if (!requireAdmin()) return handleCORS(NextResponse.json({ error: 'unauthorized' }, { status: 401 }))
+      return handleCORS(NextResponse.json({ ok: true }))
+    }
+
+    // ---------- Media (Cloudinary-backed) ----------
+    // POST /api/media  — record an uploaded asset (admin required)
+    if (route === '/media' && method === 'POST') {
+      if (!requireAdmin()) return handleCORS(NextResponse.json({ error: 'unauthorized' }, { status: 401 }))
+      const body = await request.json().catch(() => ({}))
+      const publicId = String(body.public_id || '').trim()
+      const secureUrl = String(body.secure_url || body.url || '').trim()
+      if (!publicId || !secureUrl) {
+        return handleCORS(NextResponse.json({ error: 'public_id and secure_url required' }, { status: 400 }))
+      }
+      const doc = {
+        id: uuidv4(),
+        public_id: publicId,
+        url: String(body.url || secureUrl),
+        secure_url: secureUrl,
+        asset_id: String(body.asset_id || '') || null,
+        resource_type: String(body.resource_type || 'image'),
+        delivery_type: String(body.delivery_type || 'upload'),
+        format: String(body.format || '') || null,
+        width: Number(body.width) || null,
+        height: Number(body.height) || null,
+        bytes: Number(body.bytes) || null,
+        original_filename: String(body.original_filename || '') || null,
+        category: String(body.category || 'general').trim(),
+        slot: body.slot ? String(body.slot).trim() : null,
+        blog_post_id: body.blog_post_id ? String(body.blog_post_id) : null,
+        booking_id: body.booking_id ? String(body.booking_id) : null,
+        sort_order: Number.isFinite(Number(body.sort_order)) ? Number(body.sort_order) : 0,
+        alt: body.alt ? String(body.alt).slice(0, 300) : null,
+        active: body.active === false ? false : true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      }
+      await db.collection('media').insertOne({ ...doc })
+      return handleCORS(NextResponse.json(doc, { status: 201 }))
+    }
+
+    // GET /api/media?slot=hero-slides&category=wedding&limit=100
+    if (route === '/media' && method === 'GET') {
+      const url = new URL(request.url)
+      const slot = (url.searchParams.get('slot') || '').trim()
+      const category = (url.searchParams.get('category') || '').trim()
+      const limit = Math.min(500, Math.max(1, parseInt(url.searchParams.get('limit') || '200', 10)))
+      const q = { active: { $ne: false } }
+      if (slot) q.slot = slot
+      if (category) q.category = category
+      const items = await db.collection('media')
+        .find(q, { projection: { _id: 0 } })
+        .sort({ sort_order: 1, created_at: 1 })
+        .limit(limit)
+        .toArray()
+      return handleCORS(NextResponse.json({ items }))
+    }
+
+    // PATCH /api/media/:id  — update sort_order / alt / slot / active
+    if (route.startsWith('/media/') && method === 'PATCH') {
+      if (!requireAdmin()) return handleCORS(NextResponse.json({ error: 'unauthorized' }, { status: 401 }))
+      const id = route.split('/')[2]
+      const body = await request.json().catch(() => ({}))
+      const $set = { updated_at: new Date().toISOString() }
+      if (body.sort_order != null) $set.sort_order = Number(body.sort_order) || 0
+      if (body.alt != null) $set.alt = String(body.alt).slice(0, 300)
+      if (body.slot != null) $set.slot = String(body.slot).trim() || null
+      if (body.category != null) $set.category = String(body.category).trim()
+      if (body.active != null) $set.active = !!body.active
+      const result = await db.collection('media').findOneAndUpdate(
+        { id },
+        { $set },
+        { returnDocument: 'after', projection: { _id: 0 } }
+      )
+      const doc = result?.value || result // driver compatibility
+      if (!doc) return handleCORS(NextResponse.json({ error: 'not found' }, { status: 404 }))
+      return handleCORS(NextResponse.json(doc))
+    }
+
+    // DELETE /api/media/:id — signed destroy on Cloudinary + Mongo remove
+    if (route.startsWith('/media/') && method === 'DELETE') {
+      if (!requireAdmin()) return handleCORS(NextResponse.json({ error: 'unauthorized' }, { status: 401 }))
+      const id = route.split('/')[2]
+      const doc = await db.collection('media').findOne({ id })
+      if (!doc) return handleCORS(NextResponse.json({ error: 'not found' }, { status: 404 }))
+
+      // Sign destroy request (Cloudinary needs sha1 of sorted signable params + api_secret)
+      const cloudName = process.env.CLOUDINARY_CLOUD_NAME
+      const apiKey = process.env.CLOUDINARY_API_KEY
+      const apiSecret = process.env.CLOUDINARY_API_SECRET
+      if (cloudName && apiKey && apiSecret) {
+        try {
+          const crypto = await import('crypto')
+          const timestamp = Math.floor(Date.now() / 1000)
+          const publicId = doc.public_id
+          const paramsToSign = `invalidate=true&public_id=${publicId}&timestamp=${timestamp}`
+          const signature = crypto.createHash('sha1').update(paramsToSign + apiSecret).digest('hex')
+          const form = new URLSearchParams()
+          form.append('public_id', publicId)
+          form.append('timestamp', String(timestamp))
+          form.append('invalidate', 'true')
+          form.append('api_key', apiKey)
+          form.append('signature', signature)
+          const resourceType = doc.resource_type || 'image'
+          const destroyResp = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/destroy`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: form.toString(),
+          })
+          const destroyJson = await destroyResp.json().catch(() => ({}))
+          if (!(destroyJson.result === 'ok' || destroyJson.result === 'not found')) {
+            console.warn('Cloudinary destroy did not return ok:', destroyJson)
+          }
+        } catch (e) {
+          console.error('Cloudinary destroy error:', e)
+        }
+      }
+
+      await db.collection('media').deleteOne({ id })
+      return handleCORS(NextResponse.json({ deleted: true, id }))
+    }
+
     // Route not found
     return handleCORS(NextResponse.json(
       { error: `Route ${route} not found` }, 

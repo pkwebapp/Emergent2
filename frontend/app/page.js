@@ -42,7 +42,7 @@ function Counter({ to, suffix = '', duration = 1.8, testid }) {
 /* ================================================================
    1. HERO — cinematic photo-montage crossfade with Ken Burns
 ================================================================ */
-const HERO_PHOTOS = [
+const HERO_PHOTOS_DEFAULT = [
   { src: IMG.p1, alt: 'PK Photography — wedding photography Mumbai' },
   { src: IMG.p7, alt: 'PK Photography — portrait shoot Andheri' },
   { src: IMG.v1, alt: 'PK Photography — cinematic wedding videography' },
@@ -57,12 +57,27 @@ function Hero() {
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '18%'])
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
   const [i, setI] = useState(0)
+  const [heroPhotos, setHeroPhotos] = useState(HERO_PHOTOS_DEFAULT)
+
+  // Load admin-uploaded hero slides from backend (falls back to defaults on empty/error)
+  useEffect(() => {
+    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
+    fetch(`${backend}/api/media?slot=hero-slides`, { cache: 'no-store' })
+      .then((r) => r.ok ? r.json() : { items: [] })
+      .then((data) => {
+        const items = (data?.items || [])
+          .filter((it) => it.secure_url)
+          .map((it) => ({ src: it.secure_url, alt: it.alt || 'PK Photography' }))
+        if (items.length) setHeroPhotos(items)
+      })
+      .catch(() => { /* keep defaults */ })
+  }, [])
 
   // Slow crossfade every 5.5s
   useEffect(() => {
-    const t = setInterval(() => setI(v => (v + 1) % HERO_PHOTOS.length), 5500)
+    const t = setInterval(() => setI(v => (v + 1) % heroPhotos.length), 5500)
     return () => clearInterval(t)
-  }, [])
+  }, [heroPhotos.length])
 
   // Subtle mouse parallax on hero content
   const mx = useMotionValue(0), my = useMotionValue(0)
@@ -84,7 +99,7 @@ function Hero() {
     >
       {/* Photo montage — Ken Burns crossfade */}
       <motion.div style={{ y }} className="absolute inset-0">
-        {HERO_PHOTOS.map((p, k) => (
+        {heroPhotos.map((p, k) => (
           <motion.div
             key={p.src}
             initial={{ opacity: 0, scale: 1.06 }}
@@ -202,7 +217,7 @@ function Hero() {
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
-              {HERO_PHOTOS.map((_, k) => (
+              {heroPhotos.map((_, k) => (
                 <button
                   key={k}
                   aria-label={`Hero photo ${k + 1}`}
