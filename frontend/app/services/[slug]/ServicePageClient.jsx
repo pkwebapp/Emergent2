@@ -542,16 +542,31 @@ function FAQItem({ q, a, i }) {
 export default function ServicePageClient({ slug }) {
   const service = SERVICES.find(s => s.slug === slug)
   const extra = service ? { ...fallbackExtra(service), ...(SERVICE_ABOUT[slug] ? { about: SERVICE_ABOUT[slug] } : {}), ...(SERVICE_EXTRA[slug] || {}) } : {}
-  const portfolio = service ? (extra.portfolio || [service.img, ...SERVICES.filter(s => s.slug !== slug).slice(0, 7).map(s => s.img)]) : []
+  const defaultPortfolio = service ? (extra.portfolio || [service.img, ...SERVICES.filter(s => s.slug !== slug).slice(0, 7).map(s => s.img)]) : []
 
   // Hooks must be called on every render (before any conditional return) to satisfy Rules of Hooks.
   const [activeCover, setActiveCover] = useState(0)
   const [lightbox, setLightbox] = useState(null)
   const [showStickyCTA, setShowStickyCTA] = useState(false)
+  const [portfolio, setPortfolio] = useState(defaultPortfolio)
   const heroRef = useRef(null)
   const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
   const heroY = useTransform(heroProgress, [0, 1], ['0%', '20%'])
   const heroScale = useTransform(heroProgress, [0, 1], [1, 1.12])
+
+  // Load admin-uploaded gallery images for this service slug. Overrides defaults if any uploads exist.
+  useEffect(() => {
+    if (!service) return
+    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
+    fetch(`${backend}/api/media?slot=${encodeURIComponent(slug)}-gallery`, { cache: 'no-store' })
+      .then((r) => r.ok ? r.json() : { items: [] })
+      .then((data) => {
+        const urls = (data?.items || []).filter((i) => i.secure_url).map((i) => i.secure_url)
+        if (urls.length) setPortfolio(urls)
+      })
+      .catch(() => {})
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug])
 
   useEffect(() => {
     const onScroll = () => setShowStickyCTA(window.scrollY > 900)

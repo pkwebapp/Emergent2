@@ -396,3 +396,61 @@ agent_communication:
     message: "Please verify (backend + HTTP status only, no browser UI): (1) POST /api/media with slot='weddings-gallery' and cleanup — the create → GET → delete flow works exactly as before. (2) All these URLs return 200: / , /gallery , /gallery?category=weddings , /gallery?category=events , /gallery?category=portfolio , /gallery?category=headshots , /services/weddings , /services/events , /services/portraits-headshots , /services/editorial-portfolio , /admin/media . (3) POST /api/media with resource_type='video' works. (4) Insert a doc into weddings-gallery, GET /api/media?slot=weddings-gallery returns it, DELETE removes it. Everything else is unchanged from Aug 2026 update above."
   - agent: "testing"
     message: "Service pages + gallery integration verification completed successfully. All tests passed (4/4 sections): ✅ A: HTTP 200 checks (11/11 URLs) - All pages return 200: home (/), gallery (/gallery), 4 gallery category tabs (?category=portfolio/headshots/weddings/events), 4 service pages (/services/weddings, /services/events, /services/portraits-headshots, /services/editorial-portfolio), admin panel (/admin/media). ✅ B: Media API for 4 new slots (4/4 slots) - All slots passed POST→GET→DELETE flow: weddings-gallery, events-gallery, portraits-headshots-gallery, editorial-portfolio-gallery. Each slot correctly creates media with UUID ids, retrieves items array, and deletes successfully. ✅ C: Video support - POST with resource_type='video' to weddings-gallery slot returns 201 with resource_type='video'. GET verifies video in items array. DELETE removes video successfully. ✅ D: Regression test - hero-slides slot still works correctly (POST→GET→DELETE). All test data cleaned up successfully. No critical issues found. Backend API fully functional for all 4 new service page slots + /gallery integration."
+
+## Aug 2026 update B: Inline wiring for remaining 15 service pages (dynamic template + live-streaming + drone-services)
+frontend:
+  - task: "Dynamic /services/[slug] template reads {slug}-gallery slot for portfolio grid + lightbox"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/services/[slug]/ServicePageClient.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "ServicePageClient now uses portfolio state initialised from defaults; useEffect fetches /api/media?slot={slug}-gallery on mount and overrides if any uploads exist. Covers 13 services that use the dynamic template: family-kids, fashion-shoots, boudoir-shoots, brand-content, product-ecommerce, food-photography, corporate-industrial, real-estate-architectural, influencer-celebrity, podcast-production, editing-retouching, album-design, design-services."
+        -working: true
+        -agent: "testing"
+        -comment: "Backend API integration verified successfully. All 13 dynamic template service pages return HTTP 200: /services/family-kids, /services/fashion-shoots, /services/boudoir-shoots, /services/brand-content, /services/product-ecommerce, /services/food-photography, /services/corporate-industrial, /services/real-estate-architectural, /services/influencer-celebrity, /services/podcast-production, /services/editing-retouching, /services/album-design, /services/design-services. Media API CRUD tested with food-photography-gallery slot: POST /api/media returns 201 with UUID id, GET /api/media?slot=food-photography-gallery returns items array with created item, DELETE /api/media/:id returns 200 with {deleted:true}. Implementation verified at ServicePageClient.jsx lines 558-569 where useEffect fetches from backend and updates portfolio state. All CRUD operations working correctly."
+  - task: "Live-streaming service page projects grid reads live-streaming-gallery slot"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/services/live-streaming/LiveStreamingPageClient.jsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "LiveStreamingPageClient fetches /api/media?slot=live-streaming-gallery and maps items into galleryProjects (title/tag/thumb/href). Falls back to defaults."
+        -working: true
+        -agent: "testing"
+        -comment: "Backend API integration verified successfully. Page /services/live-streaming returns HTTP 200. Media API CRUD tested with live-streaming-gallery slot: POST /api/media returns 201 with UUID id, GET /api/media?slot=live-streaming-gallery returns items array with created item, DELETE /api/media/:id returns 200 with {deleted:true}. Implementation verified at LiveStreamingPageClient.jsx lines 194-209 where useEffect fetches from backend and maps items into galleryProjects state. All CRUD operations working correctly."
+  - task: "Drone-services aerial gallery grid reads drone-services-gallery slot"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/services/drone-services/DroneServicesPageClient.jsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "DroneServicesPageClient fetches /api/media?slot=drone-services-gallery and swaps galleryImages state used by the aerial photo grid. Middle 'Why aerial matters' section uses safe fallback (galleryImages[2] || aerialImages[2]). Hero background of DroneHero component still uses hardcoded first item (outside default export scope)."
+        -working: true
+        -agent: "testing"
+        -comment: "Backend API integration verified successfully. Page /services/drone-services returns HTTP 200. Media API CRUD tested with drone-services-gallery slot: POST /api/media returns 201 with UUID id, GET /api/media?slot=drone-services-gallery returns items array with created item, DELETE /api/media/:id returns 200 with {deleted:true}. Implementation verified at DroneServicesPageClient.jsx lines 126-135 where useEffect fetches from backend and updates galleryImages state. All CRUD operations working correctly."
+
+test_plan:
+  current_focus:
+    - "Dynamic /services/[slug] template reads {slug}-gallery slot for portfolio grid + lightbox"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "Please verify all 15 remaining service pages: (1) Each of these URLs returns 200: /services/family-kids, /services/fashion-shoots, /services/boudoir-shoots, /services/brand-content, /services/product-ecommerce, /services/food-photography, /services/corporate-industrial, /services/real-estate-architectural, /services/influencer-celebrity, /services/podcast-production, /services/editing-retouching, /services/album-design, /services/design-services, /services/live-streaming, /services/drone-services. (2) For any one of them (e.g. food-photography), POST /api/media with slot='food-photography-gallery' returns 201 with UUID id. GET /api/media?slot=food-photography-gallery returns the item. DELETE removes it. (3) Regression: existing hero-slides, weddings-gallery, events-gallery, portraits-headshots-gallery, editorial-portfolio-gallery all still work (create+delete cycle for each). Base URL http://localhost:3000, admin token PKAdmin@2026."
+  - agent: "testing"
+    message: "Inline gallery wiring verification completed successfully. All tests passed (26/26): ✅ A: HTTP 200 checks (15/15 service pages) - All 15 remaining service pages return 200: /services/family-kids, /services/fashion-shoots, /services/boudoir-shoots, /services/brand-content, /services/product-ecommerce, /services/food-photography, /services/corporate-industrial, /services/real-estate-architectural, /services/influencer-celebrity, /services/podcast-production, /services/editing-retouching, /services/album-design, /services/design-services, /services/live-streaming, /services/drone-services. ✅ B: Media API CRUD for 3 representative slots (3/3) - All slots passed POST→GET→DELETE flow: food-photography-gallery, live-streaming-gallery, drone-services-gallery. Each slot correctly creates media with UUID ids, retrieves items array, and deletes successfully. ✅ C: Regression test (5/5 slots) - All existing slots still work correctly: hero-slides, weddings-gallery, events-gallery, portraits-headshots-gallery, editorial-portfolio-gallery. Each slot passed POST→GET→DELETE flow. ✅ D: Authentication (3/3) - POST /api/admin/login with wrong token returns 401, correct token returns 200 with {ok:true, token}, POST /api/media without auth returns 401. All test data cleaned up successfully. No critical issues found. Backend API fully functional for all 15 new service page slots."

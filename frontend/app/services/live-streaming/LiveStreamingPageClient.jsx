@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, ArrowUpRight, Check, Globe, MessageCircle, Mic, MonitorPlay, Play, Radio, ShieldCheck, Video, Wifi } from 'lucide-react'
 import { CONTACT } from '@/components/site/Chrome'
@@ -188,6 +189,25 @@ function FadeIn({ children, className = '', delay = 0, ...props }) {
 }
 
 export default function LiveStreamingPageClient({ faqs }) {
+  const [galleryProjects, setGalleryProjects] = useState(projects)
+
+  useEffect(() => {
+    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
+    fetch(`${backend}/api/media?slot=live-streaming-gallery`, { cache: 'no-store' })
+      .then((r) => r.ok ? r.json() : { items: [] })
+      .then((data) => {
+        const items = (data?.items || []).filter((i) => i.secure_url).map((i, idx) => ({
+          title: i.alt || projects[idx]?.title || `Live Event ${idx + 1}`,
+          tag: projects[idx]?.tag || 'Live streaming · Mumbai',
+          thumb: i.secure_url,
+          href: '/gallery',
+          _resource_type: i.resource_type,
+        }))
+        if (items.length) setGalleryProjects(items)
+      })
+      .catch(() => {})
+  }, [])
+
   return (
     <main className="bg-[#EEEAE1] text-[#161514] overflow-x-hidden selection:bg-[#FF5B22] selection:text-white">
       <ReadingProgress />
@@ -356,7 +376,7 @@ export default function LiveStreamingPageClient({ faqs }) {
             <Link href="/gallery" data-testid="livestream-gallery-cta-link" className="inline-flex items-center gap-3 bg-[#161514] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#FF5B22] transition-colors">Open gallery <ArrowRight size={14} /></Link>
           </FadeIn>
           <div className="grid sm:grid-cols-3 gap-4">
-            {projects.map((p, i) => (
+            {galleryProjects.map((p, i) => (
               <FadeIn key={p.title} delay={i * 0.05}>
                 <a href={p.href} target="_blank" rel="noreferrer" className="group block" data-testid={`livestream-project-${i}`}>
                   <div className="relative aspect-video rounded-3xl overflow-hidden bg-[#161514]">

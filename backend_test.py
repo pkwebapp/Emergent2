@@ -1,403 +1,257 @@
 #!/usr/bin/env python3
 """
-Test suite for PK Photography service pages + /gallery integration (Aug 2026 update).
-Tests the 4 new gallery slots (weddings-gallery, events-gallery, portraits-headshots-gallery, editorial-portfolio-gallery).
+Backend testing for PK Photography inline gallery wiring (Aug 2026 update B)
+Tests 15 remaining service pages + Media API CRUD + regression checks
 """
+
 import requests
-import sys
 import json
+import sys
+from typing import List, Dict, Tuple
 
-# Base URL from environment
-BASE_URL = "https://staging-emergent.preview.emergentagent.com"
+# Configuration
+BASE_URL = "http://localhost:3000"
 ADMIN_TOKEN = "PKAdmin@2026"
+HEADERS = {"Authorization": f"Bearer {ADMIN_TOKEN}", "Content-Type": "application/json"}
 
-# Track created media IDs for cleanup
-created_media_ids = []
+# Test results tracking
+passed = []
+failed = []
 
-def test_http_200_checks():
-    """Test A: All required URLs return HTTP 200"""
-    print("\n" + "=" * 70)
-    print("SECTION A: HTTP 200 Status Checks")
-    print("=" * 70)
-    
-    urls = [
-        ("/", "Home"),
-        ("/gallery", "Gallery"),
-        ("/gallery?category=portfolio", "Gallery - Portfolio"),
-        ("/gallery?category=headshots", "Gallery - Headshots"),
-        ("/gallery?category=weddings", "Gallery - Weddings"),
-        ("/gallery?category=events", "Gallery - Events"),
-        ("/services/weddings", "Weddings Service"),
-        ("/services/events", "Events Service"),
-        ("/services/portraits-headshots", "Portraits & Headshots Service"),
-        ("/services/editorial-portfolio", "Editorial & Portfolio Service"),
-        ("/admin/media", "Admin Media"),
-    ]
-    
-    results = []
-    for path, name in urls:
-        try:
-            response = requests.get(f"{BASE_URL}{path}", timeout=15)
-            if response.status_code == 200:
-                print(f"  ✅ {name}: 200")
-                results.append(True)
-            else:
-                print(f"  ❌ {name}: {response.status_code}")
-                results.append(False)
-        except Exception as e:
-            print(f"  ❌ {name}: Error - {e}")
-            results.append(False)
-    
-    passed = sum(results)
-    total = len(results)
-    print(f"\nHTTP 200 Summary: {passed}/{total} URLs returned 200")
-    return all(results)
+def log(msg: str, level: str = "INFO"):
+    """Log test messages"""
+    prefix = {"INFO": "ℹ", "PASS": "✅", "FAIL": "❌", "WARN": "⚠"}
+    print(f"{prefix.get(level, 'ℹ')} {msg}")
 
-
-def test_media_api_for_slot(slot, category):
-    """Test B: Media API CRUD for a specific slot"""
-    print(f"\n=== Testing slot: {slot} ===")
-    
-    # B1: POST - Create media
-    print(f"\n--- POST /api/media (slot={slot}) ---")
+def test_http_200(url: str, description: str) -> bool:
+    """Test if URL returns HTTP 200"""
     try:
-        response = requests.post(
-            f"{BASE_URL}/api/media",
-            headers={"Authorization": f"Bearer {ADMIN_TOKEN}"},
-            json={
-                "public_id": f"test/{slot}-1",
-                "secure_url": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
-                "slot": slot,
-                "category": category,
-                "alt": f"Auto test for {slot}",
-                "sort_order": 99
-            },
-            timeout=10
-        )
-        print(f"Status Code: {response.status_code}")
-        data = response.json()
-        print(f"Response: {json.dumps(data, indent=2)}")
-        
-        if response.status_code == 201 and "id" in data and "-" in data["id"]:
-            print(f"✅ PASS: POST created media with UUID id: {data['id']}")
-            created_media_ids.append(data["id"])
-            media_id = data["id"]
-        else:
-            print(f"❌ FAIL: Expected 201 with UUID id, got {response.status_code}")
-            return False
-    except Exception as e:
-        print(f"❌ FAIL: Error calling POST /api/media: {e}")
-        return False
-    
-    # B2: GET - Retrieve media by slot
-    print(f"\n--- GET /api/media?slot={slot} ---")
-    try:
-        response = requests.get(
-            f"{BASE_URL}/api/media?slot={slot}",
-            timeout=10
-        )
-        print(f"Status Code: {response.status_code}")
-        data = response.json()
-        print(f"Response items count: {len(data.get('items', []))}")
-        
-        if response.status_code == 200 and "items" in data:
-            found = any(item.get("public_id") == f"test/{slot}-1" for item in data["items"])
-            if found:
-                print(f"✅ PASS: GET returned items array containing test item")
-            else:
-                print(f"❌ FAIL: Test item not found in response")
-                return False
-        else:
-            print(f"❌ FAIL: Expected 200 with items array, got {response.status_code}")
-            return False
-    except Exception as e:
-        print(f"❌ FAIL: Error calling GET /api/media: {e}")
-        return False
-    
-    # B3: DELETE - Remove media
-    print(f"\n--- DELETE /api/media/{media_id} ---")
-    try:
-        response = requests.delete(
-            f"{BASE_URL}/api/media/{media_id}",
-            headers={"Authorization": f"Bearer {ADMIN_TOKEN}"},
-            timeout=10
-        )
-        print(f"Status Code: {response.status_code}")
-        data = response.json()
-        print(f"Response: {json.dumps(data, indent=2)}")
-        
-        if response.status_code == 200 and data.get("deleted") is True:
-            print(f"✅ PASS: DELETE removed media successfully")
-            # Remove from cleanup list since we already deleted it
-            if media_id in created_media_ids:
-                created_media_ids.remove(media_id)
+        resp = requests.get(url, timeout=10)
+        if resp.status_code == 200:
+            log(f"PASS: {description} → 200", "PASS")
+            passed.append(description)
             return True
         else:
-            print(f"❌ FAIL: Expected 200 with {{deleted:true}}, got {response.status_code}")
+            log(f"FAIL: {description} → {resp.status_code}", "FAIL")
+            failed.append(f"{description} (got {resp.status_code})")
             return False
     except Exception as e:
-        print(f"❌ FAIL: Error calling DELETE /api/media: {e}")
+        log(f"FAIL: {description} → {str(e)}", "FAIL")
+        failed.append(f"{description} (error: {str(e)})")
         return False
 
+def test_media_crud(slot: str, slug: str) -> Tuple[bool, str]:
+    """Test POST → GET → DELETE flow for a media slot"""
+    test_id = None
+    try:
+        # 1. POST /api/media
+        payload = {
+            "public_id": f"test/{slug}-1",
+            "secure_url": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+            "slot": slot,
+            "category": slug,
+            "alt": "Auto test image"
+        }
+        resp = requests.post(f"{BASE_URL}/api/media", json=payload, headers=HEADERS, timeout=10)
+        if resp.status_code != 201:
+            return False, f"POST failed with {resp.status_code}: {resp.text[:200]}"
+        
+        data = resp.json()
+        test_id = data.get("id")
+        if not test_id:
+            return False, "POST response missing 'id' field"
+        
+        log(f"  POST /api/media → 201 (id: {test_id[:8]}...)", "PASS")
+        
+        # 2. GET /api/media?slot=...
+        resp = requests.get(f"{BASE_URL}/api/media?slot={slot}", timeout=10)
+        if resp.status_code != 200:
+            return False, f"GET failed with {resp.status_code}"
+        
+        data = resp.json()
+        items = data.get("items", [])
+        found = any(item.get("id") == test_id for item in items)
+        if not found:
+            return False, f"GET did not return the created item (id: {test_id})"
+        
+        log(f"  GET /api/media?slot={slot} → 200 (found item)", "PASS")
+        
+        # 3. DELETE /api/media/:id
+        resp = requests.delete(f"{BASE_URL}/api/media/{test_id}", headers=HEADERS, timeout=10)
+        if resp.status_code != 200:
+            return False, f"DELETE failed with {resp.status_code}"
+        
+        data = resp.json()
+        if not data.get("deleted"):
+            return False, "DELETE response missing 'deleted: true'"
+        
+        log(f"  DELETE /api/media/{test_id[:8]}... → 200 (deleted)", "PASS")
+        
+        return True, "CRUD flow passed"
+        
+    except Exception as e:
+        # Cleanup attempt
+        if test_id:
+            try:
+                requests.delete(f"{BASE_URL}/api/media/{test_id}", headers=HEADERS, timeout=5)
+            except Exception:
+                pass
+        return False, f"Exception: {str(e)}"
 
-def test_all_new_slots():
-    """Test B: Media API for all 4 new slots"""
-    print("\n" + "=" * 70)
-    print("SECTION B: Media API for 4 New Slots")
-    print("=" * 70)
+def cleanup_test_media():
+    """Cleanup all test media items"""
+    try:
+        log("Cleaning up test media items...", "INFO")
+        resp = requests.get(f"{BASE_URL}/api/media?limit=500", timeout=10)
+        if resp.status_code == 200:
+            items = resp.json().get("items", [])
+            test_items = [item for item in items if item.get("public_id", "").startswith("test/")]
+            for item in test_items:
+                item_id = item.get("id")
+                if item_id:
+                    requests.delete(f"{BASE_URL}/api/media/{item_id}", headers=HEADERS, timeout=5)
+            log(f"Cleaned up {len(test_items)} test items", "INFO")
+    except Exception as e:
+        log(f"Cleanup warning: {str(e)}", "WARN")
+
+def main():
+    log("=" * 80, "INFO")
+    log("PK Photography - Inline Gallery Wiring Test (Aug 2026 update B)", "INFO")
+    log("=" * 80, "INFO")
     
-    slots = [
+    # A. HTTP 200 checks for all 15 remaining service pages
+    log("\n[A] Testing HTTP 200 for 15 remaining service pages...", "INFO")
+    service_pages = [
+        "/services/family-kids",
+        "/services/fashion-shoots",
+        "/services/boudoir-shoots",
+        "/services/brand-content",
+        "/services/product-ecommerce",
+        "/services/food-photography",
+        "/services/corporate-industrial",
+        "/services/real-estate-architectural",
+        "/services/influencer-celebrity",
+        "/services/podcast-production",
+        "/services/editing-retouching",
+        "/services/album-design",
+        "/services/design-services",
+        "/services/live-streaming",
+        "/services/drone-services",
+    ]
+    
+    for page in service_pages:
+        test_http_200(f"{BASE_URL}{page}", f"GET {page}")
+    
+    # B. Media API CRUD for 3 representative slots
+    log("\n[B] Testing Media API CRUD for 3 representative slots...", "INFO")
+    
+    test_slots = [
+        ("food-photography-gallery", "food-photography"),
+        ("live-streaming-gallery", "live-streaming"),
+        ("drone-services-gallery", "drone-services"),
+    ]
+    
+    for slot, slug in test_slots:
+        log(f"\nTesting slot: {slot}", "INFO")
+        success, msg = test_media_crud(slot, slug)
+        if success:
+            passed.append(f"CRUD flow for {slot}")
+        else:
+            failed.append(f"CRUD flow for {slot}: {msg}")
+            log(f"FAIL: {msg}", "FAIL")
+    
+    # C. Regression - existing slots still work
+    log("\n[C] Regression test - existing slots...", "INFO")
+    
+    regression_slots = [
+        ("hero-slides", "hero"),
         ("weddings-gallery", "weddings"),
         ("events-gallery", "events"),
         ("portraits-headshots-gallery", "portraits-headshots"),
         ("editorial-portfolio-gallery", "editorial-portfolio"),
     ]
     
-    results = []
-    for slot, category in slots:
-        result = test_media_api_for_slot(slot, category)
-        results.append((slot, result))
-    
-    passed = sum(1 for _, r in results if r)
-    total = len(results)
-    print(f"\n\nMedia API Summary: {passed}/{total} slots passed all tests")
-    return all(r for _, r in results)
-
-
-def test_video_support():
-    """Test C: Video support for new slots"""
-    print("\n" + "=" * 70)
-    print("SECTION C: Video Support")
-    print("=" * 70)
-    
-    slot = "weddings-gallery"
-    
-    # C1: POST video
-    print(f"\n--- POST /api/media (video, slot={slot}) ---")
-    try:
-        response = requests.post(
-            f"{BASE_URL}/api/media",
-            headers={"Authorization": f"Bearer {ADMIN_TOKEN}"},
-            json={
-                "public_id": "test/wedding-video-1",
-                "secure_url": "https://res.cloudinary.com/demo/video/upload/dog.mp4",
-                "resource_type": "video",
-                "slot": slot,
-                "category": "weddings",
-                "alt": "Test Wedding Video",
-                "sort_order": 100
-            },
-            timeout=10
-        )
-        print(f"Status Code: {response.status_code}")
-        data = response.json()
-        print(f"Response: {json.dumps(data, indent=2)}")
-        
-        if response.status_code == 201 and data.get("resource_type") == "video":
-            print(f"✅ PASS: POST created video with resource_type='video'")
-            created_media_ids.append(data["id"])
-            video_id = data["id"]
+    for slot, slug in regression_slots:
+        log(f"\nRegression test for slot: {slot}", "INFO")
+        success, msg = test_media_crud(slot, slug)
+        if success:
+            passed.append(f"Regression: {slot}")
         else:
-            print(f"❌ FAIL: Expected 201 with resource_type='video', got {response.status_code}")
-            return False
-    except Exception as e:
-        print(f"❌ FAIL: Error calling POST /api/media: {e}")
-        return False
+            failed.append(f"Regression: {slot}: {msg}")
+            log(f"FAIL: {msg}", "FAIL")
     
-    # C2: GET - Verify video
-    print(f"\n--- GET /api/media?slot={slot} (verify video) ---")
+    # D. Auth tests
+    log("\n[D] Testing authentication...", "INFO")
+    
+    # D1. POST /api/admin/login with wrong token
     try:
-        response = requests.get(f"{BASE_URL}/api/media?slot={slot}", timeout=10)
-        data = response.json()
-        found_video = any(
-            item.get("public_id") == "test/wedding-video-1" and item.get("resource_type") == "video"
-            for item in data.get("items", [])
-        )
-        if found_video:
-            print(f"✅ PASS: Video found in GET response with resource_type='video'")
+        resp = requests.post(f"{BASE_URL}/api/admin/login", json={"token": "wrong-token"}, timeout=10)
+        if resp.status_code == 401:
+            log("PASS: POST /api/admin/login with wrong token → 401", "PASS")
+            passed.append("Auth: wrong token returns 401")
         else:
-            print(f"❌ FAIL: Video not found in GET response")
-            return False
+            log(f"FAIL: POST /api/admin/login with wrong token → {resp.status_code} (expected 401)", "FAIL")
+            failed.append(f"Auth: wrong token (got {resp.status_code})")
     except Exception as e:
-        print(f"❌ FAIL: Error verifying video: {e}")
-        return False
+        log(f"FAIL: Auth test error: {str(e)}", "FAIL")
+        failed.append(f"Auth: wrong token (error: {str(e)})")
     
-    # C3: DELETE video
-    print(f"\n--- DELETE /api/media/{video_id} (cleanup video) ---")
+    # D2. POST /api/admin/login with correct token
     try:
-        response = requests.delete(
-            f"{BASE_URL}/api/media/{video_id}",
-            headers={"Authorization": f"Bearer {ADMIN_TOKEN}"},
-            timeout=10
-        )
-        if response.status_code == 200 and response.json().get("deleted") is True:
-            print(f"✅ PASS: Video deleted successfully")
-            if video_id in created_media_ids:
-                created_media_ids.remove(video_id)
-            return True
-        else:
-            print(f"❌ FAIL: Failed to delete video")
-            return False
-    except Exception as e:
-        print(f"❌ FAIL: Error deleting video: {e}")
-        return False
-
-
-def test_hero_slides_regression():
-    """Test D: Regression test for existing hero-slides slot"""
-    print("\n" + "=" * 70)
-    print("SECTION D: Regression Test - hero-slides Slot")
-    print("=" * 70)
-    
-    slot = "hero-slides"
-    
-    # D1: POST
-    print(f"\n--- POST /api/media (slot={slot}) ---")
-    try:
-        response = requests.post(
-            f"{BASE_URL}/api/media",
-            headers={"Authorization": f"Bearer {ADMIN_TOKEN}"},
-            json={
-                "public_id": f"test/{slot}-regression",
-                "secure_url": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
-                "slot": slot,
-                "category": "homepage",
-                "alt": "Regression test",
-                "sort_order": 99
-            },
-            timeout=10
-        )
-        if response.status_code == 201:
-            print(f"✅ PASS: POST to hero-slides works")
-            data = response.json()
-            created_media_ids.append(data["id"])
-            media_id = data["id"]
-        else:
-            print(f"❌ FAIL: POST to hero-slides failed with {response.status_code}")
-            return False
-    except Exception as e:
-        print(f"❌ FAIL: Error: {e}")
-        return False
-    
-    # D2: GET
-    print(f"\n--- GET /api/media?slot={slot} ---")
-    try:
-        response = requests.get(f"{BASE_URL}/api/media?slot={slot}", timeout=10)
-        if response.status_code == 200:
-            data = response.json()
-            found = any(item.get("public_id") == f"test/{slot}-regression" for item in data.get("items", []))
-            if found:
-                print(f"✅ PASS: GET hero-slides works")
+        resp = requests.post(f"{BASE_URL}/api/admin/login", json={"token": ADMIN_TOKEN}, timeout=10)
+        if resp.status_code == 200:
+            data = resp.json()
+            if data.get("ok") and data.get("token") == ADMIN_TOKEN:
+                log("PASS: POST /api/admin/login with correct token → 200", "PASS")
+                passed.append("Auth: correct token returns 200")
             else:
-                print(f"❌ FAIL: Test item not found")
-                return False
+                log(f"FAIL: POST /api/admin/login response invalid: {data}", "FAIL")
+                failed.append("Auth: correct token response invalid")
         else:
-            print(f"❌ FAIL: GET failed with {response.status_code}")
-            return False
+            log(f"FAIL: POST /api/admin/login with correct token → {resp.status_code}", "FAIL")
+            failed.append(f"Auth: correct token (got {resp.status_code})")
     except Exception as e:
-        print(f"❌ FAIL: Error: {e}")
-        return False
+        log(f"FAIL: Auth test error: {str(e)}", "FAIL")
+        failed.append(f"Auth: correct token (error: {str(e)})")
     
-    # D3: DELETE
-    print(f"\n--- DELETE /api/media/{media_id} ---")
+    # D3. POST /api/media without auth
     try:
-        response = requests.delete(
-            f"{BASE_URL}/api/media/{media_id}",
-            headers={"Authorization": f"Bearer {ADMIN_TOKEN}"},
-            timeout=10
-        )
-        if response.status_code == 200 and response.json().get("deleted") is True:
-            print(f"✅ PASS: DELETE hero-slides works")
-            if media_id in created_media_ids:
-                created_media_ids.remove(media_id)
-            return True
+        payload = {
+            "public_id": "test/no-auth",
+            "secure_url": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+            "slot": "test-slot"
+        }
+        resp = requests.post(f"{BASE_URL}/api/media", json=payload, timeout=10)
+        if resp.status_code == 401:
+            log("PASS: POST /api/media without auth → 401", "PASS")
+            passed.append("Auth: POST /api/media without auth returns 401")
         else:
-            print(f"❌ FAIL: DELETE failed")
-            return False
+            log(f"FAIL: POST /api/media without auth → {resp.status_code} (expected 401)", "FAIL")
+            failed.append(f"Auth: POST /api/media without auth (got {resp.status_code})")
     except Exception as e:
-        print(f"❌ FAIL: Error: {e}")
-        return False
-
-
-def cleanup_remaining():
-    """Cleanup any remaining test data"""
-    print("\n" + "=" * 70)
-    print("CLEANUP: Removing Any Remaining Test Data")
-    print("=" * 70)
-    
-    if not created_media_ids:
-        print("No remaining test data to clean up")
-        return True
-    
-    all_deleted = True
-    for media_id in created_media_ids[:]:  # Copy list to avoid modification during iteration
-        try:
-            response = requests.delete(
-                f"{BASE_URL}/api/media/{media_id}",
-                headers={"Authorization": f"Bearer {ADMIN_TOKEN}"},
-                timeout=10
-            )
-            if response.status_code == 200:
-                print(f"  ✅ Deleted: {media_id}")
-            else:
-                print(f"  ⚠️  Failed to delete {media_id}: {response.status_code}")
-                all_deleted = False
-        except Exception as e:
-            print(f"  ❌ Error deleting {media_id}: {e}")
-            all_deleted = False
-    
-    return all_deleted
-
-
-def main():
-    print("=" * 70)
-    print("PK Photography - Service Pages + Gallery Integration Test Suite")
-    print("Aug 2026 Update: Inline wiring for 4 service pages + /gallery merge")
-    print("=" * 70)
-    print(f"Base URL: {BASE_URL}")
-    print(f"Admin Token: {ADMIN_TOKEN}")
-    
-    results = []
-    
-    # Section A: HTTP 200 checks
-    results.append(("A: HTTP 200 checks", test_http_200_checks()))
-    
-    # Section B: Media API for 4 new slots
-    results.append(("B: Media API (4 new slots)", test_all_new_slots()))
-    
-    # Section C: Video support
-    results.append(("C: Video support", test_video_support()))
-    
-    # Section D: Regression test
-    results.append(("D: hero-slides regression", test_hero_slides_regression()))
+        log(f"FAIL: Auth test error: {str(e)}", "FAIL")
+        failed.append(f"Auth: POST /api/media without auth (error: {str(e)})")
     
     # Cleanup
-    print("\n" + "=" * 70)
-    print("FINAL CLEANUP")
-    print("=" * 70)
-    cleanup_success = cleanup_remaining()
+    log("\n[Cleanup] Removing test media items...", "INFO")
+    cleanup_test_media()
     
     # Summary
-    print("\n" + "=" * 70)
-    print("TEST SUMMARY")
-    print("=" * 70)
+    log("\n" + "=" * 80, "INFO")
+    log("TEST SUMMARY", "INFO")
+    log("=" * 80, "INFO")
+    log(f"✅ PASSED: {len(passed)}", "PASS")
+    log(f"❌ FAILED: {len(failed)}", "FAIL" if failed else "INFO")
     
-    for name, result in results:
-        status = "✅ PASS" if result else "❌ FAIL"
-        print(f"{status}: {name}")
+    if failed:
+        log("\nFailed tests:", "FAIL")
+        for f in failed:
+            log(f"  - {f}", "FAIL")
     
-    passed = sum(1 for _, result in results if result)
-    total = len(results)
-    print(f"\nTests Passed: {passed}/{total}")
-    print(f"Cleanup: {'✅ Success' if cleanup_success else '⚠️  Some items not cleaned up'}")
+    log("\n" + "=" * 80, "INFO")
     
-    if all(result for _, result in results):
-        print("\n✅ All tests passed! Service pages + gallery integration working correctly.")
-        sys.exit(0)
-    else:
-        print("\n❌ Some tests failed. See details above.")
-        sys.exit(1)
-
+    # Exit code
+    sys.exit(0 if not failed else 1)
 
 if __name__ == "__main__":
     main()

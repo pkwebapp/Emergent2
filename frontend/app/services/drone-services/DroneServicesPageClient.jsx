@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight, Check, CloudSun, Film, Map, MessageCircle, ShieldCheck, Sparkles, Wind, Zap } from 'lucide-react'
 import { CONTACT } from '@/components/site/Chrome'
@@ -120,6 +121,19 @@ function DroneHero() {
 }
 
 export default function DroneServicesPageClient() {
+  const [galleryImages, setGalleryImages] = useState(aerialImages)
+
+  useEffect(() => {
+    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
+    fetch(`${backend}/api/media?slot=drone-services-gallery`, { cache: 'no-store' })
+      .then((r) => r.ok ? r.json() : { items: [] })
+      .then((data) => {
+        const items = (data?.items || []).filter((i) => i.secure_url).map((i) => i.secure_url)
+        if (items.length) setGalleryImages(items)
+      })
+      .catch(() => {})
+  }, [])
+
   return (
     <main className="bg-[#EAF0EC] text-[#071014] overflow-x-hidden selection:bg-[#FF5B22] selection:text-white">
       <ReadingProgress />
@@ -133,7 +147,7 @@ export default function DroneServicesPageClient() {
             <p className="mt-7 max-w-xl text-[#3F4B47] leading-relaxed">Drone visuals turn a venue, property or brand film into a bigger story: location, movement, atmosphere and perspective in one shot.</p>
           </FadeIn>
           <FadeIn className="relative min-h-[500px] rounded-[2rem] overflow-hidden bg-[#071014]" data-testid="drone-map-board">
-            <Image src={aerialImages[2]} alt="Aerial road and architecture composition for commercial drone videography" fill sizes="(max-width: 1024px) 100vw, 640px" className="object-cover" unoptimized />
+            <Image src={galleryImages[2] || aerialImages[2]} alt="Aerial road and architecture composition for commercial drone videography" fill sizes="(max-width: 1024px) 100vw, 640px" className="object-cover" unoptimized />
             <div className="absolute inset-0 bg-gradient-to-t from-[#071014]/88 via-transparent to-transparent" />
             <div className="absolute left-5 right-5 bottom-5 grid grid-cols-3 gap-3 text-white">
               {[
@@ -222,8 +236,8 @@ export default function DroneServicesPageClient() {
             <Link href="/gallery" data-testid="drone-gallery-link" className="inline-flex items-center gap-3 bg-[#071014] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#FF5B22] transition-colors">View gallery <ArrowRight size={14} /></Link>
           </FadeIn>
           <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
-            {aerialImages.map((src, i) => (
-              <FadeIn key={src} delay={i * 0.03} className={`${i === 0 || i === 3 ? 'md:col-span-3 md:row-span-2' : 'md:col-span-2'} relative aspect-[4/5] rounded-3xl overflow-hidden bg-[#071014]`}>
+            {galleryImages.map((src, i) => (
+              <FadeIn key={`${src}-${i}`} delay={i * 0.03} className={`${i === 0 || i === 3 ? 'md:col-span-3 md:row-span-2' : 'md:col-span-2'} relative aspect-[4/5] rounded-3xl overflow-hidden bg-[#071014]`}>
                 <Image src={src} alt={`Drone photography and aerial videography portfolio frame ${i + 1}, Mumbai Goa cinematic aerial perspective`} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover hover:scale-105 transition-transform duration-700" unoptimized />
               </FadeIn>
             ))}
