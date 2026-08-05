@@ -315,6 +315,28 @@ const PORTFOLIO = [
 ]
 
 function Portfolio({ onOpen }) {
+  const [portfolio, setPortfolio] = useState(PORTFOLIO)
+
+  useEffect(() => {
+    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
+    fetch(`${backend}/api/media?slot=weddings-gallery`, { cache: 'no-store' })
+      .then((r) => r.ok ? r.json() : { items: [] })
+      .then((data) => {
+        const items = (data?.items || []).filter((i) => i.secure_url).map((i, idx) => {
+          const defaultItem = PORTFOLIO[idx] || {}
+          return {
+            img: i.secure_url,
+            couple: i.alt || defaultItem.couple || `Wedding ${idx + 1}`,
+            place: defaultItem.place || 'PK Photography',
+            size: defaultItem.size || (['lg', 'md', 'sm'][idx % 3]),
+            _uploaded: true,
+          }
+        })
+        if (items.length) setPortfolio(items)
+      })
+      .catch(() => {})
+  }, [])
+
   return (
     <section className="relative py-24 md:py-32 bg-[#F5EFE6]">
       <div className="container mx-auto max-w-[1400px] px-6 md:px-10">
@@ -323,11 +345,11 @@ function Portfolio({ onOpen }) {
             <div className="eyebrow mb-3">Selected Weddings</div>
             <h2 className="display text-4xl md:text-6xl">Real couples, <span className="font-cormorant italic text-[#FF5B22] font-light">real stories.</span></h2>
           </div>
-          <Link href="/gallery" className="inline-flex items-center gap-2 text-sm font-semibold text-[#161514] hover:text-[#FF5B22]">View full archive <ArrowRight size={14} /></Link>
+          <Link href="/gallery?category=weddings" className="inline-flex items-center gap-2 text-sm font-semibold text-[#161514] hover:text-[#FF5B22]">View full archive <ArrowRight size={14} /></Link>
         </div>
 
         <div className="grid grid-cols-12 gap-4 md:gap-5 auto-rows-[200px] md:auto-rows-[280px]">
-          {PORTFOLIO.map((p, i) => {
+          {portfolio.map((p, i) => {
             const span = p.size === 'lg' ? 'col-span-12 md:col-span-6 row-span-2' : p.size === 'md' ? 'col-span-6 md:col-span-4 row-span-2' : 'col-span-6 md:col-span-3 row-span-1'
             return (
               <motion.button
@@ -893,6 +915,22 @@ function WeddingLocalSeoBlock() {
 export default function WeddingsPage() {
   const [lightbox, setLightbox] = useState(null)
   const [videoOpen, setVideoOpen] = useState(false)
+  const [portfolioImages, setPortfolioImages] = useState(PORTFOLIO)
+
+  useEffect(() => {
+    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
+    fetch(`${backend}/api/media?slot=weddings-gallery`, { cache: 'no-store' })
+      .then((r) => r.ok ? r.json() : { items: [] })
+      .then((data) => {
+        const items = (data?.items || []).filter((i) => i.secure_url).map((i, idx) => {
+          const d = PORTFOLIO[idx] || {}
+          return { img: i.secure_url, couple: i.alt || d.couple || `Wedding ${idx + 1}`, place: d.place || 'PK Photography', size: d.size || (['lg','md','sm'][idx % 3]) }
+        })
+        if (items.length) setPortfolioImages(items)
+      })
+      .catch(() => {})
+  }, [])
+
   return (
     <main className="bg-[#EEEAE1]">
       <PageBanner slot="weddings-banner" />
@@ -918,9 +956,9 @@ export default function WeddingsPage() {
       <VideoModal open={videoOpen} onClose={() => setVideoOpen(false)} />
       <ImageLightbox
         index={lightbox}
-        images={PORTFOLIO}
+        images={portfolioImages}
         onClose={() => setLightbox(null)}
-        onNav={(d) => setLightbox((v) => (v + d + PORTFOLIO.length) % PORTFOLIO.length)}
+        onNav={(d) => setLightbox((v) => (v + d + portfolioImages.length) % portfolioImages.length)}
       />
     </main>
   )

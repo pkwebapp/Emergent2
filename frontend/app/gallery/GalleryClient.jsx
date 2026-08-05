@@ -10,29 +10,34 @@ import axiosInstance from '@live/utils/axiosConfig'
 
 // Main service categories shown on this page
 // backendKey = value used against remote API (?category=)
+// slot = corresponds to admin /admin/media > Service Pages > {slot}-gallery
 const SERVICES = [
   {
     key: 'portfolio',
     label: 'Portfolio',
     backendKey: 'Portfolio',
+    slot: 'editorial-portfolio-gallery',
     blurb: 'Story-driven visuals for models, artists and creators — built as portfolios that get you noticed.',
   },
   {
     key: 'headshots',
     label: 'Headshots',
     backendKey: 'Headshots',
+    slot: 'portraits-headshots-gallery',
     blurb: 'Corporate & artist headshots — sharp, honest, and consistent across your team.',
   },
   {
     key: 'weddings',
     label: 'Weddings',
     backendKey: 'Wedding',
+    slot: 'weddings-gallery',
     blurb: 'Cinematic wedding day coverage — every glance, every ritual, every laugh, held.',
   },
   {
     key: 'events',
     label: 'Events',
     backendKey: 'Events',
+    slot: 'events-gallery',
     blurb: 'Corporate functions, launches, parties and social gatherings — captured end-to-end.',
   },
 ]
@@ -125,11 +130,31 @@ function GalleryInner() {
       setLoading(true)
       setError(null)
       try {
-        const res = await axiosInstance.get(
-          `/gallery/all?category=${encodeURIComponent(activeService.backendKey)}`
-        )
+        const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
+        // Fetch admin-uploaded media (from /admin/media) and external gallery in parallel
+        const [uploadedRes, externalRes] = await Promise.allSettled([
+          fetch(`${backend}/api/media?slot=${encodeURIComponent(activeService.slot)}`, { cache: 'no-store' })
+            .then((r) => r.ok ? r.json() : { items: [] }),
+          axiosInstance.get(`/gallery/all?category=${encodeURIComponent(activeService.backendKey)}`)
+            .then((r) => r.data?.data || []),
+        ])
         if (cancelled) return
-        setImages(res.data?.data || [])
+
+        // Normalise uploaded media into the same shape as the external gallery items
+        const uploadedItems = (uploadedRes.status === 'fulfilled' ? (uploadedRes.value.items || []) : [])
+          .filter((i) => i.secure_url)
+          .map((i) => ({
+            _id: i.id,
+            imageUrl: i.secure_url,
+            imageName: i.alt || activeService.label,
+            resource_type: i.resource_type,
+            _uploaded: true,
+          }))
+
+        const externalItems = externalRes.status === 'fulfilled' ? externalRes.value : []
+
+        // Uploaded items come first (they're the newest/curated), then the external gallery
+        setImages([...uploadedItems, ...externalItems])
       } catch (e) {
         if (cancelled) return
         setError(e?.response?.data?.message || e.message || 'Failed to load gallery')
@@ -335,6 +360,7 @@ function GalleryInner() {
 
 /* Single tile — uses natural image aspect (no cropping) via next/image with width/height auto */
 function GalleryTile({ item, index, categoryLabel, location, onOpen }) {
+  const isVideo = item.resource_type === 'video'
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -345,13 +371,24 @@ function GalleryTile({ item, index, categoryLabel, location, onOpen }) {
       data-testid={`gallery-card-${index}`}
       className="group relative mb-4 md:mb-5 rounded-2xl overflow-hidden cursor-pointer break-inside-avoid bg-[#F0F2F5]"
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={typeof item === 'string' ? item : item.imageUrl}
-        alt={`${item.imageName || categoryLabel} at ${location} in candid cinematic style, Mumbai & Goa`}
-        loading="lazy"
-        className="block w-full h-auto transition-transform [transition-duration:1400ms] group-hover:scale-[1.03]"
-      />
+      {isVideo ? (
+        <video
+          src={item.imageUrl}
+          muted
+          loop
+          playsInline
+          autoPlay
+          className="block w-full h-auto transition-transform [transition-duration:1400ms] group-hover:scale-[1.03]"
+        />
+      ) : (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src={typeof item === 'string' ? item : item.imageUrl}
+          alt={`${item.imageName || categoryLabel} at ${location} in candid cinematic style, Mumbai & Goa`}
+          loading="lazy"
+          className="block w-full h-auto transition-transform [transition-duration:1400ms] group-hover:scale-[1.03]"
+        />
+      )}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#161514]/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       <div className="pointer-events-none absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-2 group-hover:translate-y-0">
         <div className="text-[10px] tracking-widest uppercase opacity-70">
@@ -422,13 +459,25 @@ function Lightbox({ items, index, categoryLabel, location, onClose, onNav }) {
         className="relative flex flex-col items-center gap-4"
         style={{ maxWidth: 'min(92vw, 1400px)' }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={item.imageUrl}
-          alt={`${item.imageName || categoryLabel} at ${location} in luxury editorial style, Mumbai & Goa`}
-          className="block"
-          style={{ maxHeight: '82vh', maxWidth: '92vw', width: 'auto', height: 'auto', objectFit: 'contain' }}
-        />
+        {item.resource_type === 'video' ? (
+          <video
+            src={item.imageUrl}
+            autoPlay
+            controls
+            loop
+            playsInline
+            className="block"
+            style={{ maxHeight: '82vh', maxWidth: '92vw', width: 'auto', height: 'auto', objectFit: 'contain' }}
+          />
+        ) : (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={item.imageUrl}
+            alt={`${item.imageName || categoryLabel} at ${location} in luxury editorial style, Mumbai & Goa`}
+            className="block"
+            style={{ maxHeight: '82vh', maxWidth: '92vw', width: 'auto', height: 'auto', objectFit: 'contain' }}
+          />
+        )}
         {(item.imageName || item.subtitle) && (
           <div className="bg-black/50 backdrop-blur text-white text-center px-6 py-3 rounded-full text-sm max-w-[90%]">
             <span className="font-semibold">{item.imageName}</span>

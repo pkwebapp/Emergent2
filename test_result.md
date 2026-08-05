@@ -309,3 +309,90 @@ agent_communication:
     message: "Please verify: (1) POST /api/admin/login with token PKAdmin@2026 returns 200 with {ok, token}; wrong token returns 401. (2) POST /api/media without auth returns 401; with 'Authorization: Bearer PKAdmin@2026' + body {public_id, secure_url, slot} returns 201 with id. (3) GET /api/media?slot=hero-slides returns {items:[...]} including any items just inserted. (4) DELETE /api/media/:id with admin token removes from Mongo (Cloudinary destroy may fail for fake public_ids but response should still be {deleted:true, id}). (5) Home page HTTP 200 at /. (6) All 19 official service pages return 200 at /services/{slug} (weddings, events, portraits-headshots, editorial-portfolio, live-streaming, family-kids, fashion-shoots, boudoir-shoots, brand-content, product-ecommerce, food-photography, corporate-industrial, real-estate-architectural, influencer-celebrity, podcast-production, editing-retouching, album-design, drone-services, design-services). (7) /admin/media returns 200 and requires token to unlock. Backend base URL is http://localhost:3000. Admin token env var ADMIN_TOKEN=PKAdmin@2026."
   - agent: "testing"
     message: "Cloudinary media system verification completed successfully. All 11 backend tests passed (11/11): ✅ A1-A4: Admin authentication (login with correct/wrong token, verify with/without auth) - all working correctly. ✅ B1-B4: Media CRUD operations (POST without/with auth, GET by slot, PATCH update) - all working correctly with UUID ids. ✅ C: Video support (POST with resource_type:'video', GET verification) - working correctly. ✅ D: Page HTTP status (home, admin, 19 service pages) - all return 200. ✅ E: Home page rendering - references Cloudinary/Next.js image proxy. DELETE endpoint successfully removes media and returns {deleted:true, id}. Test data cleaned up. Implementation verified at route.js lines 309-451. No critical issues found. Backend API fully functional and ready for production."
+
+## Aug 2026 update: Inline wiring for Weddings/Events/Portraits-Headshots/Editorial-Portfolio + /gallery merge
+frontend:
+  - task: "Weddings service page (/services/weddings) — inline PORTFOLIO grid + ImageLightbox read from weddings-gallery slot"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/services/weddings/page.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "WeddingsPage default export now fetches /api/media?slot=weddings-gallery and passes portfolioImages to both the Portfolio grid and the ImageLightbox. Portfolio component itself also refetches. Falls back to PORTFOLIO defaults when empty."
+        -working: true
+        -agent: "testing"
+        -comment: "Backend API integration verified successfully. POST /api/media with slot='weddings-gallery' returns 201 with UUID id (8e3a67b6-4083-42d7-b6eb-c213f82a3834). GET /api/media?slot=weddings-gallery returns 200 with items array containing the test item. DELETE /api/media/:id returns 200 with {deleted:true}. Page /services/weddings returns HTTP 200. Implementation verified at page.js lines 320-338 where useEffect fetches from backend and updates portfolio state. All CRUD operations working correctly."
+  - task: "Events service page — inline eventImages grid reads from events-gallery slot"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/services/events/EventsPageClient.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "EventsPageClient fetches /api/media?slot=events-gallery on mount, replaces galleryImages state (hero background AND grid). Fallback preserved."
+        -working: true
+        -agent: "testing"
+        -comment: "Backend API integration verified successfully. POST /api/media with slot='events-gallery' returns 201 with UUID id (477b61e4-dbb8-47ae-a3e9-5afc084911be). GET /api/media?slot=events-gallery returns 200 with items array containing the test item. DELETE /api/media/:id returns 200 with {deleted:true}. Page /services/events returns HTTP 200. Implementation verified at EventsPageClient.jsx lines 175-184 where useEffect fetches from backend and updates galleryImages state. All CRUD operations working correctly."
+  - task: "Portraits & Headshots service page — inline headshotImages reads from portraits-headshots-gallery slot"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/services/portraits-headshots/HeadshotsPageClient.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "HeadshotsPageClient fetches /api/media?slot=portraits-headshots-gallery on mount; galleryImages state renders on portfolio grid."
+        -working: true
+        -agent: "testing"
+        -comment: "Backend API integration verified successfully. POST /api/media with slot='portraits-headshots-gallery' returns 201 with UUID id (560d99d0-1100-4993-abd2-eacced7d4eba). GET /api/media?slot=portraits-headshots-gallery returns 200 with items array containing the test item. DELETE /api/media/:id returns 200 with {deleted:true}. Page /services/portraits-headshots returns HTTP 200. All CRUD operations working correctly."
+  - task: "Editorial & Portfolio service page — inline editorialImages reads from editorial-portfolio-gallery slot"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/services/editorial-portfolio/EditorialPortfolioPageClient.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "EditorialPortfolioPageClient fetches /api/media?slot=editorial-portfolio-gallery on mount; galleryImages state renders on portfolio grid."
+        -working: true
+        -agent: "testing"
+        -comment: "Backend API integration verified successfully. POST /api/media with slot='editorial-portfolio-gallery' returns 201 with UUID id (584071fe-b1d2-449e-8f33-53875bd9d85b). GET /api/media?slot=editorial-portfolio-gallery returns 200 with items array containing the test item. DELETE /api/media/:id returns 200 with {deleted:true}. Page /services/editorial-portfolio returns HTTP 200. All CRUD operations working correctly."
+  - task: "/gallery page merges admin-uploaded media with external API and supports video"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/gallery/GalleryClient.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "SERVICES array now has a slot field mapping each tab to the matching service page slot. Load fetches both /api/media?slot=X and axios /gallery/all in parallel via Promise.allSettled. Uploaded items are prepended and normalised. GalleryTile + Lightbox render <video> when resource_type='video'."
+        -working: true
+        -agent: "testing"
+        -comment: "Backend API integration and video support verified successfully. All 4 gallery tabs return HTTP 200: /gallery?category=portfolio, /gallery?category=headshots, /gallery?category=weddings, /gallery?category=events. Video support tested: POST /api/media with resource_type='video' and slot='weddings-gallery' returns 201 with resource_type='video' (id: eb7e21a7-abf8-4e18-9df2-c5cfb3d0d763). GET /api/media?slot=weddings-gallery correctly returns video item with resource_type='video'. DELETE successfully removes video. Implementation verified at GalleryClient.jsx lines 14-43 (SERVICES array with slot mappings) and lines 135-157 (parallel fetch of admin media + external API). Video rendering support verified at lines 374-382 (GalleryTile) and lines 462-471 (Lightbox). All CRUD operations and video support working correctly."
+
+test_plan:
+  current_focus:
+    - "Weddings service page (/services/weddings) — inline PORTFOLIO grid + ImageLightbox read from weddings-gallery slot"
+    - "/gallery page merges admin-uploaded media with external API and supports video"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "Please verify (backend + HTTP status only, no browser UI): (1) POST /api/media with slot='weddings-gallery' and cleanup — the create → GET → delete flow works exactly as before. (2) All these URLs return 200: / , /gallery , /gallery?category=weddings , /gallery?category=events , /gallery?category=portfolio , /gallery?category=headshots , /services/weddings , /services/events , /services/portraits-headshots , /services/editorial-portfolio , /admin/media . (3) POST /api/media with resource_type='video' works. (4) Insert a doc into weddings-gallery, GET /api/media?slot=weddings-gallery returns it, DELETE removes it. Everything else is unchanged from Aug 2026 update above."
+  - agent: "testing"
+    message: "Service pages + gallery integration verification completed successfully. All tests passed (4/4 sections): ✅ A: HTTP 200 checks (11/11 URLs) - All pages return 200: home (/), gallery (/gallery), 4 gallery category tabs (?category=portfolio/headshots/weddings/events), 4 service pages (/services/weddings, /services/events, /services/portraits-headshots, /services/editorial-portfolio), admin panel (/admin/media). ✅ B: Media API for 4 new slots (4/4 slots) - All slots passed POST→GET→DELETE flow: weddings-gallery, events-gallery, portraits-headshots-gallery, editorial-portfolio-gallery. Each slot correctly creates media with UUID ids, retrieves items array, and deletes successfully. ✅ C: Video support - POST with resource_type='video' to weddings-gallery slot returns 201 with resource_type='video'. GET verifies video in items array. DELETE removes video successfully. ✅ D: Regression test - hero-slides slot still works correctly (POST→GET→DELETE). All test data cleaned up successfully. No critical issues found. Backend API fully functional for all 4 new service page slots + /gallery integration."

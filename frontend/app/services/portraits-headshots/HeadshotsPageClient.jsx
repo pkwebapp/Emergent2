@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Check, MessageCircle, Users } from 'lucide-react'
 import { CONTACT } from '@/components/site/Chrome'
@@ -189,6 +190,19 @@ function Hero() {
 }
 
 export default function HeadshotsPageClient() {
+  const [galleryImages, setGalleryImages] = useState(headshotImages)
+
+  useEffect(() => {
+    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
+    fetch(`${backend}/api/media?slot=portraits-headshots-gallery`, { cache: 'no-store' })
+      .then((r) => r.ok ? r.json() : { items: [] })
+      .then((data) => {
+        const items = (data?.items || []).filter((i) => i.secure_url).map((i) => i.secure_url)
+        if (items.length) setGalleryImages(items)
+      })
+      .catch(() => {})
+  }, [])
+
   return (
     <main className="bg-[#EEEAE1] text-[#161514] overflow-x-hidden selection:bg-[#FF5B22] selection:text-white">
       <ReadingProgress />
@@ -337,8 +351,8 @@ export default function HeadshotsPageClient() {
             <Link href="/gallery?category=headshots" data-testid="headshots-gallery-link" className="inline-flex items-center gap-3 bg-[#161514] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#FF5B22] transition-colors">View portrait gallery <ArrowRight size={14} /></Link>
           </FadeIn>
           <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
-            {headshotImages.map((src, i) => (
-              <FadeIn key={src} delay={i * 0.03} className={`${i === 0 || i === 3 ? 'md:col-span-2 md:row-span-2' : 'md:col-span-2'} relative aspect-[4/5] rounded-3xl overflow-hidden bg-[#161514]`}>
+            {galleryImages.map((src, i) => (
+              <FadeIn key={`${src}-${i}`} delay={i * 0.03} className={`${i === 0 || i === 3 ? 'md:col-span-2 md:row-span-2' : 'md:col-span-2'} relative aspect-[4/5] rounded-3xl overflow-hidden bg-[#161514]`}>
                 <Image src={src} alt={`Professional headshot and portrait portfolio frame ${i + 1}, Mumbai studio lighting`} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover hover:scale-105 transition-transform duration-700" unoptimized />
               </FadeIn>
             ))}
