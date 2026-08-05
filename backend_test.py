@@ -1,257 +1,421 @@
 #!/usr/bin/env python3
 """
-Backend testing for PK Photography inline gallery wiring (Aug 2026 update B)
-Tests 15 remaining service pages + Media API CRUD + regression checks
+Backend test suite for PK Photography - Mongo race condition fix verification
+Tests concurrent requests, CRUD operations, and HTTP status checks
 """
 
 import requests
+import concurrent.futures
+import time
 import json
-import sys
 from typing import List, Dict, Tuple
 
 # Configuration
-BASE_URL = "http://localhost:3000"
+BASE_URL = "https://staging-emergent.preview.emergentagent.com"
 ADMIN_TOKEN = "PKAdmin@2026"
-HEADERS = {"Authorization": f"Bearer {ADMIN_TOKEN}", "Content-Type": "application/json"}
+HEADERS_AUTH = {"Authorization": f"Bearer {ADMIN_TOKEN}", "Content-Type": "application/json"}
+HEADERS_NO_AUTH = {"Content-Type": "application/json"}
 
 # Test results tracking
-passed = []
-failed = []
+test_results = {
+    "passed": [],
+    "failed": [],
+    "warnings": []
+}
 
-def log(msg: str, level: str = "INFO"):
-    """Log test messages"""
-    prefix = {"INFO": "ℹ", "PASS": "✅", "FAIL": "❌", "WARN": "⚠"}
-    print(f"{prefix.get(level, 'ℹ')} {msg}")
+def log_pass(test_name: str, details: str = ""):
+    """Log a passing test"""
+    msg = f"✅ PASS: {test_name}"
+    if details:
+        msg += f" - {details}"
+    print(msg)
+    test_results["passed"].append(test_name)
 
-def test_http_200(url: str, description: str) -> bool:
-    """Test if URL returns HTTP 200"""
-    try:
-        resp = requests.get(url, timeout=10)
-        if resp.status_code == 200:
-            log(f"PASS: {description} → 200", "PASS")
-            passed.append(description)
-            return True
+def log_fail(test_name: str, details: str):
+    """Log a failing test"""
+    msg = f"❌ FAIL: {test_name} - {details}"
+    print(msg)
+    test_results["failed"].append(f"{test_name}: {details}")
+
+def log_warning(test_name: str, details: str):
+    """Log a warning"""
+    msg = f"⚠️  WARNING: {test_name} - {details}"
+    print(msg)
+    test_results["warnings"].append(f"{test_name}: {details}")
+
+# ============================================================================
+# A. CONCURRENT SAFETY TESTS
+# ============================================================================
+
+def test_concurrent_get_requests():
+    """A1: Fire 20 concurrent GET requests to /api/media?slot=hero-slides"""
+    print("\n" + "="*80)
+    print("TEST A1: 20 Concurrent GET requests to /api/media?slot=hero-slides")
+    print("="*80)
+    
+    def single_get_request(index: int) -> Tuple[int, int, str, str]:
+        """Single GET request, returns (index, status_code, body_text, error_msg)"""
+        try:
+            response = requests.get(
+                f"{BASE_URL}/api/media?slot=hero-slides",
+                timeout=60
+            )
+            return (index, response.status_code, response.text, "")
+        except Exception as e:
+            return (index, 0, "", str(e))
+    
+    # Execute 20 concurrent requests
+    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+        futures = [executor.submit(single_get_request, i) for i in range(20)]
+        results = [f.result() for f in concurrent.futures.as_completed(futures)]
+    
+    # Sort by index for easier reading
+    results.sort(key=lambda x: x[0])
+    
+    # Analyze results
+    all_200 = True
+    all_json = True
+    no_undefined_errors = True
+    no_500_errors = True
+    
+    for idx, status, body, error in results:
+        if error:
+            log_fail(f"A1.{idx+1}", f"Request exception: {error}")
+            all_200 = False
+            continue
+            
+        if status != 200:
+            log_fail(f"A1.{idx+1}", f"Expected HTTP 200, got {status}")
+            all_200 = False
+            if status == 500:
+                no_500_errors = False
+        
+        if "Cannot read properties of undefined" in body:
+            log_fail(f"A1.{idx+1}", f"Response contains 'Cannot read properties of undefined'")
+            no_undefined_errors = False
+        
+        try:
+            data = json.loads(body)
+            if "items" not in data:
+                log_fail(f"A1.{idx+1}", f"Response missing 'items' field")
+                all_json = False
+        except json.JSONDecodeError:
+            log_fail(f"A1.{idx+1}", f"Response is not valid JSON")
+            all_json = False
+    
+    if all_200 and all_json and no_undefined_errors and no_500_errors:
+        log_pass("A1: Concurrent GET safety", "All 20 requests returned HTTP 200 with valid JSON {items:[...]}")
+    else:
+        summary = []
+        if not all_200:
+            summary.append("some requests did not return 200")
+        if not all_json:
+            summary.append("some responses missing 'items' field")
+        if not no_undefined_errors:
+            summary.append("found 'Cannot read properties of undefined' errors")
+        if not no_500_errors:
+            summary.append("found HTTP 500 errors")
+        log_fail("A1: Concurrent GET safety", "; ".join(summary))
+
+def test_concurrent_post_requests():
+    """A2: Fire 20 concurrent POST requests with unique bodies"""
+    print("\n" + "="*80)
+    print("TEST A2: 20 Concurrent POST requests to /api/media")
+    print("="*80)
+    
+    created_ids = []
+    
+    def single_post_request(index: int) -> Tuple[int, int, str, str, str]:
+        """Single POST request, returns (index, status_code, response_id, body_text, error_msg)"""
+        try:
+            payload = {
+                "public_id": f"audit/concurrent-{index}",
+                "secure_url": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+                "slot": "audit-concurrent"
+            }
+            response = requests.post(
+                f"{BASE_URL}/api/media",
+                headers=HEADERS_AUTH,
+                json=payload,
+                timeout=60
+            )
+            
+            response_id = ""
+            if response.status_code == 201:
+                try:
+                    data = response.json()
+                    response_id = data.get("id", "")
+                except Exception:
+                    pass
+            
+            return (index, response.status_code, response_id, response.text, "")
+        except Exception as e:
+            return (index, 0, "", "", str(e))
+    
+    # Execute 20 concurrent requests
+    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+        futures = [executor.submit(single_post_request, i) for i in range(20)]
+        results = [f.result() for f in concurrent.futures.as_completed(futures)]
+    
+    # Sort by index
+    results.sort(key=lambda x: x[0])
+    
+    # Analyze results
+    all_201 = True
+    all_have_uuid = True
+    
+    for idx, status, response_id, body, error in results:
+        if error:
+            log_fail(f"A2.{idx+1}", f"Request exception: {error}")
+            all_201 = False
+            continue
+        
+        if status != 201:
+            log_fail(f"A2.{idx+1}", f"Expected HTTP 201, got {status}")
+            all_201 = False
+        
+        if not response_id:
+            log_fail(f"A2.{idx+1}", f"Response missing 'id' field or not a valid UUID")
+            all_have_uuid = False
         else:
-            log(f"FAIL: {description} → {resp.status_code}", "FAIL")
-            failed.append(f"{description} (got {resp.status_code})")
-            return False
-    except Exception as e:
-        log(f"FAIL: {description} → {str(e)}", "FAIL")
-        failed.append(f"{description} (error: {str(e)})")
-        return False
+            created_ids.append(response_id)
+    
+    if all_201 and all_have_uuid and len(created_ids) == 20:
+        log_pass("A2: Concurrent POST safety", f"All 20 requests returned HTTP 201 with valid UUID ids")
+    else:
+        log_fail("A2: Concurrent POST safety", f"Expected 20 successful creates, got {len(created_ids)}")
+    
+    return created_ids
 
-def test_media_crud(slot: str, slug: str) -> Tuple[bool, str]:
-    """Test POST → GET → DELETE flow for a media slot"""
-    test_id = None
+def test_verify_concurrent_posts(created_ids: List[str]):
+    """A3: Verify GET /api/media?slot=audit-concurrent returns all 20 items"""
+    print("\n" + "="*80)
+    print("TEST A3: Verify all 20 concurrent POSTs are retrievable")
+    print("="*80)
+    
     try:
-        # 1. POST /api/media
-        payload = {
-            "public_id": f"test/{slug}-1",
-            "secure_url": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
-            "slot": slot,
-            "category": slug,
-            "alt": "Auto test image"
-        }
-        resp = requests.post(f"{BASE_URL}/api/media", json=payload, headers=HEADERS, timeout=10)
-        if resp.status_code != 201:
-            return False, f"POST failed with {resp.status_code}: {resp.text[:200]}"
+        response = requests.get(
+            f"{BASE_URL}/api/media?slot=audit-concurrent",
+            timeout=60
+        )
         
-        data = resp.json()
-        test_id = data.get("id")
-        if not test_id:
-            return False, "POST response missing 'id' field"
+        if response.status_code != 200:
+            log_fail("A3: Verify concurrent items", f"GET returned {response.status_code}, expected 200")
+            return
         
-        log(f"  POST /api/media → 201 (id: {test_id[:8]}...)", "PASS")
-        
-        # 2. GET /api/media?slot=...
-        resp = requests.get(f"{BASE_URL}/api/media?slot={slot}", timeout=10)
-        if resp.status_code != 200:
-            return False, f"GET failed with {resp.status_code}"
-        
-        data = resp.json()
+        data = response.json()
         items = data.get("items", [])
-        found = any(item.get("id") == test_id for item in items)
-        if not found:
-            return False, f"GET did not return the created item (id: {test_id})"
         
-        log(f"  GET /api/media?slot={slot} → 200 (found item)", "PASS")
-        
-        # 3. DELETE /api/media/:id
-        resp = requests.delete(f"{BASE_URL}/api/media/{test_id}", headers=HEADERS, timeout=10)
-        if resp.status_code != 200:
-            return False, f"DELETE failed with {resp.status_code}"
-        
-        data = resp.json()
-        if not data.get("deleted"):
-            return False, "DELETE response missing 'deleted: true'"
-        
-        log(f"  DELETE /api/media/{test_id[:8]}... → 200 (deleted)", "PASS")
-        
-        return True, "CRUD flow passed"
-        
+        if len(items) >= 20:
+            log_pass("A3: Verify concurrent items", f"Found {len(items)} items (expected at least 20)")
+        else:
+            log_fail("A3: Verify concurrent items", f"Found only {len(items)} items, expected 20")
+    
     except Exception as e:
-        # Cleanup attempt
-        if test_id:
-            try:
-                requests.delete(f"{BASE_URL}/api/media/{test_id}", headers=HEADERS, timeout=5)
-            except Exception:
-                pass
-        return False, f"Exception: {str(e)}"
+        log_fail("A3: Verify concurrent items", f"Exception: {str(e)}")
 
-def cleanup_test_media():
-    """Cleanup all test media items"""
+def test_cleanup_concurrent_posts(created_ids: List[str]):
+    """A4: Cleanup - DELETE all 20 concurrent test items"""
+    print("\n" + "="*80)
+    print("TEST A4: Cleanup - DELETE all 20 concurrent test items")
+    print("="*80)
+    
+    deleted_count = 0
+    failed_deletes = []
+    
+    for item_id in created_ids:
+        try:
+            response = requests.delete(
+                f"{BASE_URL}/api/media/{item_id}",
+                headers=HEADERS_AUTH,
+                timeout=60
+            )
+            
+            if response.status_code == 200:
+                deleted_count += 1
+            else:
+                failed_deletes.append(f"{item_id} (status {response.status_code})")
+        except Exception as e:
+            failed_deletes.append(f"{item_id} (exception: {str(e)})")
+    
+    if deleted_count == len(created_ids):
+        log_pass("A4: Cleanup concurrent items", f"Successfully deleted all {deleted_count} items")
+    else:
+        log_warning("A4: Cleanup concurrent items", f"Deleted {deleted_count}/{len(created_ids)} items. Failed: {failed_deletes}")
+
+# ============================================================================
+# B. REGRESSION TESTS - Single-request CRUD
+# ============================================================================
+
+def test_single_crud_cycle(slot_name: str, test_label: str):
+    """Test single POST -> GET -> DELETE cycle for a slot"""
+    print("\n" + "="*80)
+    print(f"TEST {test_label}: Single CRUD cycle for slot={slot_name}")
+    print("="*80)
+    
+    # POST
+    payload = {
+        "public_id": f"test/{slot_name}/regression-{int(time.time())}",
+        "secure_url": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+        "slot": slot_name
+    }
+    
     try:
-        log("Cleaning up test media items...", "INFO")
-        resp = requests.get(f"{BASE_URL}/api/media?limit=500", timeout=10)
-        if resp.status_code == 200:
-            items = resp.json().get("items", [])
-            test_items = [item for item in items if item.get("public_id", "").startswith("test/")]
-            for item in test_items:
-                item_id = item.get("id")
-                if item_id:
-                    requests.delete(f"{BASE_URL}/api/media/{item_id}", headers=HEADERS, timeout=5)
-            log(f"Cleaned up {len(test_items)} test items", "INFO")
+        post_response = requests.post(
+            f"{BASE_URL}/api/media",
+            headers=HEADERS_AUTH,
+            json=payload,
+            timeout=60
+        )
+        
+        if post_response.status_code != 201:
+            log_fail(f"{test_label}.POST", f"Expected 201, got {post_response.status_code}")
+            return
+        
+        post_data = post_response.json()
+        item_id = post_data.get("id")
+        
+        if not item_id:
+            log_fail(f"{test_label}.POST", "Response missing 'id' field")
+            return
+        
+        log_pass(f"{test_label}.POST", f"Created item with id={item_id}")
+        
+        # GET
+        get_response = requests.get(
+            f"{BASE_URL}/api/media?slot={slot_name}",
+            timeout=60
+        )
+        
+        if get_response.status_code != 200:
+            log_fail(f"{test_label}.GET", f"Expected 200, got {get_response.status_code}")
+            return
+        
+        get_data = get_response.json()
+        items = get_data.get("items", [])
+        found = any(item.get("id") == item_id for item in items)
+        
+        if found:
+            log_pass(f"{test_label}.GET", f"Item {item_id} found in slot {slot_name}")
+        else:
+            log_fail(f"{test_label}.GET", f"Item {item_id} not found in slot {slot_name}")
+        
+        # DELETE
+        delete_response = requests.delete(
+            f"{BASE_URL}/api/media/{item_id}",
+            headers=HEADERS_AUTH,
+            timeout=60
+        )
+        
+        if delete_response.status_code == 200:
+            delete_data = delete_response.json()
+            if delete_data.get("deleted") == True:
+                log_pass(f"{test_label}.DELETE", f"Successfully deleted item {item_id}")
+            else:
+                log_fail(f"{test_label}.DELETE", f"Response missing 'deleted: true'")
+        else:
+            log_fail(f"{test_label}.DELETE", f"Expected 200, got {delete_response.status_code}")
+    
     except Exception as e:
-        log(f"Cleanup warning: {str(e)}", "WARN")
+        log_fail(f"{test_label}", f"Exception during CRUD cycle: {str(e)}")
+
+# ============================================================================
+# C. HTTP 200 SANITY CHECKS
+# ============================================================================
+
+def test_http_status_checks():
+    """C: HTTP 200 sanity check for multiple pages"""
+    print("\n" + "="*80)
+    print("TEST C: HTTP 200 sanity checks for key pages")
+    print("="*80)
+    
+    pages = [
+        "/",
+        "/admin/media",
+        "/gallery",
+        "/services/weddings",
+        "/services/food-photography",
+        "/services/drone-services",
+        "/services/live-streaming",
+        "/wedding",
+        "/headshots",
+        "/blogs"
+    ]
+    
+    all_passed = True
+    
+    for page in pages:
+        try:
+            response = requests.get(
+                f"{BASE_URL}{page}",
+                timeout=60
+            )
+            
+            if response.status_code == 200:
+                log_pass(f"C.HTTP.{page}", f"Returns 200")
+            else:
+                log_fail(f"C.HTTP.{page}", f"Expected 200, got {response.status_code}")
+                all_passed = False
+        
+        except Exception as e:
+            log_fail(f"C.HTTP.{page}", f"Exception: {str(e)}")
+            all_passed = False
+    
+    if all_passed:
+        log_pass("C: HTTP status checks", f"All {len(pages)} pages returned 200")
+
+# ============================================================================
+# MAIN TEST EXECUTION
+# ============================================================================
 
 def main():
-    log("=" * 80, "INFO")
-    log("PK Photography - Inline Gallery Wiring Test (Aug 2026 update B)", "INFO")
-    log("=" * 80, "INFO")
+    print("\n" + "="*80)
+    print("PK PHOTOGRAPHY - MONGO RACE CONDITION FIX VERIFICATION")
+    print("="*80)
+    print(f"Base URL: {BASE_URL}")
+    print(f"Admin Token: {ADMIN_TOKEN}")
+    print("="*80)
     
-    # A. HTTP 200 checks for all 15 remaining service pages
-    log("\n[A] Testing HTTP 200 for 15 remaining service pages...", "INFO")
-    service_pages = [
-        "/services/family-kids",
-        "/services/fashion-shoots",
-        "/services/boudoir-shoots",
-        "/services/brand-content",
-        "/services/product-ecommerce",
-        "/services/food-photography",
-        "/services/corporate-industrial",
-        "/services/real-estate-architectural",
-        "/services/influencer-celebrity",
-        "/services/podcast-production",
-        "/services/editing-retouching",
-        "/services/album-design",
-        "/services/design-services",
-        "/services/live-streaming",
-        "/services/drone-services",
-    ]
+    # A. Concurrent safety tests
+    print("\n\n### SECTION A: CONCURRENT SAFETY TESTS ###\n")
+    test_concurrent_get_requests()
+    created_ids = test_concurrent_post_requests()
+    if created_ids:
+        test_verify_concurrent_posts(created_ids)
+        test_cleanup_concurrent_posts(created_ids)
     
-    for page in service_pages:
-        test_http_200(f"{BASE_URL}{page}", f"GET {page}")
+    # B. Regression tests
+    print("\n\n### SECTION B: REGRESSION TESTS - Single CRUD Cycles ###\n")
+    test_single_crud_cycle("weddings-gallery", "B1")
+    test_single_crud_cycle("food-photography-gallery", "B2")
+    test_single_crud_cycle("hero-slides", "B3")
     
-    # B. Media API CRUD for 3 representative slots
-    log("\n[B] Testing Media API CRUD for 3 representative slots...", "INFO")
-    
-    test_slots = [
-        ("food-photography-gallery", "food-photography"),
-        ("live-streaming-gallery", "live-streaming"),
-        ("drone-services-gallery", "drone-services"),
-    ]
-    
-    for slot, slug in test_slots:
-        log(f"\nTesting slot: {slot}", "INFO")
-        success, msg = test_media_crud(slot, slug)
-        if success:
-            passed.append(f"CRUD flow for {slot}")
-        else:
-            failed.append(f"CRUD flow for {slot}: {msg}")
-            log(f"FAIL: {msg}", "FAIL")
-    
-    # C. Regression - existing slots still work
-    log("\n[C] Regression test - existing slots...", "INFO")
-    
-    regression_slots = [
-        ("hero-slides", "hero"),
-        ("weddings-gallery", "weddings"),
-        ("events-gallery", "events"),
-        ("portraits-headshots-gallery", "portraits-headshots"),
-        ("editorial-portfolio-gallery", "editorial-portfolio"),
-    ]
-    
-    for slot, slug in regression_slots:
-        log(f"\nRegression test for slot: {slot}", "INFO")
-        success, msg = test_media_crud(slot, slug)
-        if success:
-            passed.append(f"Regression: {slot}")
-        else:
-            failed.append(f"Regression: {slot}: {msg}")
-            log(f"FAIL: {msg}", "FAIL")
-    
-    # D. Auth tests
-    log("\n[D] Testing authentication...", "INFO")
-    
-    # D1. POST /api/admin/login with wrong token
-    try:
-        resp = requests.post(f"{BASE_URL}/api/admin/login", json={"token": "wrong-token"}, timeout=10)
-        if resp.status_code == 401:
-            log("PASS: POST /api/admin/login with wrong token → 401", "PASS")
-            passed.append("Auth: wrong token returns 401")
-        else:
-            log(f"FAIL: POST /api/admin/login with wrong token → {resp.status_code} (expected 401)", "FAIL")
-            failed.append(f"Auth: wrong token (got {resp.status_code})")
-    except Exception as e:
-        log(f"FAIL: Auth test error: {str(e)}", "FAIL")
-        failed.append(f"Auth: wrong token (error: {str(e)})")
-    
-    # D2. POST /api/admin/login with correct token
-    try:
-        resp = requests.post(f"{BASE_URL}/api/admin/login", json={"token": ADMIN_TOKEN}, timeout=10)
-        if resp.status_code == 200:
-            data = resp.json()
-            if data.get("ok") and data.get("token") == ADMIN_TOKEN:
-                log("PASS: POST /api/admin/login with correct token → 200", "PASS")
-                passed.append("Auth: correct token returns 200")
-            else:
-                log(f"FAIL: POST /api/admin/login response invalid: {data}", "FAIL")
-                failed.append("Auth: correct token response invalid")
-        else:
-            log(f"FAIL: POST /api/admin/login with correct token → {resp.status_code}", "FAIL")
-            failed.append(f"Auth: correct token (got {resp.status_code})")
-    except Exception as e:
-        log(f"FAIL: Auth test error: {str(e)}", "FAIL")
-        failed.append(f"Auth: correct token (error: {str(e)})")
-    
-    # D3. POST /api/media without auth
-    try:
-        payload = {
-            "public_id": "test/no-auth",
-            "secure_url": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
-            "slot": "test-slot"
-        }
-        resp = requests.post(f"{BASE_URL}/api/media", json=payload, timeout=10)
-        if resp.status_code == 401:
-            log("PASS: POST /api/media without auth → 401", "PASS")
-            passed.append("Auth: POST /api/media without auth returns 401")
-        else:
-            log(f"FAIL: POST /api/media without auth → {resp.status_code} (expected 401)", "FAIL")
-            failed.append(f"Auth: POST /api/media without auth (got {resp.status_code})")
-    except Exception as e:
-        log(f"FAIL: Auth test error: {str(e)}", "FAIL")
-        failed.append(f"Auth: POST /api/media without auth (error: {str(e)})")
-    
-    # Cleanup
-    log("\n[Cleanup] Removing test media items...", "INFO")
-    cleanup_test_media()
+    # C. HTTP status checks
+    print("\n\n### SECTION C: HTTP 200 SANITY CHECKS ###\n")
+    test_http_status_checks()
     
     # Summary
-    log("\n" + "=" * 80, "INFO")
-    log("TEST SUMMARY", "INFO")
-    log("=" * 80, "INFO")
-    log(f"✅ PASSED: {len(passed)}", "PASS")
-    log(f"❌ FAILED: {len(failed)}", "FAIL" if failed else "INFO")
+    print("\n\n" + "="*80)
+    print("TEST SUMMARY")
+    print("="*80)
+    print(f"✅ PASSED: {len(test_results['passed'])} tests")
+    print(f"❌ FAILED: {len(test_results['failed'])} tests")
+    print(f"⚠️  WARNINGS: {len(test_results['warnings'])} warnings")
     
-    if failed:
-        log("\nFailed tests:", "FAIL")
-        for f in failed:
-            log(f"  - {f}", "FAIL")
+    if test_results['failed']:
+        print("\nFailed tests:")
+        for failure in test_results['failed']:
+            print(f"  - {failure}")
     
-    log("\n" + "=" * 80, "INFO")
+    if test_results['warnings']:
+        print("\nWarnings:")
+        for warning in test_results['warnings']:
+            print(f"  - {warning}")
     
-    # Exit code
-    sys.exit(0 if not failed else 1)
+    print("="*80)
+    
+    # Return exit code
+    return 0 if len(test_results['failed']) == 0 else 1
 
 if __name__ == "__main__":
-    main()
+    exit(main())

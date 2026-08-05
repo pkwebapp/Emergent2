@@ -5,14 +5,25 @@ import { NextResponse } from 'next/server'
 // MongoDB connection
 let client
 let db
+let connectPromise
 
 async function connectToMongo() {
-  if (!client) {
-    client = new MongoClient(process.env.MONGO_URL)
-    await client.connect()
-    db = client.db(process.env.DB_NAME)
+  if (db) return db
+  if (!connectPromise) {
+    connectPromise = (async () => {
+      try {
+        client = new MongoClient(process.env.MONGO_URL)
+        await client.connect()
+        db = client.db(process.env.DB_NAME)
+        return db
+      } catch (e) {
+        // Reset so the next call retries instead of caching the failed promise
+        connectPromise = null
+        throw e
+      }
+    })()
   }
-  return db
+  return connectPromise
 }
 
 // Helper function to handle CORS
