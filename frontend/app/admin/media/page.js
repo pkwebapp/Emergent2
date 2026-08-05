@@ -281,42 +281,67 @@ function ServicesTab({ adminToken }) {
   )
 }
 
-/* ================= Gallery tab (existing category-based) ================= */
+/* ================= Galleries tab — matches /gallery page tabs 1:1 =================
+   Uploads here go to the SAME slot as the service page gallery,
+   so a single upload shows on BOTH the /gallery listing AND the service page.
+================================================================ */
+const GALLERY_TABS = [
+  { key: 'portfolio', label: 'Portfolio', slot: 'editorial-portfolio-gallery', category: 'editorial-portfolio', servicePage: '/services/editorial-portfolio' },
+  { key: 'headshots', label: 'Headshots', slot: 'portraits-headshots-gallery', category: 'portraits-headshots', servicePage: '/services/portraits-headshots' },
+  { key: 'weddings', label: 'Weddings', slot: 'weddings-gallery', category: 'weddings', servicePage: '/services/weddings' },
+  { key: 'events', label: 'Events', slot: 'events-gallery', category: 'events', servicePage: '/services/events' },
+]
+
 function GalleryTab({ adminToken }) {
-  const [cat, setCat] = useState(GALLERY_CATEGORIES[0])
+  const [key, setKey] = useState(GALLERY_TABS[0].key)
+  const active = GALLERY_TABS.find((t) => t.key === key) || GALLERY_TABS[0]
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
 
   const load = async () => {
     setLoading(true)
-    const { items } = await listMedia({ category: cat })
-    setItems((items || []).filter((i) => !i.slot || i.slot === 'gallery'))
+    const { items } = await listMedia({ slot: active.slot })
+    setItems(items || [])
     setLoading(false)
   }
-  useEffect(() => { load() /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [cat])
+  useEffect(() => { load() /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [key])
 
   return (
     <div>
-      <h2 className="text-xl font-semibold text-neutral-100">Galleries (main /gallery listing)</h2>
-      <p className="mt-1 text-sm text-neutral-400">Bulk upload photos per category — shown on the site&apos;s master gallery listing.</p>
+      <h2 className="text-xl font-semibold text-neutral-100">Galleries — the /gallery page tabs</h2>
+      <p className="mt-1 text-sm text-neutral-400">
+        These are the 4 tabs shown on your public <code className="bg-neutral-900 px-1.5 py-0.5 rounded text-orange-300">/gallery</code> page.
+        Each upload here also appears on the matching service page&apos;s gallery section — one upload, both places.
+      </p>
       <div className="mt-4 flex flex-wrap gap-2">
-        {GALLERY_CATEGORIES.map((c) => (
-          <button key={c} onClick={() => setCat(c)}
-            className={`text-sm rounded-full px-3 py-1 border ${cat === c ? 'bg-orange-500 border-orange-500 text-white' : 'border-neutral-700 text-neutral-300 hover:border-neutral-500'}`}
-          >{c}</button>
+        {GALLERY_TABS.map((t) => (
+          <button key={t.key} onClick={() => setKey(t.key)}
+            className={`text-sm rounded-full px-4 py-1.5 border ${key === t.key ? 'bg-orange-500 border-orange-500 text-white' : 'border-neutral-700 text-neutral-300 hover:border-neutral-500'}`}
+          >{t.label}</button>
         ))}
       </div>
+
+      <div className="mt-4 rounded-lg bg-neutral-950/50 border border-neutral-800 px-4 py-3 text-xs text-neutral-400 flex flex-wrap gap-3 items-center">
+        <span>Slot: <code className="bg-neutral-900 px-1.5 py-0.5 rounded text-orange-300">{active.slot}</code></span>
+        <span>·</span>
+        <span>Appears on: <a href={active.servicePage} target="_blank" rel="noreferrer" className="underline hover:text-white">{active.servicePage}</a></span>
+        <span>·</span>
+        <span>and <a href={`/gallery?category=${active.key}`} target="_blank" rel="noreferrer" className="underline hover:text-white">/gallery?category={active.key}</a></span>
+      </div>
+
       <div className="mt-4">
         <ImageUploader
-          category={cat}
-          slot="gallery"
+          category={active.category}
+          slot={active.slot}
           adminToken={adminToken}
           multiple
+          acceptVideo
           sortOrderStart={items.length}
           onUploaded={load}
-          label={`Drop images for "${cat}" (multiple allowed)`}
+          label={`Drop images or videos for "${active.label}" (multiple allowed)`}
         />
       </div>
+
       {loading ? (
         <div className="mt-6 text-sm text-neutral-500">Loading…</div>
       ) : (
