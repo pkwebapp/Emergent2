@@ -1,4 +1,5 @@
 "use client";
+import PageBanner from "@/components/media/PageBanner";
 
 import dynamic from "next/dynamic";
 const backgroundVideo = "/live-streaming/coverpage.mp4";
@@ -57,6 +58,7 @@ export default function LiveStreamingPage() {
     "Broadcast your events in high-definition to a global audience with PK Photography—your trusted partner in seamless live streaming.";
   return (
     <main>
+      <PageBanner slot="live-streaming-banner" />
       <Banner
         fallbackImage={fallbackImage}
         backgroundVideo={backgroundVideo}

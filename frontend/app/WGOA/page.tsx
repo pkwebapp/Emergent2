@@ -4,6 +4,7 @@ import './gallery.css';
 import { heroImage, gridImages } from '@live/lib/gallery-images';
 import HeroSection from './components/HeroSection';
 import GalleryGrid from './components/GalleryGrid';
+import PageBanner from '@/components/media/PageBanner';
 
 export const metadata: Metadata = {
   title: 'Your Gallery — PK Photography',
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 export default function GalleryPage() {
   return (
     <div className="gallery-page">
+      <PageBanner slot="wgoa-banner" />
 
       {/* Hero */}
       <HeroSection

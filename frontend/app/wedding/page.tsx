@@ -1,4 +1,5 @@
 "use client";
+import PageBanner from "@/components/media/PageBanner";
 import Banner from "@live/components/live-streaming/Banner";
 import Services from "@live/components/wedding/Services";
 import Marquee from "react-fast-marquee";
@@ -73,6 +74,7 @@ const WeddingPage = () => {
   }, []);
   return (
     <div>
+      <PageBanner slot="wedding-banner" />
       <Banner
         fallbackImage={cover}
         backgroundVideo={backgroundVideo}

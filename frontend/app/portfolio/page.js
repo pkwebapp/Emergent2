@@ -1,4 +1,5 @@
 "use client";
+import PageBanner from "@/components/media/PageBanner";
 
 //import Gallery from "@live/sections/serviceSections/GallarySection";
 import GetStartedSection from "@live/sections/serviceSections/GetStartedSection";
@@ -19,6 +20,7 @@ import PortfolioFAQ from "@live/components/Portfolio/PortfolioFAQ";
 export default function page() {
   return (
     <div>
+      <PageBanner slot="portfolio-banner" />
       <HeroSection />
       <GetStartedSection
         text1="Showcase Your"

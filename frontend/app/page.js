@@ -308,6 +308,19 @@ function About() {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const imgY = useTransform(scrollYProgress, [0, 1], ['-8%', '8%'])
+  const [aboutSrc, setAboutSrc] = useState(IMG.p1)
+
+  useEffect(() => {
+    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
+    fetch(`${backend}/api/media?slot=home-about-portrait`, { cache: 'no-store' })
+      .then((r) => r.ok ? r.json() : { items: [] })
+      .then((data) => {
+        const first = (data?.items || [])[0]
+        if (first?.secure_url) setAboutSrc(first.secure_url)
+      })
+      .catch(() => {})
+  }, [])
+
   return (
     <section id="about" ref={ref} className="relative py-24 md:py-40 bg-[#EEEAE1] overflow-hidden" data-testid="about-section">
       {/* Backdrop editorial word */}
@@ -326,7 +339,7 @@ function About() {
           <div className="col-span-1 md:col-span-5 order-2 md:order-1">
             <motion.div style={{ y: imgY }} className="relative aspect-[4/5] overflow-hidden rounded-none md:rounded-sm">
               <Image
-                src={IMG.p1}
+                src={aboutSrc}
                 alt="Prabhakar Kumar — PK Photography studio, Andheri West Mumbai"
                 fill
                 sizes="(max-width: 768px) 100vw, 560px"
@@ -556,6 +569,25 @@ const PORTFOLIO = [
 
 function Portfolio() {
   const trackRef = useRef(null)
+  const [portfolio, setPortfolio] = useState(PORTFOLIO)
+
+  useEffect(() => {
+    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
+    fetch(`${backend}/api/media?slot=home-portfolio-featured`, { cache: 'no-store' })
+      .then((r) => r.ok ? r.json() : { items: [] })
+      .then((data) => {
+        const items = (data?.items || []).filter((i) => i.secure_url).map((i) => ({
+          img: i.secure_url,
+          name: i.alt || 'Featured',
+          loc: '',
+          cat: 'PK Photography',
+          _resource_type: i.resource_type,
+        }))
+        if (items.length) setPortfolio(items)
+      })
+      .catch(() => { /* keep defaults */ })
+  }, [])
+
   return (
     <section id="portfolio" className="relative py-24 md:py-32 bg-[#EEEAE1] overflow-hidden" data-testid="portfolio-section">
       <div className="container mx-auto max-w-[1400px] px-6 md:px-10">
@@ -601,7 +633,7 @@ function Portfolio() {
         data-testid="portfolio-track"
         style={{ scrollBehavior: 'smooth' }}
       >
-        {PORTFOLIO.map((p, k) => (
+        {portfolio.map((p, k) => (
           <motion.div
             key={k}
             initial={{ opacity: 0, y: 24 }}

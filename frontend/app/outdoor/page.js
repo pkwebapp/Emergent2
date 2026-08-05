@@ -1,3 +1,4 @@
+import PageBanner from "@/components/media/PageBanner";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import img7 from "@live/assets/headshot/img7.png";
@@ -26,7 +27,9 @@ const Pricing = dynamic (() => import("@live/components/outdoor/Pricing"),{
 
 export default function OutDoor() {
   return (
-    <div className="pl-6 pr-6 ">
+    <>
+      <PageBanner slot="outdoor-banner" />
+      <div className="pl-6 pr-6 ">
       <div className="flex sm:flex-col md:flex-row  justify-between pb-9 border-b-2  border-[#747478] ">
         <div className="text-4xl md:text-6xl font-semibold">
           <p className="pb-2.5 pt-3">Out Door</p>
@@ -133,5 +136,6 @@ export default function OutDoor() {
         <CallToAction />
       </div>
     </div>
+    </>
   );
 }

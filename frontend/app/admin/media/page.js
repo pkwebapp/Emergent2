@@ -4,19 +4,51 @@ import { useEffect, useState } from 'react'
 import ImageUploader from '@/components/media/ImageUploader'
 import { listMedia, deleteMedia, updateMedia } from '@/lib/cloudinary'
 
+/* ================================================================
+   Slot configuration — organised by section.
+   Each entry: { slot, title, description, multiple, acceptVideo?, category? }
+================================================================ */
 const HERO_SLOT = 'hero-slides'
 const GALLERY_CATEGORIES = [
   'wedding', 'prewedding', 'headshots', 'boudoir', 'brandshoot',
   'editorial', 'festival', 'food', 'celebrity', 'realestate',
-  'portrait', 'outdoor', 'baby', 'ads',
+  'portrait', 'outdoor', 'baby', 'ads', 'ecommerce', 'design',
+  'live-streaming', 'wgoa',
+]
+
+const HOME_SLOTS = [
+  { slot: 'hero-slides', title: 'Hero slides (rotating)', description: 'Big rotating photos in the home hero.', multiple: true, acceptVideo: true },
+  { slot: 'home-about-portrait', title: 'About section portrait', description: 'The portrait shown in the "About the studio" section on Home.', multiple: false },
+  { slot: 'home-portfolio-featured', title: 'Featured portfolio strip', description: 'Photos in the Featured Portfolio strip on the home page.', multiple: true },
+  { slot: 'home-clients', title: 'Client logos', description: 'Logo images for the "trusted by" client strip.', multiple: true },
+]
+
+const SERVICE_PAGES = [
+  { key: 'wedding', label: 'Wedding' },
+  { key: 'headshots', label: 'Headshots' },
+  { key: 'portrait', label: 'Portrait' },
+  { key: 'boudoir', label: 'Boudoir' },
+  { key: 'brandshoot', label: 'Brand shoot' },
+  { key: 'editorial', label: 'Editorial' },
+  { key: 'festival', label: 'Festival' },
+  { key: 'food', label: 'Food' },
+  { key: 'celebrity', label: 'Celebrity' },
+  { key: 'realestate', label: 'Real estate' },
+  { key: 'outdoor', label: 'Outdoor' },
+  { key: 'baby', label: 'Baby' },
+  { key: 'ads', label: 'Ads' },
+  { key: 'ecommerce', label: 'E-commerce' },
+  { key: 'design', label: 'Design' },
+  { key: 'live-streaming', label: 'Live streaming' },
+  { key: 'wgoa', label: 'Weddings Goa' },
 ]
 
 const TABS = [
-  { key: 'hero', label: 'Hero Slides' },
+  { key: 'home', label: 'Home' },
+  { key: 'services', label: 'Service Pages' },
   { key: 'gallery', label: 'Galleries' },
-  { key: 'about', label: 'About' },
-  { key: 'portfolio', label: 'Portfolio' },
   { key: 'blog', label: 'Blog' },
+  { key: 'portfolio', label: 'Portfolio' },
 ]
 
 /* ================= Login Gate ================= */
@@ -39,11 +71,7 @@ function LoginGate({ onOK }) {
       if (!res.ok) throw new Error(data.error || 'Login failed')
       localStorage.setItem('pk_admin_token', data.token)
       onOK(data.token)
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setBusy(false)
-    }
+    } catch (err) { setError(err.message) } finally { setBusy(false) }
   }
 
   return (
@@ -52,19 +80,14 @@ function LoginGate({ onOK }) {
         <h1 className="text-2xl font-semibold text-neutral-100">Admin Media Panel</h1>
         <p className="mt-1 text-sm text-neutral-400">Enter the admin token to continue.</p>
         <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          type="password" value={password} onChange={(e) => setPassword(e.target.value)}
           placeholder="Admin token"
           className="mt-6 w-full rounded-lg bg-neutral-900 border border-neutral-800 px-4 py-3 text-neutral-100 focus:outline-none focus:border-orange-500"
           autoFocus
         />
         {error && <div className="mt-3 text-sm text-red-400">{error}</div>}
-        <button
-          type="submit"
-          disabled={busy || !password}
-          className="mt-6 w-full rounded-lg bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-medium py-3"
-        >
+        <button type="submit" disabled={busy || !password}
+          className="mt-6 w-full rounded-lg bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-medium py-3">
           {busy ? 'Verifying…' : 'Unlock'}
         </button>
       </form>
@@ -72,105 +95,92 @@ function LoginGate({ onOK }) {
   )
 }
 
-/* ================= Media Card ================= */
-function MediaCard({ item, onDelete, onSort, sortValue }) {
+/* ================= Media Card + Grid ================= */
+function MediaCard({ item, onDelete, onSortSave, sortValue, onSortChange }) {
+  const isVideo = item.resource_type === 'video'
   return (
     <div className="group relative rounded-lg overflow-hidden bg-neutral-900 border border-neutral-800">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={item.secure_url} alt={item.alt || ''} className="w-full h-40 object-cover" />
+      {isVideo ? (
+        <video src={item.secure_url} muted loop playsInline className="w-full h-40 object-cover" />
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={item.secure_url} alt={item.alt || ''} className="w-full h-40 object-cover" />
+      )}
       <div className="p-2 text-xs text-neutral-400 flex items-center justify-between gap-2">
-        <input
-          type="number"
-          value={sortValue}
-          onChange={(e) => onSort(Number(e.target.value))}
+        <input type="number" value={sortValue} onChange={(e) => onSortChange(Number(e.target.value))}
+          onBlur={onSortSave}
           className="w-16 rounded bg-neutral-800 border border-neutral-700 px-2 py-1 text-neutral-100"
-          title="Sort order"
-        />
-        <button
-          onClick={() => onDelete(item)}
-          className="rounded bg-red-500/10 hover:bg-red-500/20 text-red-300 px-2 py-1"
-        >Delete</button>
+          title="Sort order" />
+        <span className="text-[10px] text-neutral-500 uppercase">{isVideo ? 'video' : 'image'}</span>
+        <button onClick={() => onDelete(item)}
+          className="rounded bg-red-500/10 hover:bg-red-500/20 text-red-300 px-2 py-1">Delete</button>
       </div>
     </div>
   )
 }
 
-/* ================= Media Grid ================= */
 function MediaGrid({ items, adminToken, onChanged }) {
   const [drafts, setDrafts] = useState({})
 
   const del = async (item) => {
     if (!confirm(`Delete ${item.original_filename || item.public_id}? This removes it from Cloudinary too.`)) return
-    try {
-      await deleteMedia(item.id, adminToken)
-      onChanged()
-    } catch (e) {
-      alert(e.message)
-    }
+    try { await deleteMedia(item.id, adminToken); onChanged() }
+    catch (e) { alert(e.message) }
   }
 
-  const changeSort = (id, value) => {
-    setDrafts((old) => ({ ...old, [id]: value }))
-  }
+  const changeSort = (id, value) => setDrafts((old) => ({ ...old, [id]: value }))
 
   const saveSort = async (item) => {
     const value = drafts[item.id]
     if (value == null || value === item.sort_order) return
-    try {
-      await updateMedia(item.id, { sort_order: value }, adminToken)
-      onChanged()
-    } catch (e) {
-      alert(e.message)
-    }
+    try { await updateMedia(item.id, { sort_order: value }, adminToken); onChanged() }
+    catch (e) { alert(e.message) }
   }
 
   if (!items.length) {
-    return <div className="text-sm text-neutral-500 mt-4">No images yet. Upload some above.</div>
+    return <div className="text-sm text-neutral-500 mt-4">No items yet. Upload some above.</div>
   }
   return (
     <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
       {items.map((item) => (
-        <div key={item.id} onBlur={() => saveSort(item)}>
-          <MediaCard
-            item={item}
-            sortValue={drafts[item.id] ?? item.sort_order}
-            onSort={(v) => changeSort(item.id, v)}
-            onDelete={del}
-          />
-        </div>
+        <MediaCard key={item.id}
+          item={item}
+          sortValue={drafts[item.id] ?? item.sort_order}
+          onSortChange={(v) => changeSort(item.id, v)}
+          onSortSave={() => saveSort(item)}
+          onDelete={del} />
       ))}
     </div>
   )
 }
 
-/* ================= Hero Slides Section ================= */
-function HeroSlidesSection({ adminToken }) {
+/* ================= Slot Section ================= */
+function SlotSection({ adminToken, slot, title, description, multiple = false, acceptVideo = false, category }) {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
 
   const load = async () => {
     setLoading(true)
-    const { items } = await listMedia({ slot: HERO_SLOT })
+    const { items } = await listMedia({ slot })
     setItems(items || [])
     setLoading(false)
   }
-  useEffect(() => { load() }, [])
+  useEffect(() => { load() /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [slot])
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold text-neutral-100">Home Page — Hero Slides</h2>
-      <p className="mt-1 text-sm text-neutral-400">
-        Upload the images that rotate in the Home hero. Once you upload at least one, the site will use these instead of the built-in defaults. Order by the number under each thumbnail (lowest first).
-      </p>
+    <div className="mt-8 border border-neutral-800 rounded-xl p-5 bg-neutral-950/40">
+      <h3 className="text-lg font-semibold text-neutral-100">{title}</h3>
+      <p className="mt-1 text-sm text-neutral-400">{description}</p>
+      <p className="mt-1 text-xs text-neutral-500">Slot: <code className="bg-neutral-900 px-1.5 py-0.5 rounded">{slot}</code></p>
       <div className="mt-4">
         <ImageUploader
-          category="homepage"
-          slot={HERO_SLOT}
+          category={category || 'homepage'}
+          slot={slot}
           adminToken={adminToken}
-          multiple
+          multiple={multiple}
+          acceptVideo={acceptVideo}
           sortOrderStart={items.length}
           onUploaded={load}
-          label="Drop hero images here (multiple allowed)"
         />
       </div>
       {loading ? (
@@ -182,8 +192,59 @@ function HeroSlidesSection({ adminToken }) {
   )
 }
 
-/* ================= Gallery Section ================= */
-function GallerySection({ adminToken }) {
+/* ================= Home tab ================= */
+function HomeTab({ adminToken }) {
+  return (
+    <div>
+      <h2 className="text-xl font-semibold text-neutral-100">Home Page</h2>
+      <p className="mt-1 text-sm text-neutral-400">Manage every visible media area on the home page.</p>
+      {HOME_SLOTS.map((s) => (
+        <SlotSection key={s.slot} adminToken={adminToken} {...s} category="homepage" />
+      ))}
+    </div>
+  )
+}
+
+/* ================= Service Pages tab ================= */
+function ServicesTab({ adminToken }) {
+  const [page, setPage] = useState(SERVICE_PAGES[0].key)
+  const active = SERVICE_PAGES.find((p) => p.key === page)
+  const bannerSlot = `${page}-banner`
+  const gallerySlot = `${page}-gallery`
+  return (
+    <div>
+      <h2 className="text-xl font-semibold text-neutral-100">Service Pages</h2>
+      <p className="mt-1 text-sm text-neutral-400">Every service page has a banner strip (top of page) and a gallery. Upload images or videos.</p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        {SERVICE_PAGES.map((p) => (
+          <button key={p.key} onClick={() => setPage(p.key)}
+            className={`text-sm rounded-full px-3 py-1 border ${page === p.key ? 'bg-orange-500 border-orange-500 text-white' : 'border-neutral-700 text-neutral-300 hover:border-neutral-500'}`}
+          >{p.label}</button>
+        ))}
+      </div>
+      <SlotSection
+        adminToken={adminToken}
+        slot={bannerSlot}
+        title={`${active.label} — Page Banner (images / videos)`}
+        description={`Renders as a full-width banner at the top of the ${active.label} page. First item is the big hero (image or video). Remaining items form a marquee strip.`}
+        multiple
+        acceptVideo
+        category={page}
+      />
+      <SlotSection
+        adminToken={adminToken}
+        slot={gallerySlot}
+        title={`${active.label} — Gallery`}
+        description={`Renders as an image grid on the ${active.label} page.`}
+        multiple
+        category={page}
+      />
+    </div>
+  )
+}
+
+/* ================= Gallery tab (existing category-based) ================= */
+function GalleryTab({ adminToken }) {
   const [cat, setCat] = useState(GALLERY_CATEGORIES[0])
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
@@ -191,27 +252,22 @@ function GallerySection({ adminToken }) {
   const load = async () => {
     setLoading(true)
     const { items } = await listMedia({ category: cat })
-    // Only gallery-slot items (exclude hero-slides / about / portfolio when browsing gallery)
-    setItems((items || []).filter(i => !i.slot || i.slot === 'gallery'))
+    setItems((items || []).filter((i) => !i.slot || i.slot === 'gallery'))
     setLoading(false)
   }
-  useEffect(() => { load() }, [cat])
+  useEffect(() => { load() /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [cat])
 
   return (
     <div>
-      <h2 className="text-xl font-semibold text-neutral-100">Galleries</h2>
-      <p className="mt-1 text-sm text-neutral-400">Bulk upload photos into a gallery category. These render on that category's gallery page.</p>
-
+      <h2 className="text-xl font-semibold text-neutral-100">Galleries (main /gallery listing)</h2>
+      <p className="mt-1 text-sm text-neutral-400">Bulk upload photos per category — shown on the site&apos;s master gallery listing.</p>
       <div className="mt-4 flex flex-wrap gap-2">
         {GALLERY_CATEGORIES.map((c) => (
-          <button
-            key={c}
-            onClick={() => setCat(c)}
+          <button key={c} onClick={() => setCat(c)}
             className={`text-sm rounded-full px-3 py-1 border ${cat === c ? 'bg-orange-500 border-orange-500 text-white' : 'border-neutral-700 text-neutral-300 hover:border-neutral-500'}`}
           >{c}</button>
         ))}
       </div>
-
       <div className="mt-4">
         <ImageUploader
           category={cat}
@@ -223,7 +279,6 @@ function GallerySection({ adminToken }) {
           label={`Drop images for "${cat}" (multiple allowed)`}
         />
       </div>
-
       {loading ? (
         <div className="mt-6 text-sm text-neutral-500">Loading…</div>
       ) : (
@@ -233,38 +288,56 @@ function GallerySection({ adminToken }) {
   )
 }
 
-/* ================= Simple slot sections (About / Portfolio / Blog) ================= */
-function SlotSection({ adminToken, slot, title, description, category = 'homepage', multiple = false }) {
-  const [items, setItems] = useState([])
-  const [loading, setLoading] = useState(true)
-
-  const load = async () => {
-    setLoading(true)
-    const { items } = await listMedia({ slot })
-    setItems(items || [])
-    setLoading(false)
-  }
-  useEffect(() => { load() }, [slot])
-
+/* ================= Blog tab ================= */
+function BlogTab({ adminToken }) {
   return (
     <div>
-      <h2 className="text-xl font-semibold text-neutral-100">{title}</h2>
-      <p className="mt-1 text-sm text-neutral-400">{description}</p>
-      <div className="mt-4">
-        <ImageUploader
-          category={category}
-          slot={slot}
-          adminToken={adminToken}
-          multiple={multiple}
-          sortOrderStart={items.length}
-          onUploaded={load}
-        />
-      </div>
-      {loading ? (
-        <div className="mt-6 text-sm text-neutral-500">Loading…</div>
-      ) : (
-        <MediaGrid items={items} adminToken={adminToken} onChanged={load} />
-      )}
+      <h2 className="text-xl font-semibold text-neutral-100">Blog</h2>
+      <p className="mt-1 text-sm text-neutral-400">Cover images shown on the blog listing page and inside posts.</p>
+      <SlotSection
+        adminToken={adminToken}
+        slot="blog-covers"
+        title="Blog listing cover images"
+        description="Images shown as covers on the Blog listing page."
+        multiple
+        category="blog"
+      />
+      <SlotSection
+        adminToken={adminToken}
+        slot="blog-banner"
+        title="Blog page top banner"
+        description="Banner strip at the top of the Blog listing page."
+        multiple
+        acceptVideo
+        category="blog"
+      />
+    </div>
+  )
+}
+
+/* ================= Portfolio tab ================= */
+function PortfolioTab({ adminToken }) {
+  return (
+    <div>
+      <h2 className="text-xl font-semibold text-neutral-100">Portfolio Page</h2>
+      <p className="mt-1 text-sm text-neutral-400">Images used on the /portfolio page.</p>
+      <SlotSection
+        adminToken={adminToken}
+        slot="portfolio-banner"
+        title="Portfolio page banner"
+        description="Top-of-page banner (image or video)."
+        multiple
+        acceptVideo
+        category="portfolio"
+      />
+      <SlotSection
+        adminToken={adminToken}
+        slot="portfolio-gallery"
+        title="Portfolio gallery"
+        description="Photos shown in the main portfolio grid."
+        multiple
+        category="portfolio"
+      />
     </div>
   )
 }
@@ -273,39 +346,24 @@ function SlotSection({ adminToken, slot, title, description, category = 'homepag
 export default function AdminMediaPage() {
   const [token, setToken] = useState(null)
   const [checked, setChecked] = useState(false)
-  const [tab, setTab] = useState('hero')
+  const [tab, setTab] = useState('home')
 
   useEffect(() => {
     const t = localStorage.getItem('pk_admin_token')
     if (t) {
-      // verify with backend
       const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
-      fetch(`${backend}/api/admin/verify`, {
-        headers: { Authorization: `Bearer ${t}` },
-      }).then((r) => {
-        if (r.ok) setToken(t)
-        else localStorage.removeItem('pk_admin_token')
-      }).finally(() => setChecked(true))
+      fetch(`${backend}/api/admin/verify`, { headers: { Authorization: `Bearer ${t}` } })
+        .then((r) => { if (r.ok) setToken(t); else localStorage.removeItem('pk_admin_token') })
+        .finally(() => setChecked(true))
     } else {
       setChecked(true)
     }
   }, [])
 
-  const logout = () => {
-    localStorage.removeItem('pk_admin_token')
-    setToken(null)
-  }
+  const logout = () => { localStorage.removeItem('pk_admin_token'); setToken(null) }
 
-  if (!checked) {
-    return <div className="min-h-screen bg-[#0e0d0c] text-neutral-400 flex items-center justify-center">Loading…</div>
-  }
-  if (!token) {
-    return (
-      <div className="min-h-screen bg-[#0e0d0c] text-neutral-100">
-        <LoginGate onOK={setToken} />
-      </div>
-    )
-  }
+  if (!checked) return <div className="min-h-screen bg-[#0e0d0c] text-neutral-400 flex items-center justify-center">Loading…</div>
+  if (!token) return <div className="min-h-screen bg-[#0e0d0c] text-neutral-100"><LoginGate onOK={setToken} /></div>
 
   return (
     <div className="min-h-screen bg-[#0e0d0c] text-neutral-100">
@@ -313,54 +371,25 @@ export default function AdminMediaPage() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-semibold">Media Admin</h1>
-            <p className="text-sm text-neutral-400">Upload &amp; manage images across the site (Cloudinary + MongoDB).</p>
+            <p className="text-sm text-neutral-400">Upload &amp; manage every image/video across the site.</p>
           </div>
-          <button onClick={logout} className="text-sm rounded-md border border-neutral-700 hover:border-neutral-500 px-3 py-1.5">
-            Log out
-          </button>
+          <button onClick={logout} className="text-sm rounded-md border border-neutral-700 hover:border-neutral-500 px-3 py-1.5">Log out</button>
         </div>
 
         <div className="mt-6 flex flex-wrap gap-2 border-b border-neutral-800 pb-2">
           {TABS.map((t) => (
-            <button
-              key={t.key}
-              onClick={() => setTab(t.key)}
+            <button key={t.key} onClick={() => setTab(t.key)}
               className={`text-sm rounded-t-md px-4 py-2 ${tab === t.key ? 'bg-neutral-900 text-white border border-neutral-800 border-b-0' : 'text-neutral-400 hover:text-white'}`}
             >{t.label}</button>
           ))}
         </div>
 
         <div className="mt-6">
-          {tab === 'hero' && <HeroSlidesSection adminToken={token} />}
-          {tab === 'gallery' && <GallerySection adminToken={token} />}
-          {tab === 'about' && (
-            <SlotSection
-              adminToken={token}
-              slot="about"
-              title="About Section Image"
-              description="Upload a single image for the About/Studio section on the home page. If multiple are uploaded, the earliest is used."
-              multiple={false}
-            />
-          )}
-          {tab === 'portfolio' && (
-            <SlotSection
-              adminToken={token}
-              slot="portfolio-featured"
-              title="Featured Portfolio (Home Page)"
-              description="Images shown in the Featured Portfolio strip on the home page."
-              multiple
-            />
-          )}
-          {tab === 'blog' && (
-            <SlotSection
-              adminToken={token}
-              slot="blog-cover"
-              title="Blog Cover Images"
-              description="Cover images for the Blog listing page. Attach post-specific images via the Blog admin once we build it."
-              multiple
-              category="blog"
-            />
-          )}
+          {tab === 'home' && <HomeTab adminToken={token} />}
+          {tab === 'services' && <ServicesTab adminToken={token} />}
+          {tab === 'gallery' && <GalleryTab adminToken={token} />}
+          {tab === 'blog' && <BlogTab adminToken={token} />}
+          {tab === 'portfolio' && <PortfolioTab adminToken={token} />}
         </div>
       </div>
     </div>

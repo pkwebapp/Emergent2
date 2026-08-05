@@ -4,15 +4,17 @@ import { useCallback, useRef, useState } from 'react'
 import { uploadToCloudinary, saveMediaRecord } from '@/lib/cloudinary'
 
 /**
- * Reusable image uploader (drag-drop + click).
+ * Reusable media uploader (drag-drop + click). Supports images AND videos.
  * Props:
- *   - category (required)  e.g. 'wedding' | 'homepage'
- *   - slot?                 e.g. 'hero-slides'
- *   - multiple?             boolean
- *   - adminToken (required) admin bearer token
- *   - onUploaded?(record)   callback after saveMediaRecord
- *   - sortOrderStart?       starting sort_order (default 0)
- *   - label?                label shown in the dropzone
+ *   - category (required)
+ *   - slot?
+ *   - multiple?
+ *   - adminToken (required)
+ *   - onUploaded?(record)
+ *   - sortOrderStart?
+ *   - label?
+ *   - acceptVideo? (default: false)
+ *   - maxSizeMB? (default: 10 for images, 100 for videos)
  */
 export default function ImageUploader({
   category,
@@ -22,12 +24,18 @@ export default function ImageUploader({
   onUploaded,
   sortOrderStart = 0,
   label,
+  acceptVideo = false,
+  maxSizeMB,
 }) {
   const inputRef = useRef(null)
   const [busy, setBusy] = useState(false)
   const [progress, setProgress] = useState({})
   const [error, setError] = useState(null)
   const [drag, setDrag] = useState(false)
+
+  const accept = acceptVideo
+    ? 'image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm'
+    : 'image/jpeg,image/png,image/webp'
 
   const handleFiles = useCallback(async (fileList) => {
     const files = Array.from(fileList || [])
@@ -37,12 +45,12 @@ export default function ImageUploader({
     try {
       for (let i = 0; i < files.length; i++) {
         const file = files[i]
-        if (!file.type.startsWith('image/')) {
-          throw new Error(`${file.name} is not an image`)
-        }
-        if (file.size > 10 * 1024 * 1024) {
-          throw new Error(`${file.name} exceeds 10MB`)
-        }
+        const isVideo = file.type.startsWith('video/')
+        const isImage = file.type.startsWith('image/')
+        if (!isImage && !isVideo) throw new Error(`${file.name} is not an image or video`)
+        if (!acceptVideo && isVideo) throw new Error(`Video uploads not allowed here`)
+        const limitMB = maxSizeMB || (isVideo ? 100 : 10)
+        if (file.size > limitMB * 1024 * 1024) throw new Error(`${file.name} exceeds ${limitMB}MB`)
         const key = `${file.name}-${i}`
         const result = await uploadToCloudinary(file, {
           onProgress: (p) => setProgress((old) => ({ ...old, [key]: p })),
@@ -63,7 +71,7 @@ export default function ImageUploader({
       setBusy(false)
       if (inputRef.current) inputRef.current.value = ''
     }
-  }, [category, slot, sortOrderStart, adminToken, onUploaded])
+  }, [category, slot, sortOrderStart, adminToken, onUploaded, acceptVideo, maxSizeMB])
 
   return (
     <div className="w-full">
@@ -83,7 +91,7 @@ export default function ImageUploader({
         <input
           ref={inputRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp"
+          accept={accept}
           multiple={multiple}
           className="hidden"
           disabled={busy}
@@ -92,8 +100,10 @@ export default function ImageUploader({
         <div className="text-sm text-neutral-300">
           {busy ? 'Uploading…' : (
             <>
-              <p className="font-medium text-neutral-100">{label || (multiple ? 'Drop images here or click to upload' : 'Drop an image here or click to upload')}</p>
-              <p className="mt-1 text-xs text-neutral-400">JPG · PNG · WEBP · up to 10 MB{multiple ? ' each' : ''}</p>
+              <p className="font-medium text-neutral-100">{label || (multiple ? 'Drop files here or click to upload' : 'Drop a file here or click to upload')}</p>
+              <p className="mt-1 text-xs text-neutral-400">
+                {acceptVideo ? 'JPG · PNG · WEBP · MP4 · MOV · WEBM' : 'JPG · PNG · WEBP'} · up to {maxSizeMB || (acceptVideo ? 100 : 10)} MB{multiple ? ' each' : ''}
+              </p>
             </>
           )}
         </div>

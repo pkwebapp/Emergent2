@@ -1,6 +1,12 @@
 // Utility: browser-direct upload to Cloudinary using an unsigned upload preset.
-// Uses XMLHttpRequest so we can report progress (fetch cannot).
+// Supports images AND videos (dispatches to the correct Cloudinary endpoint).
 'use client'
+
+function detectResourceType(file) {
+  if (!file || !file.type) return 'image'
+  if (file.type.startsWith('video/')) return 'video'
+  return 'image'
+}
 
 export function uploadToCloudinary(file, { onProgress } = {}) {
   return new Promise((resolve, reject) => {
@@ -10,8 +16,9 @@ export function uploadToCloudinary(file, { onProgress } = {}) {
       reject(new Error('Cloudinary env vars missing (NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME / _UPLOAD_PRESET)'))
       return
     }
+    const resourceType = detectResourceType(file)
     const xhr = new XMLHttpRequest()
-    xhr.open('POST', `https://api.cloudinary.com/v1_1/${cloud}/image/upload`)
+    xhr.open('POST', `https://api.cloudinary.com/v1_1/${cloud}/${resourceType}/upload`)
     xhr.upload.onprogress = (event) => {
       if (event.lengthComputable && onProgress) {
         onProgress(Math.round((event.loaded * 100) / event.total))
@@ -20,8 +27,12 @@ export function uploadToCloudinary(file, { onProgress } = {}) {
     xhr.onload = () => {
       try {
         const body = JSON.parse(xhr.responseText)
-        if (xhr.status >= 200 && xhr.status < 300) resolve(body)
-        else reject(new Error(body?.error?.message || `Upload failed (${xhr.status})`))
+        if (xhr.status >= 200 && xhr.status < 300) {
+          body._resource_type = resourceType
+          resolve(body)
+        } else {
+          reject(new Error(body?.error?.message || `Upload failed (${xhr.status})`))
+        }
       } catch (e) {
         reject(new Error('Invalid Cloudinary response'))
       }
@@ -34,7 +45,6 @@ export function uploadToCloudinary(file, { onProgress } = {}) {
   })
 }
 
-// Save the Cloudinary metadata to our backend
 export async function saveMediaRecord({ cloudinaryResult, category, slot, blogPostId, bookingId, sortOrder = 0, alt, adminToken }) {
   const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
   const res = await fetch(`${backend}/api/media`, {
@@ -48,7 +58,7 @@ export async function saveMediaRecord({ cloudinaryResult, category, slot, blogPo
       secure_url: cloudinaryResult.secure_url,
       public_id: cloudinaryResult.public_id,
       asset_id: cloudinaryResult.asset_id,
-      resource_type: cloudinaryResult.resource_type || 'image',
+      resource_type: cloudinaryResult._resource_type || cloudinaryResult.resource_type || 'image',
       delivery_type: cloudinaryResult.type || 'upload',
       format: cloudinaryResult.format,
       width: cloudinaryResult.width,

@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import Journal from './Journal'
 import { POSTS } from './posts'
+import PageBanner from '@/components/media/PageBanner'
 
 const CANONICAL = 'https://pkphotography.in/blogs'
 
@@ -66,6 +67,7 @@ export default function Page() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }} />
+      <PageBanner slot="blog-banner" />
       <Suspense fallback={<div className="min-h-screen bg-[#EEEAE1]" />}>
         <Journal />
       </Suspense>
