@@ -25,8 +25,7 @@ export default function EventsPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <PageBanner slot="events-banner" />
-      <EventsPageClient />
+            <EventsPageClient />
     </>
   )
 }

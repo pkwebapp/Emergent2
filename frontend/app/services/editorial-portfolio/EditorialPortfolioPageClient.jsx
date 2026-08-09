@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight, Check, MessageCircle, Sparkles } from 'lucide-react'
 import { CONTACT } from '@/components/site/Chrome'
 import { ReadingProgress, RelatedServices } from '@/components/services/ServiceExtras'
+import HeroMedia from '@/components/media/HeroMedia'
 import { SERVICES } from '@/lib/services'
 import { SERVICE_SEO } from '@/lib/seo'
 
@@ -133,9 +134,7 @@ function Hero() {
   return (
     <section className="relative min-h-[92svh] overflow-hidden bg-[#161514]" data-testid="editorial-hero-section">
       <motion.div initial={{ scale: 1.08 }} animate={{ scale: 1 }} transition={{ duration: 1.6, ease: [0.16,1,0.3,1] }} className="absolute inset-0">
-        <video autoPlay muted loop playsInline preload="auto" poster={service?.img} className="absolute inset-0 w-full h-full object-cover">
-          <source src={heroVideo} type="video/mp4" />
-        </video>
+        <HeroMedia slot="editorial-portfolio-banner" fallbackImage={service?.img} fallbackVideo={heroVideo} />
         <div className="absolute inset-0 bg-gradient-to-b from-[#161514]/40 via-transparent to-[#161514]/90" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#161514]/70 via-transparent to-transparent" />
       </motion.div>

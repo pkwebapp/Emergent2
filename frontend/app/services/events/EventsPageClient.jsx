@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight, Calendar, Check, MessageCircle, Play, Users, Zap } from 'lucide-react'
 import { CONTACT } from '@/components/site/Chrome'
 import { ReadingProgress, RelatedServices } from '@/components/services/ServiceExtras'
+import HeroMedia from '@/components/media/HeroMedia'
 
 const CLD = 'https://res.cloudinary.com/ddamvvrby/image/upload'
 
@@ -188,15 +189,7 @@ export default function EventsPageClient() {
       <ReadingProgress />
       <section className="relative min-h-[92svh] pt-32 md:pt-40 pb-16 overflow-hidden bg-[#11100F] text-white" data-testid="events-hero-section">
         <div className="absolute inset-0">
-          <Image
-            src={galleryImages[0]}
-            alt="Corporate event photographer covering a product launch in documentary style, Mumbai and Goa"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-45"
-            unoptimized
-          />
+          <HeroMedia slot="events-banner" fallbackImage={galleryImages[0]} className="opacity-45" />
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(17,16,15,0.92),rgba(17,16,15,0.68),rgba(17,16,15,0.32))]" />
         </div>
 

@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight, ArrowUpRight, Check, Globe, MessageCircle, Mic, MonitorPlay, Play, Radio, ShieldCheck, Video, Wifi } from 'lucide-react'
 import { CONTACT } from '@/components/site/Chrome'
 import { ReadingProgress, RelatedServices } from '@/components/services/ServiceExtras'
+import HeroMedia from '@/components/media/HeroMedia'
 
 const CLD = 'https://res.cloudinary.com/ddamvvrby/image/upload'
 
@@ -215,15 +216,7 @@ export default function LiveStreamingPageClient({ faqs }) {
       {/* ---------- Hero ---------- */}
       <section className="relative min-h-[92svh] pt-32 md:pt-40 pb-16 overflow-hidden bg-[#11100F] text-white" data-testid="livestream-hero-section">
         <div className="absolute inset-0">
-          <Image
-            src={IMG.hero}
-            alt="Live streaming control desk broadcasting a multi-camera event in Mumbai"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-40"
-            unoptimized
-          />
+          <HeroMedia slot="live-streaming-banner" fallbackImage={IMG.hero} className="opacity-40" />
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(17,16,15,0.94),rgba(17,16,15,0.7),rgba(17,16,15,0.35))]" />
         </div>
 

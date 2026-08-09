@@ -7,6 +7,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight, Check, CloudSun, Film, Map, MessageCircle, ShieldCheck, Sparkles, Wind, Zap } from 'lucide-react'
 import { CONTACT } from '@/components/site/Chrome'
 import { ReadingProgress, RelatedServices } from '@/components/services/ServiceExtras'
+import HeroMedia from '@/components/media/HeroMedia'
 
 const aerialImages = [
   'https://images.unsplash.com/photo-1499669404910-ba8b35824a3c?crop=entropy&cs=srgb&fm=jpg&ixlib=rb-4.1.0&q=85',
@@ -96,7 +97,7 @@ function DroneHero() {
   return (
     <section className="relative min-h-[94svh] overflow-hidden bg-[#071014] text-white" data-testid="drone-hero-section">
       <motion.div style={{ y, scale }} className="absolute inset-0">
-        <Image src={aerialImages[0]} alt="Drone photography and aerial videography over city architecture in cinematic style, Mumbai and Goa" fill priority sizes="100vw" className="object-cover opacity-68" unoptimized />
+        <HeroMedia slot="drone-services-banner" fallbackImage={aerialImages[0]} className="opacity-68" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_68%_30%,rgba(255,91,34,0.20),transparent_26%),linear-gradient(90deg,rgba(7,16,20,0.94),rgba(7,16,20,0.62),rgba(7,16,20,0.25))]" />
       </motion.div>
 

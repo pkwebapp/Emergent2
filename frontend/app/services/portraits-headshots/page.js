@@ -25,8 +25,7 @@ export default function HeadshotsPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <PageBanner slot="portraits-headshots-banner" />
-      <HeadshotsPageClient />
+            <HeadshotsPageClient />
     </>
   )
 }

@@ -25,8 +25,7 @@ export default function EditorialPortfolioPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <PageBanner slot="editorial-portfolio-banner" />
-      <EditorialPortfolioPageClient />
+            <EditorialPortfolioPageClient />
     </>
   )
 }

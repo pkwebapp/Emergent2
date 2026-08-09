@@ -52,8 +52,7 @@ export default function LiveStreamingPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <PageBanner slot="live-streaming-banner" />
-      <LiveStreamingPageClient faqs={faqs} />
+            <LiveStreamingPageClient faqs={faqs} />
     </>
   )
 }

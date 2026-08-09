@@ -8,6 +8,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { ArrowRight, ArrowUpRight, ArrowLeft, Check, Award, Zap, Users, Star, MessageCircle, Play, Camera, Video, Sparkles, Calendar, Clock, ChevronDown, X } from 'lucide-react'
 import { CONTACT } from '@/components/site/Chrome'
 import { ReadingProgress } from '@/components/services/ServiceExtras'
+import HeroMedia from '@/components/media/HeroMedia'
 import { SERVICES } from '@/lib/services'
 import { SERVICE_SEO, imageAlt } from '@/lib/seo'
 
@@ -596,13 +597,7 @@ export default function ServicePageClient({ slug }) {
       {/* ---------- Video Hero with parallax ---------- */}
       <section ref={heroRef} className="relative min-h-[92svh] overflow-hidden bg-[#161514]">
         <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0">
-          {extra.video ? (
-            <video autoPlay muted loop playsInline preload="auto" poster={service.img} className="absolute inset-0 w-full h-full object-cover">
-              <source src={extra.video} type="video/mp4" />
-            </video>
-          ) : (
-            <Image src={service.img} alt={localAlt(`${service.t} hero`, 'Mumbai and Goa', seo.style || 'premium editorial')} fill priority sizes="100vw" className="object-cover" unoptimized />
-          )}
+          <HeroMedia slot={`${slug}-banner`} fallbackImage={service.img} fallbackVideo={extra.video} />
           <div className="absolute inset-0 bg-gradient-to-b from-[#161514]/40 via-transparent to-[#161514]/90" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#161514]/70 via-transparent to-transparent" />
         </motion.div>

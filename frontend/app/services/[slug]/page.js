@@ -47,7 +47,6 @@ export default async function ServicePage({ params }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <PageBanner slot={`${slug}-banner`} />
       <ServicePageClient slug={slug} />
     </>
   )
