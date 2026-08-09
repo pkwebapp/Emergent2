@@ -129,6 +129,21 @@ backend:
         agent: "testing"
         comment: "Smoke test after vercel.json addition. GET /api/root proxies correctly to Next.js and returns 200 with {message: Hello World}. Proxy functionality working correctly."
 
+  - task: "Admin token login (reset ADMIN_TOKEN)"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "User reported admin login at /admin/media was failing because ADMIN_TOKEN was missing (the .env is gitignored and was not present after repo clone). Reset ADMIN_TOKEN to 'PKAdmin@2026' in /app/frontend/.env and restarted frontend. Please verify: (1) POST /api/admin/login with {token: 'PKAdmin@2026'} returns 200 {ok:true,token}. (2) POST /api/admin/login with a wrong token returns 401 {error: 'Invalid admin token'}. (3) GET /api/admin/verify with header 'x-admin-token: PKAdmin@2026' (or 'Authorization: Bearer PKAdmin@2026') returns 200 {ok:true}, and returns 401 with a wrong/missing token. Test through the FastAPI proxy at /api/*."
+      - working: true
+        agent: "testing"
+        comment: "Admin token login fix verified successfully. All 6 authentication tests passed (6/6): (1) POST /api/admin/login with correct token 'PKAdmin@2026' returns HTTP 200 with {ok: true, token: 'PKAdmin@2026'}. (2) POST /api/admin/login with wrong token returns HTTP 401 with {error: 'Invalid admin token'}. (3) GET /api/admin/verify with 'x-admin-token: PKAdmin@2026' header returns HTTP 200 with {ok: true}. (4) GET /api/admin/verify with 'Authorization: Bearer PKAdmin@2026' header returns HTTP 200 with {ok: true}. (5) GET /api/admin/verify with no token returns HTTP 401 with {error: 'unauthorized'}. (6) GET /api/admin/verify with wrong token returns HTTP 401 with {error: 'unauthorized'}. Implementation verified at route.js lines 320-344: requireAdmin() helper checks both 'Authorization: Bearer' and 'x-admin-token' headers, POST /api/admin/login validates token and returns it on success, GET /api/admin/verify uses requireAdmin() gate. Admin authentication is working correctly through the FastAPI proxy. The reported bug (admin login at /admin/media not working) is now resolved."
+
 frontend:
   - task: "Next.js API catch-all route"
     implemented: true
@@ -213,8 +228,7 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "Mumbai + Goa studio address details update"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -235,6 +249,8 @@ agent_communication:
     message: "Signup page hydration error fix verification completed successfully. All 9 test cases passed. The reported bug (hydration error, unconfigured next-auth, react-phone-input-2 causing hydration mismatch) has been completely resolved. The signup page now: (1) Loads without any hydration errors, next-auth errors, or 'Cannot read property' errors. (2) Uses plain HTML inputs styled with Tailwind CSS (no react-phone-input-2). (3) Has no next-auth imports or usage in the page component. (4) Implements proper client-side validation for full name (required), email (optional but validated), and mobile (10 digits). (5) Successfully submits to POST /api/auth/signup endpoint which validates data and stores in MongoDB 'signups' collection. (6) Shows proper loading state ('Creating…') during submission. (7) Displays success state with green check icon, 'You're on the list' message, Continue with Google button, and Back to home link. (8) Continue with Google button correctly redirects to Emergent auth flow (https://auth.emergentagent.com/oauth/?redirect=http://localhost:3000/client). (9) Mobile responsive (390x844) with no horizontal scroll. (10) Site header/chrome visible on page. Backend endpoint working correctly - returns 400 for invalid data, 200 with {ok: true, id: uuid} for valid data. Note: Console shows next-auth errors from SessionProvider in root layout (/app/frontend/app/providers.js), but these don't affect signup page functionality. The signup page itself is completely fixed and working perfectly."
   - agent: "testing"
     message: "COMPREHENSIVE SITE AUDIT completed successfully. Tested 11 key pages (homepage, 3 service pages, booking, services, gallery, pricing, blogs, signup, privacy policy) on desktop (1440x900) and mobile (390x844) viewports. CRITICAL FINDINGS: ✅ NO OLD phone number '+91 88887 66739' found on any page (initial test had false positive due to regex pattern). ✅ NO OLD postal code '400058' found on any page. ✅ JSON-LD schema on homepage and service pages contains CORRECT phone '+91 8888766739' and CORRECT postal code '400053'. ✅ Footer displays both Mumbai and Goa studios with correct addresses on all pages. ✅ Hamburger menu contains CORRECT phone number. ✅ No horizontal scroll on mobile viewport. ✅ All pages load successfully with HTTP 200 status. SUMMARY: All SEO fixes verified working correctly. Phone number and postal code updates have been successfully applied throughout the site. No content bugs, broken links, or layout issues found. Site is production-ready."
+  - agent: "testing"
+    message: "Admin token login fix verification completed successfully. All 6 authentication tests passed (6/6): ✅ Test 1: POST /api/admin/login with correct token 'PKAdmin@2026' returns HTTP 200 with {ok: true, token: 'PKAdmin@2026'}. ✅ Test 2: POST /api/admin/login with wrong token returns HTTP 401 with {error: 'Invalid admin token'}. ✅ Test 3: GET /api/admin/verify with 'x-admin-token: PKAdmin@2026' header returns HTTP 200 with {ok: true}. ✅ Test 4: GET /api/admin/verify with 'Authorization: Bearer PKAdmin@2026' header returns HTTP 200 with {ok: true}. ✅ Test 5: GET /api/admin/verify with no token returns HTTP 401 with {error: 'unauthorized'}. ✅ Test 6: GET /api/admin/verify with wrong token returns HTTP 401 with {error: 'unauthorized'}. Implementation verified at route.js lines 320-344: requireAdmin() helper checks both 'Authorization: Bearer' and 'x-admin-token' headers, POST /api/admin/login validates token and returns it on success, GET /api/admin/verify uses requireAdmin() gate. Admin authentication is working correctly through the FastAPI proxy. The reported bug (admin login at /admin/media not working) is now RESOLVED. No critical issues found."
 ## New task (Aug 2026): Cloudinary media system + site-wide banner slots
 backend:
   - task: "Media API (POST/GET/PATCH/DELETE) + admin token gate"
