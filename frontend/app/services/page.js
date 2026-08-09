@@ -6,6 +6,19 @@ import Image from 'next/image'
 import { motion, useScroll, useTransform, useSpring, AnimatePresence, useMotionValue, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import { SERVICES } from '@/app/page'
+import { useMediaSlot } from '@/hooks/useMediaSlot'
+
+/**
+ * Resolve a service card's still + video from that service's own hero banner
+ * slot (`<slug>-banner`) — the SAME media used on the service page hero.
+ * Falls back to the hardcoded defaults when the admin hasn't uploaded yet.
+ */
+function useBannerMedia(slug, fallbackImage, fallbackVideo) {
+  const { items } = useMediaSlot(`${slug}-banner`)
+  const img = items.find((i) => i.resource_type === 'image')?.secure_url || fallbackImage
+  const video = items.find((i) => i.resource_type === 'video')?.secure_url || fallbackVideo || null
+  return { img, video }
+}
 
 /* --- Hero image cluster --- */
 const HERO_IMG = {
@@ -372,7 +385,7 @@ function FeaturedRow({ item, index, total, reverse, reduce }) {
 
   const { head, tail } = splitTitle(item.t)
   const tags = TAGS[item.slug] || []
-  const video = VIDEOS[item.slug]
+  const { img: stillSrc, video } = useBannerMedia(item.slug, item.img, VIDEOS[item.slug])
 
   useEffect(() => {
     const v = videoRef.current
@@ -406,7 +419,7 @@ function FeaturedRow({ item, index, total, reverse, reduce }) {
       >
         <motion.div style={{ y: reduce ? 0 : y, scale: reduce ? 1 : scale, willChange: 'transform' }} className="absolute inset-[-8%]">
           <Image
-            src={item.img}
+            src={stillSrc}
             alt={item.t}
             fill
             sizes="(max-width: 768px) 100vw, 60vw"
@@ -618,9 +631,19 @@ function RestCard({ item, index, col, reduce }) {
   const rotY = useMotionValue(0)
   const sRotX = useSpring(rotX, { stiffness: 130, damping: 20 })
   const sRotY = useSpring(rotY, { stiffness: 130, damping: 20 })
+  const videoRef = useRef(null)
+  const [hover, setHover] = useState(false)
 
   const { head, tail } = splitTitle(item.t)
   const tags = TAGS[item.slug] || []
+  const { img: stillSrc, video } = useBannerMedia(item.slug, item.img, VIDEOS[item.slug])
+
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    if (hover) v.play().catch(() => {})
+    else { v.pause(); v.currentTime = 0 }
+  }, [hover])
 
   const onMove = (e) => {
     if (reduce) return
@@ -633,6 +656,7 @@ function RestCard({ item, index, col, reduce }) {
     rotX.set(-dy * 4)
   }
   const onLeave = () => {
+    setHover(false)
     rotX.set(0)
     rotY.set(0)
   }
@@ -650,19 +674,32 @@ function RestCard({ item, index, col, reduce }) {
         data-magnetic
         data-cursor="Explore"
         onMouseMove={onMove}
+        onMouseEnter={() => setHover(true)}
         onMouseLeave={onLeave}
         ref={cardRef}
         className="group relative block overflow-hidden rounded-sm bg-[#F5F2ED]"
       >
         <motion.div style={{ rotateX: sRotX, rotateY: sRotY, transformStyle: 'preserve-3d', willChange: 'transform' }} className="relative aspect-[4/5] overflow-hidden">
           <Image
-            src={item.img}
+            src={stillSrc}
             alt={item.t}
             fill
             sizes="(max-width: 768px) 100vw, 33vw"
             className="object-cover transition-[transform,filter] [transition-duration:1400ms] ease-out group-hover:scale-[1.08] group-hover:brightness-[1.06]"
             unoptimized
           />
+          {video && (
+            <video
+              ref={videoRef}
+              muted
+              playsInline
+              loop
+              preload="none"
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${hover ? 'opacity-100' : 'opacity-0'}`}
+            >
+              <source src={video} type="video/mp4" />
+            </video>
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-[#0E0D0C] via-[#0E0D0C]/68 to-transparent" />
           <div
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
