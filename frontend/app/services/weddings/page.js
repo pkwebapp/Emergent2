@@ -1,5 +1,5 @@
 'use client'
-import PageBanner from '@/components/media/PageBanner'
+import HeroMedia from '@/components/media/HeroMedia'
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
@@ -71,9 +71,7 @@ function Hero({ onPlayFilm }) {
   return (
     <section ref={ref} className="relative min-h-[100svh] overflow-hidden bg-[#161514]">
       <motion.div style={{ y, scale }} className="absolute inset-0">
-        <video autoPlay muted loop playsInline preload="auto" poster={IMG.hero} className="absolute inset-0 w-full h-full object-cover">
-          <source src={IMG.video} type="video/mp4" />
-        </video>
+        <HeroMedia slot="weddings-banner" fallbackImage={IMG.hero} fallbackVideo={IMG.video} />
         <div className="absolute inset-0 bg-gradient-to-b from-[#161514]/50 via-[#161514]/25 to-[#161514]/95" />
       </motion.div>
 
@@ -933,7 +931,6 @@ export default function WeddingsPage() {
 
   return (
     <main className="bg-[#EEEAE1]">
-      <PageBanner slot="weddings-banner" />
       <ReadingProgress />
       <Hero onPlayFilm={() => setVideoOpen(true)} />
       <Storytelling />
