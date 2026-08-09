@@ -145,6 +145,21 @@ backend:
         comment: "Admin token login fix verified successfully. All 6 authentication tests passed (6/6): (1) POST /api/admin/login with correct token 'PKAdmin@2026' returns HTTP 200 with {ok: true, token: 'PKAdmin@2026'}. (2) POST /api/admin/login with wrong token returns HTTP 401 with {error: 'Invalid admin token'}. (3) GET /api/admin/verify with 'x-admin-token: PKAdmin@2026' header returns HTTP 200 with {ok: true}. (4) GET /api/admin/verify with 'Authorization: Bearer PKAdmin@2026' header returns HTTP 200 with {ok: true}. (5) GET /api/admin/verify with no token returns HTTP 401 with {error: 'unauthorized'}. (6) GET /api/admin/verify with wrong token returns HTTP 401 with {error: 'unauthorized'}. Implementation verified at route.js lines 320-344: requireAdmin() helper checks both 'Authorization: Bearer' and 'x-admin-token' headers, POST /api/admin/login validates token and returns it on success, GET /api/admin/verify uses requireAdmin() gate. Admin authentication is working correctly through the FastAPI proxy. The reported bug (admin login at /admin/media not working) is now resolved."
 
 frontend:
+  - task: "Service page hero banner slideshow (PageBanner)"
+    implemented: true
+    working: true
+    file: "/app/frontend/components/media/PageBanner.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "On service pages, after uploading 1 image + 1 video to the banner slot, the first item showed as a big hero and the rest appeared as a small broken thumbnail/marquee strip below. Both should rotate one-by-one inside the same hero area."
+      - working: true
+        agent: "testing"
+        comment: "Fix verified (8/8 passed) on /services/weddings (weddings-banner slot with 1 image + 1 video). All items now rotate ONE BY ONE inside the SAME hero area as a slideshow with pagination dots (2) and prev/next arrows. Clicking next advances image->video in the same region. Auto-advance after ~5s for images works. The old thumbnail/marquee strip below the hero is completely GONE; content below hero is normal page content. Applies to all ~30 pages using PageBanner."
+
   - task: "Next.js API catch-all route"
     implemented: true
     working: true
