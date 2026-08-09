@@ -8,6 +8,7 @@ import { ArrowRight, Check, CloudSun, Film, Map, MessageCircle, ShieldCheck, Spa
 import { CONTACT } from '@/components/site/Chrome'
 import { ReadingProgress, RelatedServices } from '@/components/services/ServiceExtras'
 import HeroMedia from '@/components/media/HeroMedia'
+import { backendUrl } from '@/lib/backend'
 
 const aerialImages = [
   'https://images.unsplash.com/photo-1499669404910-ba8b35824a3c?crop=entropy&cs=srgb&fm=jpg&ixlib=rb-4.1.0&q=85',
@@ -125,7 +126,7 @@ export default function DroneServicesPageClient() {
   const [galleryImages, setGalleryImages] = useState(aerialImages)
 
   useEffect(() => {
-    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
+    const backend = backendUrl()
     fetch(`${backend}/api/media?slot=drone-services-gallery`, { cache: 'no-store' })
       .then((r) => r.ok ? r.json() : { items: [] })
       .then((data) => {

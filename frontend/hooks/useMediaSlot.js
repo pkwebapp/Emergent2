@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { backendUrl } from '@/lib/backend'
 
 /**
  * Fetches media records for a given slot or category.
@@ -12,7 +13,7 @@ export function useMediaSlot(slot) {
   useEffect(() => {
     if (!slot) { setLoading(false); return }
     let cancelled = false
-    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
+    const backend = backendUrl()
     fetch(`${backend}/api/media?slot=${encodeURIComponent(slot)}`, { cache: 'no-store' })
       .then((r) => r.ok ? r.json() : { items: [] })
       .then((data) => { if (!cancelled) { setItems(data?.items || []); setLoading(false) } })
@@ -28,7 +29,7 @@ export function useMediaCategory(category) {
   useEffect(() => {
     if (!category) { setLoading(false); return }
     let cancelled = false
-    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
+    const backend = backendUrl()
     fetch(`${backend}/api/media?category=${encodeURIComponent(category)}`, { cache: 'no-store' })
       .then((r) => r.ok ? r.json() : { items: [] })
       .then((data) => { if (!cancelled) { setItems(data?.items || []); setLoading(false) } })

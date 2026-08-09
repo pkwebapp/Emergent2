@@ -8,6 +8,7 @@ import { ArrowRight, Calendar, Check, MessageCircle, Play, Users, Zap } from 'lu
 import { CONTACT } from '@/components/site/Chrome'
 import { ReadingProgress, RelatedServices } from '@/components/services/ServiceExtras'
 import HeroMedia from '@/components/media/HeroMedia'
+import { backendUrl } from '@/lib/backend'
 
 const CLD = 'https://res.cloudinary.com/ddamvvrby/image/upload'
 
@@ -174,7 +175,7 @@ export default function EventsPageClient() {
   const [galleryImages, setGalleryImages] = useState(eventImages)
 
   useEffect(() => {
-    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
+    const backend = backendUrl()
     fetch(`${backend}/api/media?slot=events-gallery`, { cache: 'no-store' })
       .then((r) => r.ok ? r.json() : { items: [] })
       .then((data) => {

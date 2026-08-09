@@ -8,6 +8,7 @@ import { ArrowRight, Check, MessageCircle, Users } from 'lucide-react'
 import { CONTACT } from '@/components/site/Chrome'
 import { ReadingProgress, RelatedServices } from '@/components/services/ServiceExtras'
 import HeroMedia from '@/components/media/HeroMedia'
+import { backendUrl } from '@/lib/backend'
 import { SERVICES } from '@/lib/services'
 import { SERVICE_SEO } from '@/lib/seo'
 
@@ -192,7 +193,7 @@ export default function HeadshotsPageClient() {
   const [galleryImages, setGalleryImages] = useState(headshotImages)
 
   useEffect(() => {
-    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
+    const backend = backendUrl()
     fetch(`${backend}/api/media?slot=portraits-headshots-gallery`, { cache: 'no-store' })
       .then((r) => r.ok ? r.json() : { items: [] })
       .then((data) => {
