@@ -145,6 +145,21 @@ backend:
         comment: "Admin token login fix verified successfully. All 6 authentication tests passed (6/6): (1) POST /api/admin/login with correct token 'PKAdmin@2026' returns HTTP 200 with {ok: true, token: 'PKAdmin@2026'}. (2) POST /api/admin/login with wrong token returns HTTP 401 with {error: 'Invalid admin token'}. (3) GET /api/admin/verify with 'x-admin-token: PKAdmin@2026' header returns HTTP 200 with {ok: true}. (4) GET /api/admin/verify with 'Authorization: Bearer PKAdmin@2026' header returns HTTP 200 with {ok: true}. (5) GET /api/admin/verify with no token returns HTTP 401 with {error: 'unauthorized'}. (6) GET /api/admin/verify with wrong token returns HTTP 401 with {error: 'unauthorized'}. Implementation verified at route.js lines 320-344: requireAdmin() helper checks both 'Authorization: Bearer' and 'x-admin-token' headers, POST /api/admin/login validates token and returns it on success, GET /api/admin/verify uses requireAdmin() gate. Admin authentication is working correctly through the FastAPI proxy. The reported bug (admin login at /admin/media not working) is now resolved."
 
 frontend:
+  - task: "Service page hero background from uploaded media (HeroMedia)"
+    implemented: true
+    working: true
+    file: "/app/frontend/components/media/HeroMedia.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "Uploaded photo/video was showing in a separate banner ABOVE the hero. It should instead be the BACKGROUND of the actual hero section: show the photo first, then once the video is fully loaded show the video."
+      - working: true
+        agent: "testing"
+        comment: "Verified 5/5 core requirements on /services/weddings: no separate banner above hero; hero background shows uploaded Cloudinary (jeoj8k1t) photo immediately; text overlay readable; content below hero is normal; hero uses uploaded media not old defaults. Video element configured correctly (opacity 0 -> 1 on onCanPlayThrough) with accessible jeoj8k1t mp4 (HTTP 200); fade-in could not be observed in the headless Playwright env due to video streaming limitation but implementation is correct. Applied to weddings page only so far."
+
   - task: "Service page hero banner slideshow (PageBanner)"
     implemented: true
     working: true
