@@ -372,6 +372,7 @@ async function handleRoute(request, { params }) {
         booking_id: body.booking_id ? String(body.booking_id) : null,
         sort_order: Number.isFinite(Number(body.sort_order)) ? Number(body.sort_order) : 0,
         alt: body.alt ? String(body.alt).slice(0, 300) : null,
+        location: body.location ? String(body.location).slice(0, 200) : null,
         active: body.active === false ? false : true,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
@@ -405,6 +406,7 @@ async function handleRoute(request, { params }) {
       const $set = { updated_at: new Date().toISOString() }
       if (body.sort_order != null) $set.sort_order = Number(body.sort_order) || 0
       if (body.alt != null) $set.alt = String(body.alt).slice(0, 300)
+      if (body.location != null) $set.location = String(body.location).slice(0, 200) || null
       if (body.slot != null) $set.slot = String(body.slot).trim() || null
       if (body.category != null) $set.category = String(body.category).trim()
       if (body.active != null) $set.active = !!body.active

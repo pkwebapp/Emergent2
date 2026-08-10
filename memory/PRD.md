@@ -24,3 +24,8 @@ Pull the full public repo `github.com/pkwebapp/Emergent2` into /app without chan
 - Placeholder starting prices (₹18k / ₹42k / ₹75k) — swap for the real values.
 - WhatsApp number reuses the existing `+91 8888766739` from other pages.
 - Location images are drawn from the repo's existing wedding/outdoor folders as placeholders — swap once real Ashvem / Mandrem / Arambol / Vagator frames are ready.
+
+## Update — Gallery Title + Location (Aug 2025)
+- Media records now support a `location` field (Title = existing `alt`). Backend: POST/PATCH `/api/media` in `frontend/app/api/[[...path]]/route.js`.
+- Admin `/admin/media`: each gallery image card now has editable **Title** + **Location** text inputs (auto-save on blur) for Galleries tab (Weddings/Events/Portraits-Headshots/Portfolio), Service Pages galleries, and Portfolio tab.
+- Public pages: removed the "Open story" link and the full-screen lightbox from the Weddings mosaic (`services/weddings/page.js`), the generic service Portfolio Showcase (`services/[slug]/ServicePageClient.jsx`), and the `/gallery` page (`gallery/GalleryClient.jsx`). Tiles are now non-clickable and show Title + Location on hover.

@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion'
-import { ArrowRight, ArrowUpRight, ArrowLeft, MessageCircle, Play, Camera, Video, Film, Sparkles, MapPin, Clock, X, Check, Heart, Star, Award } from 'lucide-react'
+import { ArrowRight, MessageCircle, Play, Camera, Video, Film, Sparkles, MapPin, Clock, X, Check, Heart, Star, Award } from 'lucide-react'
 import { CONTACT } from '@/components/site/Chrome'
 import { ReadingProgress, RelatedServices } from '@/components/services/ServiceExtras'
 
@@ -312,7 +312,7 @@ const PORTFOLIO = [
   { img: IMG.w11, couple: 'Kavya & Yash', place: 'Umaid Bhawan · Jodhpur', size: 'lg' },
 ]
 
-function Portfolio({ onOpen }) {
+function Portfolio() {
   const [portfolio, setPortfolio] = useState(PORTFOLIO)
 
   useEffect(() => {
@@ -325,7 +325,7 @@ function Portfolio({ onOpen }) {
           return {
             img: i.secure_url,
             couple: i.alt || defaultItem.couple || `Wedding ${idx + 1}`,
-            place: defaultItem.place || 'PK Photography',
+            place: i.location || defaultItem.place || 'PK Photography',
             size: defaultItem.size || (['lg', 'md', 'sm'][idx % 3]),
             _uploaded: true,
           }
@@ -349,9 +349,8 @@ function Portfolio({ onOpen }) {
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 md:gap-5">
           {portfolio.map((p, i) => {
             return (
-              <motion.button
+              <motion.div
                 key={i}
-                onClick={() => onOpen(i)}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
@@ -363,12 +362,11 @@ function Portfolio({ onOpen }) {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#161514]/85 via-[#161514]/10 to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="absolute inset-0 p-5 md:p-6 flex flex-col justify-end text-left text-white">
                   <div className="opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-500">
-                    <div className="text-[10px] tracking-[0.28em] uppercase text-[#67E8F9] flex items-center gap-2"><MapPin size={11} /> {p.place}</div>
+                    {p.place && <div className="text-[10px] tracking-[0.28em] uppercase text-[#67E8F9] flex items-center gap-2"><MapPin size={11} /> {p.place}</div>}
+                    {p.couple && <div className="display text-xl md:text-2xl mt-2">{p.couple}</div>}
                   </div>
-                  <div className="display text-xl md:text-2xl mt-2">{p.couple}</div>
-                  <div className="mt-2 inline-flex items-center gap-1 text-[10px] uppercase tracking-widest text-white/70 opacity-0 group-hover:opacity-100 transition-opacity">Open story <ArrowUpRight size={11} /></div>
                 </div>
-              </motion.button>
+              </motion.div>
             )
           })}
         </div>
@@ -804,39 +802,6 @@ function VideoModal({ open, onClose }) {
   )
 }
 
-/* ---------- Image Lightbox ---------- */
-function ImageLightbox({ index, images, onClose, onNav }) {
-  useEffect(() => {
-    if (index === null) return
-    const onKey = (e) => {
-      if (e.key === 'Escape') onClose()
-      if (e.key === 'ArrowRight') onNav(1)
-      if (e.key === 'ArrowLeft') onNav(-1)
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [index, onClose, onNav])
-  return (
-    <AnimatePresence>
-      {index !== null && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="fixed inset-0 z-[150] bg-black/95 backdrop-blur-sm grid place-content-center p-4">
-          <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }} onClick={(e) => e.stopPropagation()} className="relative w-[min(92vw,1100px)] aspect-[4/5] md:aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl">
-            <Image src={images[index].img} alt={`${images[index].couple} wedding at ${images[index].place} in candid cinematic style, Mumbai & Goa`} fill sizes="1100px" className="object-cover" priority />
-            <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/85 to-transparent">
-              <div className="text-[10px] tracking-widest uppercase text-[#67E8F9] flex items-center gap-2"><MapPin size={11} /> {images[index].place}</div>
-              <div className="display text-2xl text-white mt-1">{images[index].couple}</div>
-              <div className="text-xs text-white/60 mt-1">Frame {index + 1} / {images.length}</div>
-            </div>
-          </motion.div>
-          <button onClick={() => onNav(-1)} aria-label="Previous" className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[#EEEAE1]/10 backdrop-blur border border-white/20 text-white grid place-content-center hover:bg-[#EEEAE1]/20"><ArrowLeft size={18} /></button>
-          <button onClick={() => onNav(1)} aria-label="Next" className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[#EEEAE1]/10 backdrop-blur border border-white/20 text-white grid place-content-center hover:bg-[#EEEAE1]/20"><ArrowRight size={18} /></button>
-          <button onClick={onClose} aria-label="Close" className="absolute top-6 right-6 w-12 h-12 rounded-full bg-[#EEEAE1]/10 backdrop-blur text-white grid place-content-center hover:bg-[#EEEAE1]/20"><X size={20} /></button>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  )
-}
-
 /* ---------- Sticky Enquire ---------- */
 function StickyEnquire() {
   const [show, setShow] = useState(false)
@@ -911,23 +876,7 @@ function WeddingLocalSeoBlock() {
 }
 
 export default function WeddingsPage() {
-  const [lightbox, setLightbox] = useState(null)
   const [videoOpen, setVideoOpen] = useState(false)
-  const [portfolioImages, setPortfolioImages] = useState(PORTFOLIO)
-
-  useEffect(() => {
-    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
-    fetch(`${backend}/api/media?slot=weddings-gallery`, { cache: 'no-store' })
-      .then((r) => r.ok ? r.json() : { items: [] })
-      .then((data) => {
-        const items = (data?.items || []).filter((i) => i.secure_url).map((i, idx) => {
-          const d = PORTFOLIO[idx] || {}
-          return { img: i.secure_url, couple: i.alt || d.couple || `Wedding ${idx + 1}`, place: d.place || 'PK Photography', size: d.size || (['lg','md','sm'][idx % 3]) }
-        })
-        if (items.length) setPortfolioImages(items)
-      })
-      .catch(() => {})
-  }, [])
 
   return (
     <main className="bg-[#EEEAE1]">
@@ -936,7 +885,7 @@ export default function WeddingsPage() {
       <Storytelling />
       <ServiceBlocks />
       <JourneyTimeline />
-      <Portfolio onOpen={(i) => setLightbox(i)} />
+      <Portfolio />
       <WeddingFilms onPlay={() => setVideoOpen(true)} />
       <WhyUs />
       <Deliverables />
@@ -951,12 +900,6 @@ export default function WeddingsPage() {
 
       <StickyEnquire />
       <VideoModal open={videoOpen} onClose={() => setVideoOpen(false)} />
-      <ImageLightbox
-        index={lightbox}
-        images={portfolioImages}
-        onClose={() => setLightbox(null)}
-        onNav={(d) => setLightbox((v) => (v + d + portfolioImages.length) % portfolioImages.length)}
-      />
     </main>
   )
 }

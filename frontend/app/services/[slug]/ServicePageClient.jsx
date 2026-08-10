@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
-import { ArrowRight, ArrowUpRight, ArrowLeft, Check, Award, Zap, Users, Star, MessageCircle, Play, Camera, Video, Sparkles, Calendar, Clock, ChevronDown, X } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Check, Award, Zap, Users, Star, MessageCircle, Play, Camera, Video, Sparkles, Calendar, Clock, ChevronDown, MapPin } from 'lucide-react'
 import { CONTACT } from '@/components/site/Chrome'
 import { ReadingProgress } from '@/components/services/ServiceExtras'
 import HeroMedia from '@/components/media/HeroMedia'
@@ -547,7 +547,6 @@ export default function ServicePageClient({ slug }) {
 
   // Hooks must be called on every render (before any conditional return) to satisfy Rules of Hooks.
   const [activeCover, setActiveCover] = useState(0)
-  const [lightbox, setLightbox] = useState(null)
   const [showStickyCTA, setShowStickyCTA] = useState(false)
   const [portfolio, setPortfolio] = useState(defaultPortfolio)
   const heroRef = useRef(null)
@@ -562,8 +561,10 @@ export default function ServicePageClient({ slug }) {
     fetch(`${backend}/api/media?slot=${encodeURIComponent(slug)}-gallery`, { cache: 'no-store' })
       .then((r) => r.ok ? r.json() : { items: [] })
       .then((data) => {
-        const urls = (data?.items || []).filter((i) => i.secure_url).map((i) => i.secure_url)
-        if (urls.length) setPortfolio(urls)
+        const items = (data?.items || [])
+          .filter((i) => i.secure_url)
+          .map((i) => ({ url: i.secure_url, title: i.alt || '', location: i.location || '' }))
+        if (items.length) setPortfolio(items)
       })
       .catch(() => {})
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -573,11 +574,6 @@ export default function ServicePageClient({ slug }) {
     const onScroll = () => setShowStickyCTA(window.scrollY > 900)
     onScroll(); window.addEventListener('scroll', onScroll); return () => window.removeEventListener('scroll', onScroll)
   }, [])
-
-  useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') setLightbox(null); if (e.key === 'ArrowRight' && lightbox !== null) setLightbox(l => (l + 1) % portfolio.length); if (e.key === 'ArrowLeft' && lightbox !== null) setLightbox(l => (l - 1 + portfolio.length) % portfolio.length) }
-    window.addEventListener('keydown', onKey); return () => window.removeEventListener('keydown', onKey)
-  }, [lightbox, portfolio.length])
 
   if (!service) return notFound()
   const aboutHead = SERVICE_HEAD[slug] || ['The craft of', `${service.t.toLowerCase()}.`]
@@ -885,16 +881,17 @@ export default function ServicePageClient({ slug }) {
             <div>
               <div className="eyebrow mb-3">Portfolio Showcase</div>
               <h2 className="display text-4xl md:text-6xl">Recent <span className="text-[#FF5B22] italic font-medium">frames.</span></h2>
-              <p className="mt-3 text-[#8A857D] text-sm">Tap any image to open. Use ← → to navigate.</p>
             </div>
             <Link href="/gallery" className="inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B22]">View full gallery <ArrowRight size={14} /></Link>
           </div>
           <div className="columns-2 md:columns-4 gap-3 md:gap-4">
-            {portfolio.slice(0, 8).map((src, i) => {
+            {portfolio.slice(0, 8).map((p, i) => {
+              const src = typeof p === 'string' ? p : p.url
+              const title = (typeof p === 'string' ? '' : p.title) || `${shortTitle} · ${2024 + (i % 2)}`
+              const loc = typeof p === 'string' ? '' : p.location
               return (
-                <motion.button
+                <motion.div
                   key={i}
-                  onClick={() => setLightbox(i)}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-40px' }}
@@ -902,18 +899,13 @@ export default function ServicePageClient({ slug }) {
                   className="relative block w-full mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl group"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={src} alt={localAlt(`${service.t} portfolio frame ${i + 1}`, 'Mumbai or Goa shoot location', 'luxury editorial')} loading="lazy" className="w-full h-auto block transition-transform [transition-duration:1200ms] group-hover:scale-110" />
+                  <img src={src} alt={localAlt(`${service.t} portfolio frame ${i + 1}`, loc || 'Mumbai or Goa shoot location', 'luxury editorial')} loading="lazy" className="w-full h-auto block transition-transform [transition-duration:1200ms] group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#161514]/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <span className="w-14 h-14 rounded-full bg-[#EEEAE1]/95 backdrop-blur text-[#161514] grid place-content-center scale-75 group-hover:scale-100 transition-transform">
-                      <ArrowUpRight size={20} />
-                    </span>
+                  <div className="absolute bottom-3 left-3 right-3 text-white opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                    {loc && <div className="text-[10px] tracking-widest uppercase text-[#67E8F9] flex items-center gap-1.5"><MapPin size={11} /> {loc}</div>}
+                    <div className="text-sm font-semibold mt-1">{title}</div>
                   </div>
-                  <div className="absolute bottom-3 left-3 text-white opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
-                    <div className="text-[10px] tracking-widest uppercase text-white/70">PK Photography</div>
-                    <div className="text-sm font-semibold">{shortTitle} · {2024 + (i % 2)}</div>
-                  </div>
-                </motion.button>
+                </motion.div>
               )
             })}
           </div>
@@ -998,23 +990,6 @@ export default function ServicePageClient({ slug }) {
         )}
       </AnimatePresence>
 
-      {/* ---------- Lightbox modal ---------- */}
-      <AnimatePresence>
-        {lightbox !== null && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setLightbox(null)} className="fixed inset-0 z-[150] bg-black/95 backdrop-blur-sm grid place-content-center p-4">
-            <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }} onClick={(e) => e.stopPropagation()} className="relative w-[min(92vw,1100px)] aspect-[4/5] md:aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl">
-              <Image src={portfolio[lightbox]} alt={localAlt(`${service.t} enlarged portfolio frame ${lightbox + 1}`, 'Mumbai or Goa venue', 'candid cinematic')} fill sizes="1100px" className="object-cover" priority />
-              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
-                <div className="text-[10px] tracking-widest uppercase text-[#67E8F9]">PK Photography · {shortTitle}</div>
-                <div className="text-white text-xl font-semibold mt-1">Frame {String(lightbox + 1).padStart(2, '0')} / {String(portfolio.length).padStart(2, '0')}</div>
-              </div>
-            </motion.div>
-            <button onClick={() => setLightbox((lightbox - 1 + portfolio.length) % portfolio.length)} aria-label="Previous" className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[#EEEAE1]/10 backdrop-blur border border-white/20 text-white grid place-content-center hover:bg-[#EEEAE1]/20"><ArrowLeft size={18} /></button>
-            <button onClick={() => setLightbox((lightbox + 1) % portfolio.length)} aria-label="Next" className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[#EEEAE1]/10 backdrop-blur border border-white/20 text-white grid place-content-center hover:bg-[#EEEAE1]/20"><ArrowRight size={18} /></button>
-            <button onClick={() => setLightbox(null)} aria-label="Close" className="absolute top-6 right-6 w-12 h-12 rounded-full bg-[#EEEAE1]/10 backdrop-blur text-white grid place-content-center hover:bg-[#EEEAE1]/20"><X size={20} /></button>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </main>
   )
 }

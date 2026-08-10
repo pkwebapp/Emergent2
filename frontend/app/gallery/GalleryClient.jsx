@@ -1,9 +1,8 @@
 'use client'
 
 import { Suspense, useEffect, useState } from 'react'
-import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowRight, X, ChevronLeft, ChevronRight, Link as LinkIcon, Check } from 'lucide-react'
+import { ArrowRight, Link as LinkIcon, Check, MapPin } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { IMG, PageHeader } from '@/components/site/Chrome'
 import axiosInstance from '@live/utils/axiosConfig'
@@ -86,7 +85,6 @@ function GalleryInner() {
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [lightbox, setLightbox] = useState(null) // { idx }
   const [copied, setCopied] = useState(false)
 
   const activeService = SERVICES.find((s) => s.key === active)
@@ -147,6 +145,7 @@ function GalleryInner() {
             _id: i.id,
             imageUrl: i.secure_url,
             imageName: i.alt || activeService.label,
+            subtitle: i.location || '',
             resource_type: i.resource_type,
             _uploaded: true,
           }))
@@ -333,33 +332,18 @@ function GalleryInner() {
                   index={i}
                   categoryLabel={activeService.label}
                   location={LOCATION_BY_CATEGORY[active]}
-                  onOpen={() => setLightbox({ idx: i })}
                 />
               ))}
             </div>
           )}
         </div>
       </section>
-
-      {/* Lightbox */}
-      <AnimatePresence>
-        {lightbox && (
-          <Lightbox
-            items={displayItems}
-            index={lightbox.idx}
-            categoryLabel={activeService.label}
-            location={LOCATION_BY_CATEGORY[active]}
-            onClose={() => setLightbox(null)}
-            onNav={(nextIdx) => setLightbox({ idx: nextIdx })}
-          />
-        )}
-      </AnimatePresence>
     </main>
   )
 }
 
 /* Single tile — uses natural image aspect (no cropping) via next/image with width/height auto */
-function GalleryTile({ item, index, categoryLabel, location, onOpen }) {
+function GalleryTile({ item, index, categoryLabel, location }) {
   const isVideo = item.resource_type === 'video'
   return (
     <motion.div
@@ -367,9 +351,8 @@ function GalleryTile({ item, index, categoryLabel, location, onOpen }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-30px' }}
       transition={{ duration: 0.6, delay: (index % 6) * 0.04 }}
-      onClick={onOpen}
       data-testid={`gallery-card-${index}`}
-      className="group relative mb-4 md:mb-5 rounded-2xl overflow-hidden cursor-pointer break-inside-avoid bg-[#F0F2F5]"
+      className="group relative mb-4 md:mb-5 rounded-2xl overflow-hidden break-inside-avoid bg-[#F0F2F5]"
     >
       {isVideo ? (
         <video
@@ -384,109 +367,19 @@ function GalleryTile({ item, index, categoryLabel, location, onOpen }) {
         /* eslint-disable-next-line @next/next/no-img-element */
         <img
           src={typeof item === 'string' ? item : item.imageUrl}
-          alt={`${item.imageName || categoryLabel} at ${location} in candid cinematic style, Mumbai & Goa`}
+          alt={`${item.imageName || categoryLabel} at ${item.subtitle || location} in candid cinematic style, Mumbai & Goa`}
           loading="lazy"
           className="block w-full h-auto transition-transform [transition-duration:1400ms] group-hover:scale-[1.03]"
         />
       )}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#161514]/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       <div className="pointer-events-none absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-2 group-hover:translate-y-0">
-        <div className="text-[10px] tracking-widest uppercase opacity-70">
-          PK Photography · {categoryLabel}
-        </div>
-        {item.imageName && <div className="font-semibold truncate">{item.imageName}</div>}
-        {item.subtitle && <div className="text-xs opacity-80 truncate">{item.subtitle}</div>}
-      </div>
-    </motion.div>
-  )
-}
-
-function Lightbox({ items, index, categoryLabel, location, onClose, onNav }) {
-  const item = items[index]
-  const prev = () => onNav((index - 1 + items.length) % items.length)
-  const next = () => onNav((index + 1) % items.length)
-
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === 'Escape') onClose()
-      if (e.key === 'ArrowLeft') prev()
-      if (e.key === 'ArrowRight') next()
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index])
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onClick={onClose}
-      className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-sm grid place-content-center p-4"
-      data-testid="gallery-lightbox"
-    >
-      <button
-        onClick={onClose}
-        aria-label="Close"
-        data-testid="gallery-lightbox-close"
-        className="absolute top-6 right-6 w-12 h-12 rounded-full bg-[#EEEAE1]/10 backdrop-blur grid place-content-center text-white hover:bg-[#EEEAE1]/20"
-      >
-        <X size={20} />
-      </button>
-      <button
-        onClick={(e) => { e.stopPropagation(); prev() }}
-        aria-label="Previous"
-        data-testid="gallery-lightbox-prev"
-        className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[#EEEAE1]/10 backdrop-blur grid place-content-center text-white hover:bg-[#EEEAE1]/20"
-      >
-        <ChevronLeft size={22} />
-      </button>
-      <button
-        onClick={(e) => { e.stopPropagation(); next() }}
-        aria-label="Next"
-        data-testid="gallery-lightbox-next"
-        className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[#EEEAE1]/10 backdrop-blur grid place-content-center text-white hover:bg-[#EEEAE1]/20"
-      >
-        <ChevronRight size={22} />
-      </button>
-      <motion.div
-        key={item.imageUrl}
-        initial={{ scale: 0.94, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.94, opacity: 0 }}
-        onClick={(e) => e.stopPropagation()}
-        className="relative flex flex-col items-center gap-4"
-        style={{ maxWidth: 'min(92vw, 1400px)' }}
-      >
-        {item.resource_type === 'video' ? (
-          <video
-            src={item.imageUrl}
-            autoPlay
-            controls
-            loop
-            playsInline
-            className="block"
-            style={{ maxHeight: '82vh', maxWidth: '92vw', width: 'auto', height: 'auto', objectFit: 'contain' }}
-          />
-        ) : (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src={item.imageUrl}
-            alt={`${item.imageName || categoryLabel} at ${location} in luxury editorial style, Mumbai & Goa`}
-            className="block"
-            style={{ maxHeight: '82vh', maxWidth: '92vw', width: 'auto', height: 'auto', objectFit: 'contain' }}
-          />
-        )}
-        {(item.imageName || item.subtitle) && (
-          <div className="bg-black/50 backdrop-blur text-white text-center px-6 py-3 rounded-full text-sm max-w-[90%]">
-            <span className="font-semibold">{item.imageName}</span>
-            {item.subtitle ? <span className="opacity-70"> · {item.subtitle}</span> : null}
+        {item.subtitle && (
+          <div className="text-[10px] tracking-widest uppercase text-[#67E8F9] flex items-center gap-1.5">
+            <MapPin size={11} /> {item.subtitle}
           </div>
         )}
-      </motion.div>
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-xs tracking-widest uppercase">
-        {index + 1} / {items.length}
+        {item.imageName && <div className="font-semibold truncate mt-1">{item.imageName}</div>}
       </div>
     </motion.div>
   )

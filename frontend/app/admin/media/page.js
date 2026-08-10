@@ -104,7 +104,7 @@ function LoginGate({ onOK }) {
 }
 
 /* ================= Media Card + Grid ================= */
-function MediaCard({ item, onDelete, onSortSave, sortValue, onSortChange }) {
+function MediaCard({ item, onDelete, onSortSave, sortValue, onSortChange, showMeta, titleValue, locationValue, onTitleChange, onLocationChange, onMetaSave }) {
   const isVideo = item.resource_type === 'video'
   return (
     <div className="group relative rounded-lg overflow-hidden bg-neutral-900 border border-neutral-800">
@@ -113,6 +113,20 @@ function MediaCard({ item, onDelete, onSortSave, sortValue, onSortChange }) {
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={item.secure_url} alt={item.alt || ''} className="w-full h-40 object-cover" />
+      )}
+      {showMeta && (
+        <div className="p-2 pb-0 space-y-1.5">
+          <input
+            type="text" value={titleValue} onChange={(e) => onTitleChange(e.target.value)} onBlur={onMetaSave}
+            placeholder="Title (e.g. Ananya & Rohan)"
+            className="w-full rounded bg-neutral-800 border border-neutral-700 px-2 py-1 text-[11px] text-neutral-100 placeholder:text-neutral-500 focus:outline-none focus:border-orange-500"
+            title="Title shown on the image" />
+          <input
+            type="text" value={locationValue} onChange={(e) => onLocationChange(e.target.value)} onBlur={onMetaSave}
+            placeholder="Location (e.g. Taj Land's End · Mumbai)"
+            className="w-full rounded bg-neutral-800 border border-neutral-700 px-2 py-1 text-[11px] text-neutral-100 placeholder:text-neutral-500 focus:outline-none focus:border-orange-500"
+            title="Location shown on the image" />
+        </div>
       )}
       <div className="p-2 text-xs text-neutral-400 flex items-center justify-between gap-2">
         <input type="number" value={sortValue} onChange={(e) => onSortChange(Number(e.target.value))}
@@ -127,8 +141,9 @@ function MediaCard({ item, onDelete, onSortSave, sortValue, onSortChange }) {
   )
 }
 
-function MediaGrid({ items, adminToken, onChanged }) {
+function MediaGrid({ items, adminToken, onChanged, showMeta = false }) {
   const [drafts, setDrafts] = useState({})
+  const [metaDrafts, setMetaDrafts] = useState({})
 
   const del = async (item) => {
     if (!confirm(`Delete ${item.original_filename || item.public_id}? This removes it from Cloudinary too.`)) return
@@ -145,6 +160,21 @@ function MediaGrid({ items, adminToken, onChanged }) {
     catch (e) { alert(e.message) }
   }
 
+  const changeMeta = (id, field, value) =>
+    setMetaDrafts((old) => ({ ...old, [id]: { ...old[id], [field]: value } }))
+
+  const saveMeta = async (item) => {
+    const draft = metaDrafts[item.id] || {}
+    const nextTitle = draft.alt ?? (item.alt || '')
+    const nextLoc = draft.location ?? (item.location || '')
+    const patch = {}
+    if (nextTitle !== (item.alt || '')) patch.alt = nextTitle
+    if (nextLoc !== (item.location || '')) patch.location = nextLoc
+    if (!Object.keys(patch).length) return
+    try { await updateMedia(item.id, patch, adminToken); onChanged() }
+    catch (e) { alert(e.message) }
+  }
+
   if (!items.length) {
     return <div className="text-sm text-neutral-500 mt-4">No items yet. Upload some above.</div>
   }
@@ -153,9 +183,15 @@ function MediaGrid({ items, adminToken, onChanged }) {
       {items.map((item) => (
         <MediaCard key={item.id}
           item={item}
+          showMeta={showMeta}
           sortValue={drafts[item.id] ?? item.sort_order}
           onSortChange={(v) => changeSort(item.id, v)}
           onSortSave={() => saveSort(item)}
+          titleValue={metaDrafts[item.id]?.alt ?? (item.alt || '')}
+          locationValue={metaDrafts[item.id]?.location ?? (item.location || '')}
+          onTitleChange={(v) => changeMeta(item.id, 'alt', v)}
+          onLocationChange={(v) => changeMeta(item.id, 'location', v)}
+          onMetaSave={() => saveMeta(item)}
           onDelete={del} />
       ))}
     </div>
@@ -163,7 +199,7 @@ function MediaGrid({ items, adminToken, onChanged }) {
 }
 
 /* ================= Slot Section ================= */
-function SlotSection({ adminToken, slot, title, description, multiple = false, acceptVideo = false, category, startIndex = 0 }) {
+function SlotSection({ adminToken, slot, title, description, multiple = false, acceptVideo = false, category, startIndex = 0, showMeta = false }) {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -194,7 +230,7 @@ function SlotSection({ adminToken, slot, title, description, multiple = false, a
       {loading ? (
         <div className="mt-6 text-sm text-neutral-500">Loading…</div>
       ) : (
-        <MediaGrid items={items} adminToken={adminToken} onChanged={load} />
+        <MediaGrid items={items} adminToken={adminToken} onChanged={load} showMeta={showMeta} />
       )}
     </div>
   )
@@ -245,9 +281,10 @@ function ServicesTab({ adminToken }) {
         adminToken={adminToken}
         slot={gallerySlot}
         title={`${active.label} — Gallery`}
-        description={`Renders as an image grid on the ${active.label} page.`}
+        description={`Renders as an image grid on the ${active.label} page. Add a Title and Location to each image — they appear over the photo on hover.`}
         multiple
         category={active.key}
+        showMeta
       />
     </div>
   )
@@ -317,7 +354,7 @@ function GalleryTab({ adminToken }) {
       {loading ? (
         <div className="mt-6 text-sm text-neutral-500">Loading…</div>
       ) : (
-        <MediaGrid items={items} adminToken={adminToken} onChanged={load} />
+        <MediaGrid items={items} adminToken={adminToken} onChanged={load} showMeta />
       )}
     </div>
   )
@@ -407,9 +444,10 @@ function PortfolioTab({ adminToken }) {
         adminToken={adminToken}
         slot="portfolio-gallery"
         title="Portfolio gallery"
-        description="Photos shown in the main portfolio grid."
+        description="Photos shown in the main portfolio grid. Add a Title and Location to each image — they appear over the photo on hover."
         multiple
         category="portfolio"
+        showMeta
       />
     </div>
   )
