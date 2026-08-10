@@ -9,6 +9,8 @@ import {
   ChevronDown, ArrowRight, ArrowUpRight, Clock, Loader2, CheckCircle2, Instagram, Send,
 } from 'lucide-react'
 import { CATEGORIES, catColor, POSTS, EDITORS, SLIDES, INSTA_IMAGES } from './posts'
+import HeroMedia from '@/components/media/HeroMedia'
+import { useMediaSlot } from '@/hooks/useMediaSlot'
 
 const INSTAGRAM = 'https://www.instagram.com/'
 const WHATSAPP = 'https://wa.me/+918888766739'
@@ -174,6 +176,12 @@ export default function Journal() {
     return () => clearInterval(t)
   }, [])
 
+  // Admin-uploaded hero media (photo + video) for the blog hero background.
+  const { items: bannerItems } = useMediaSlot('blog-banner')
+  const hasUploadedBanner = bannerItems.some(
+    (i) => i.resource_type === 'image' || i.resource_type === 'video'
+  )
+
   const [external, setExternal] = useState([])
   useEffect(() => {
     let on = true
@@ -226,17 +234,21 @@ export default function Journal() {
         className="relative h-[92svh] min-h-[620px] w-full overflow-hidden flex flex-col justify-end"
       >
         <motion.div style={{ scale: heroScale }} className="absolute inset-0">
-          {SLIDES.map((src, i) => (
-            <motion.div
-              key={src}
-              initial={false}
-              animate={{ opacity: slide === i ? 1 : 0 }}
-              transition={{ duration: 1.4, ease: 'easeInOut' }}
-              className="absolute inset-0"
-            >
-              <Image src={src} alt="" fill priority={i === 0} sizes="100vw" className="object-cover" />
-            </motion.div>
-          ))}
+          {hasUploadedBanner ? (
+            <HeroMedia slot="blog-banner" fallbackImage={SLIDES[0]} />
+          ) : (
+            SLIDES.map((src, i) => (
+              <motion.div
+                key={src}
+                initial={false}
+                animate={{ opacity: slide === i ? 1 : 0 }}
+                transition={{ duration: 1.4, ease: 'easeInOut' }}
+                className="absolute inset-0"
+              >
+                <Image src={src} alt="" fill priority={i === 0} sizes="100vw" className="object-cover" />
+              </motion.div>
+            ))
+          )}
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d0c0b] via-[#0d0c0b]/35 to-[#0d0c0b]/50" />
 
