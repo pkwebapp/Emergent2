@@ -30,6 +30,9 @@ import {
   Star,
   Compass,
 } from 'lucide-react'
+import { useBlogInside } from '@/hooks/useMediaSlot'
+
+const POST_ID = 'pre-wedding-goa'
 
 const WHATSAPP = 'https://wa.me/+918888766739'
 
@@ -409,14 +412,14 @@ function ServiceSection({ s, reverse }) {
 }
 
 /* ---------------- Reel highlight (dark card) ---------------- */
-function ReelHighlight() {
+function ReelHighlight({ image }) {
   return (
     <section className="scroll-mt-28 my-14 md:my-24">
       <Reveal y={40}>
         <div className="relative overflow-hidden rounded-[6px] bg-[#161514] text-white grid md:grid-cols-2">
           <div className="relative min-h-[320px] md:min-h-[440px]">
             <Image
-              src={REEL.image}
+              src={image || REEL.image}
               alt={REEL.alt}
               fill
               sizes="(max-width:768px) 100vw, 50vw"
@@ -573,6 +576,13 @@ export default function GoaEditorial({ faqs }) {
   const heroFade = useTransform(heroProgress, [0, 0.8], [1, 0])
 
   const [active, setActive] = useState('intro')
+
+  // Admin-managed inside images (ordered 1,2,3,4… via the "Sort order" field).
+  // 1–5 = the five service photos, 6 = the reel photo, 7–10 = the four locations.
+  const { pick } = useBlogInside(POST_ID)
+  const services = SERVICES.map((s, i) => ({ ...s, image: pick(i + 1, s.image) }))
+  const reelImage = pick(SERVICES.length + 1, REEL.image)
+  const locations = LOCATIONS.map((l, i) => ({ ...l, image: pick(SERVICES.length + 2 + i, l.image) }))
 
   useEffect(() => {
     const ids = TOC.map((t) => t.id)
@@ -781,11 +791,11 @@ export default function GoaEditorial({ faqs }) {
                 </div>
               </Reveal>
               <div className="divide-y divide-[#DBD4C6]/70">
-                {SERVICES.map((s, i) => (
+                {services.map((s, i) => (
                   <ServiceSection key={s.id} s={s} reverse={i % 2 === 1} />
                 ))}
               </div>
-              <ReelHighlight />
+              <ReelHighlight image={reelImage} />
             </section>
           </div>
 
@@ -845,7 +855,7 @@ export default function GoaEditorial({ faqs }) {
             </div>
           </Reveal>
           <div className="divide-y divide-[#DBD4C6]">
-            {LOCATIONS.map((loc, i) => (
+            {locations.map((loc, i) => (
               <LocationCard key={loc.id} loc={loc} index={i} />
             ))}
           </div>

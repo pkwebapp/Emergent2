@@ -36,6 +36,9 @@ import {
   Clock,
   ShieldCheck,
 } from 'lucide-react'
+import { useBlogInside } from '@/hooks/useMediaSlot'
+
+const POST_ID = 'goa-wedding-guide'
 
 const WHATSAPP = 'https://wa.me/+918888766739'
 
@@ -455,6 +458,10 @@ export default function GoaWeddingEditorial({ faqs }) {
 
   const [active, setActive] = useState('intro')
 
+  // Admin-managed inside images (ordered 1,2,3,4… via the "Sort order" field).
+  const { pick } = useBlogInside(POST_ID)
+  const venues = VENUES.map((v, i) => ({ ...v, image: pick(i + 1, v.image) }))
+
   useEffect(() => {
     const ids = TOC.map((t) => t.id)
     const obs = new IntersectionObserver(
@@ -767,7 +774,7 @@ export default function GoaWeddingEditorial({ faqs }) {
               </Reveal>
 
               <div className="grid md:grid-cols-2 gap-6 md:gap-8">
-                {VENUES.map((v, i) => (
+                {venues.map((v, i) => (
                   <Reveal key={v.tier} delay={i * 0.08} y={40}>
                     <article
                       data-testid={`dw-venue-tier-${i}`}

@@ -9,6 +9,9 @@ import {
   Presentation, Users, Camera, Trophy, Plane, Film, Sparkles, Check,
   Linkedin, Instagram, Clapperboard,
 } from 'lucide-react'
+import { useBlogInside } from '@/hooks/useMediaSlot'
+
+const POST_ID = 'corporate-playbook'
 
 const WHATSAPP = 'https://wa.me/+918888766739'
 
@@ -306,6 +309,10 @@ export default function CorporateEditorial({ faqs }) {
   const heroFade = useTransform(heroProgress, [0, 0.8], [1, 0])
 
   const [active, setActive] = useState('conference')
+
+  // Admin-managed inside images (ordered 1,2,3,4… via the "Sort order" field).
+  const { pick } = useBlogInside(POST_ID)
+  const services = SERVICES.map((s, i) => ({ ...s, image: pick(i + 1, s.image) }))
   useEffect(() => {
     const ids = TOC.map((t) => t.id)
     const obs = new IntersectionObserver(
@@ -408,7 +415,7 @@ export default function CorporateEditorial({ faqs }) {
             </section>
 
             <div className="divide-y divide-[#DBD4C6]/70">
-              {SERVICES.map((s, i) => (
+              {services.map((s, i) => (
                 <ServiceSection key={s.id} s={s} reverse={i % 2 === 1} />
               ))}
             </div>

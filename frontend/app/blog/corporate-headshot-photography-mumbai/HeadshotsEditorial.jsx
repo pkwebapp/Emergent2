@@ -28,6 +28,9 @@ import {
   Quote,
   Sparkles,
 } from 'lucide-react'
+import { useBlogInside } from '@/hooks/useMediaSlot'
+
+const POST_ID = 'headshots-mumbai'
 
 const WHATSAPP = 'https://wa.me/+918888766739'
 const STUDIO_ADDRESS =
@@ -427,6 +430,10 @@ export default function HeadshotsEditorial({ faqs }) {
 
   const [active, setActive] = useState('intro')
 
+  // Admin-managed inside images (ordered 1,2,3,4… via the "Sort order" field).
+  const { pick } = useBlogInside(POST_ID)
+  const craft = CRAFT.map((c, i) => ({ ...c, image: pick(i + 1, c.image) }))
+
   useEffect(() => {
     const ids = TOC.map((t) => t.id)
     const obs = new IntersectionObserver(
@@ -794,7 +801,7 @@ export default function HeadshotsEditorial({ faqs }) {
               </Reveal>
 
               <div className="divide-y divide-[#DBD4C6]">
-                {CRAFT.map((c, i) => {
+                {craft.map((c, i) => {
                   const reverse = i % 2 === 1
                   return (
                     <div

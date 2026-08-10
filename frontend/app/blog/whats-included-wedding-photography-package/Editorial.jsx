@@ -9,6 +9,9 @@ import {
   Camera, Video, Film, Plane, BookOpen, Radio, Sparkles, Check, QrCode, Clapperboard, Instagram,
   Calendar, Mail, Phone, User, Send, Loader2, CheckCircle2,
 } from 'lucide-react'
+import { useBlogInside } from '@/hooks/useMediaSlot'
+
+const POST_ID = 'wedding-package'
 
 const WHATSAPP = 'https://wa.me/+918888766739'
 
@@ -591,6 +594,10 @@ export default function Editorial({ faqs }) {
 
   const [active, setActive] = useState('candid')
 
+  // Admin-managed inside images (ordered 1,2,3,4… via the "Sort order" field).
+  const { pick } = useBlogInside(POST_ID)
+  const services = SERVICES.map((s, i) => ({ ...s, image: pick(i + 1, s.image) }))
+
   useEffect(() => {
     const ids = TOC.map((t) => t.id)
     const obs = new IntersectionObserver(
@@ -757,7 +764,7 @@ export default function Editorial({ faqs }) {
 
             {/* Service sections (zig-zag) */}
             <div className="divide-y divide-[#DBD4C6]/70">
-              {SERVICES.map((s, i) => (
+              {services.map((s, i) => (
                 <ServiceSection key={s.id} s={s} reverse={i % 2 === 1} />
               ))}
             </div>

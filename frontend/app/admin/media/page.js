@@ -163,7 +163,7 @@ function MediaGrid({ items, adminToken, onChanged }) {
 }
 
 /* ================= Slot Section ================= */
-function SlotSection({ adminToken, slot, title, description, multiple = false, acceptVideo = false, category }) {
+function SlotSection({ adminToken, slot, title, description, multiple = false, acceptVideo = false, category, startIndex = 0 }) {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -187,7 +187,7 @@ function SlotSection({ adminToken, slot, title, description, multiple = false, a
           adminToken={adminToken}
           multiple={multiple}
           acceptVideo={acceptVideo}
-          sortOrderStart={items.length}
+          sortOrderStart={items.length + startIndex}
           onUploaded={load}
         />
       </div>
@@ -323,6 +323,16 @@ function GalleryTab({ adminToken }) {
   )
 }
 
+/* Blog posts that have a full article page wired to render numbered inside
+   images. Value = how many ordered image spots that article supports. */
+const ARTICLE_INSIDE_SLOTS = {
+  'goa-wedding-guide': 4,
+  'headshots-mumbai': 3,
+  'pre-wedding-goa': 10,
+  'wedding-package': 7,
+  'corporate-playbook': 6,
+}
+
 /* ================= Blog tab ================= */
 function BlogTab({ adminToken }) {
   return (
@@ -347,15 +357,31 @@ function BlogTab({ adminToken }) {
           listing for that post. Leave empty to keep the built-in image. ({BLOG_POSTS.length} posts)
         </p>
         {BLOG_POSTS.map((post) => (
-          <SlotSection
-            key={post.id}
-            adminToken={adminToken}
-            slot={`blog-cover-${post.id}`}
-            title={post.title}
-            description={`Cover image for “${post.title}”. Category: ${post.category}. Falls back to ${post.image} if empty.`}
-            multiple={false}
-            category="blog-cover"
-          />
+          <div key={post.id} className="mt-6 rounded-xl border border-neutral-800 bg-neutral-950/30 p-4">
+            <div className="text-sm font-semibold text-orange-300">{post.title}</div>
+            <div className="text-[11px] text-neutral-500 mt-0.5">Post id: <code className="bg-neutral-900 px-1 rounded">{post.id}</code></div>
+            <SlotSection
+              adminToken={adminToken}
+              slot={`blog-cover-${post.id}`}
+              title="Thumbnail / cover image"
+              description={`Single cover shown on the /blogs card for this post. Falls back to ${post.image} if empty.`}
+              multiple={false}
+              category="blog-cover"
+            />
+            {ARTICLE_INSIDE_SLOTS[post.id] ? (
+              <SlotSection
+                adminToken={adminToken}
+                slot={`blog-inside-${post.id}`}
+                title={`Inside images (ordered 1 – ${ARTICLE_INSIDE_SLOTS[post.id]})`}
+                description={`Images shown INSIDE the article. Set the "Sort order" on each to mark 1, 2, 3, 4 … — they fill this article's ${ARTICLE_INSIDE_SLOTS[post.id]} image spots in that order. Empty spots keep the built-in image.`}
+                multiple
+                category="blog-inside"
+                startIndex={1}
+              />
+            ) : (
+              <p className="mt-3 text-xs text-neutral-600 italic">This post links out / has no dedicated article layout, so it only has a cover image.</p>
+            )}
+          </div>
         ))}
       </div>
     </div>
