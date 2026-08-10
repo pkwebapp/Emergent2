@@ -395,7 +395,7 @@ function FeaturedRow({ item, index, total, reverse, reduce }) {
       v.pause()
       v.currentTime = 0
     }
-  }, [hover])
+  }, [hover, video])
 
   return (
     <Link
@@ -428,15 +428,15 @@ function FeaturedRow({ item, index, total, reverse, reduce }) {
           />
           {video && (
             <video
+              key={video}
               ref={videoRef}
+              src={video}
               muted
               playsInline
               loop
               preload="none"
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${hover ? 'opacity-100' : 'opacity-0'}`}
-            >
-              <source src={video} type="video/mp4" />
-            </video>
+            />
           )}
         </motion.div>
 
@@ -690,15 +690,15 @@ function RestCard({ item, index, col, reduce }) {
           />
           {video && (
             <video
+              key={video}
               ref={videoRef}
+              src={video}
               muted
               playsInline
               loop
               preload="none"
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${hover ? 'opacity-100' : 'opacity-0'}`}
-            >
-              <source src={video} type="video/mp4" />
-            </video>
+            />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-[#0E0D0C] via-[#0E0D0C]/68 to-transparent" />
           <div
