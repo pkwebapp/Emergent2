@@ -62,6 +62,24 @@ async function handleRoute(request, { params }) {
       return handleCORS(NextResponse.json({ status: 'ok' }))
     }
 
+    // next-auth's <SessionProvider> automatically polls these endpoints on every
+    // page. This app actually uses a custom cookie session (see /auth/me &
+    // /auth/google-session), so there is no next-auth backend. Return the same
+    // safe empty responses next-auth itself returns for anonymous users, to
+    // avoid CLIENT_FETCH_ERROR noise in the browser console on every page load.
+    if (route === '/auth/session' && method === 'GET') {
+      return handleCORS(NextResponse.json({}))
+    }
+    if (route === '/auth/providers' && method === 'GET') {
+      return handleCORS(NextResponse.json({}))
+    }
+    if (route === '/auth/csrf' && method === 'GET') {
+      return handleCORS(NextResponse.json({ csrfToken: '' }))
+    }
+    if (route === '/auth/_log' && method === 'POST') {
+      return handleCORS(NextResponse.json({}))
+    }
+
     // Booking/contact enquiries - POST /api/contact
     if (route === '/contact' && method === 'POST') {
       const body = await request.json().catch(() => ({}))

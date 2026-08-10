@@ -690,12 +690,45 @@ frontend:
         -agent: "testing"
         -comment: "Blog cover image fix verification COMPLETED SUCCESSFULLY (Aug 10, 2026). All 3 tests passed (3/3): ✅ TEST 1 PASS: Article hero (/blog/destination-wedding-goa-complete-field-guide) uses uploaded Cloudinary cover. Hero image src: https://res.cloudinary.com/jeoj8k1t/image/upload/v1786348515/whtwvovd1vv5cglz58hm.png (contains uploaded ID 'whtwvovd1vv5cglz58hm', NOT default /destination-weddings.jpg). Implementation verified at GoaWeddingEditorial.jsx line 464: const cover = useBlogCover(POST_ID) where POST_ID='goa-wedding-guide', and line 493: src={cover || '/destination-weddings.jpg'} with unoptimized={!!cover}. ✅ TEST 2 PASS (with caveat): /blogs listing shows uploaded cover for the CORRECT post entry (id='goa-wedding-guide'). Discovered duplicate post entry (id='goa-destination' at posts.js line 45-51) with same title 'Planning a Destination Wedding in Goa: The Complete Field Guide' but different ID, which shows default image. The coverMap logic is working correctly - it maps blog-cover-goa-wedding-guide to the uploaded image. Implementation verified at Journal.jsx lines 186-188: useMediaCategory('blog-cover') fetches all blog covers, builds coverMap[slot]=secure_url, and line 226: image: coverMap[`blog-cover-${p.id}`] || p.image. The duplicate entry doesn't have a matching cover upload (would need blog-cover-goa-destination slot). ✅ TEST 3 PASS: Control article (/blog/corporate-headshot-photography-mumbai, id='headshots-mumbai') correctly uses default headshot images (/headshot/Hed_1.jpg, /headshot/Hed_2.jpg, /headshots-portraits.jpg, /personal-portrait.jpg), NOT jeoj8k1t cover. Hero shows 4 default images in grid layout as expected. VERDICT: The blog cover image fix is WORKING CORRECTLY. Admin-uploaded covers appear as article hero banners AND as thumbnails on /blogs listing. The duplicate post entry in posts.js is a data issue (two posts with similar titles but different IDs), not a code bug. The fix is production-ready."
 
+## Aug 2026 update E: Gallery Title+Location + Lightbox removal + next-auth session shim (AUDIT)
+backend:
+  - task: "Media API supports location field (POST + PATCH /api/media) and next-auth session shim"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "Added `location` field to POST /api/media and PATCH /api/media/:id (Title = existing `alt`). Also added safe shims for orphaned next-auth SessionProvider: GET /api/auth/session -> {}, GET /api/auth/providers -> {}, GET /api/auth/csrf -> {csrfToken:''}, POST /api/auth/_log -> {}. Admin token PKAdmin@2026. Please verify: (1) POST /api/media with {public_id, secure_url, slot, alt, location} returns 201 including location. (2) PATCH /api/media/:id with {location} and {alt} updates and returns them. (3) GET /api/media?slot=weddings-gallery returns items incl location. (4) DELETE works. (5) GET /api/auth/session returns 200 {}. (6) Existing endpoints still fine: POST /api/admin/login (PKAdmin@2026 -> 200, wrong -> 401), POST /api/contact (valid -> 201, missing fields -> 400), POST /api/newsletter (valid email -> 201, invalid -> 400), GET /api/auth/me without cookie -> 401."
+        -working: true
+        -agent: "testing"
+        -comment: "FULL-SITE BACKEND AUDIT completed successfully. All 20 tests passed (20/20). ✅ MEDIA API with location field (6/6 tests): (1) POST /api/media without auth correctly returns 401. (2) POST /api/media with auth and location field returns 201 with all fields including location='Goa Beach' and alt='Test Couple'. Created media ID: ece8fd20-5ddd-4923-bd4f-97e0dd467bcb. (3) GET /api/media?slot=weddings-gallery returns 200 with items array containing the test item with location field intact. (4) PATCH /api/media/{id} with location='Mandrem Beach' and alt='Renamed Couple' returns 200 with updated fields. (5) Verified no pre-existing media with original_filename '0N3A0991 pre wedding' in weddings-gallery slot (no protected items to preserve). (6) DELETE /api/media/{id} returns 200 with {deleted:true, id}. Test item cleaned up successfully. ✅ NEXT-AUTH SESSION SHIM (4/4 tests): (1) GET /api/auth/session returns 200 with empty JSON {}. (2) GET /api/auth/providers returns 200 with empty JSON {}. (3) GET /api/auth/csrf returns 200 with {csrfToken:''}. (4) POST /api/auth/_log returns 200 with empty JSON {}. All shim endpoints working correctly to prevent console errors from SessionProvider. ✅ CORE ENDPOINTS REGRESSION (10/10 tests): (1) POST /api/admin/login with correct token 'PKAdmin@2026' returns 200 {ok:true, token}. (2) POST /api/admin/login with wrong token returns 401 with error. (3) GET /api/admin/verify with Bearer token returns 200 {ok:true}. (4) GET /api/admin/verify without token returns 401. (5) POST /api/contact with valid data (name, email, phone, date, service) returns 201 {ok:true}. (6) POST /api/contact with missing fields returns 400 with error. (7) POST /api/newsletter with valid email returns 201 {ok:true}. (8) POST /api/newsletter with invalid email returns 400 with error. (9) GET /api/auth/me without cookie returns 401 {error:'not authenticated'} (expected behavior). (10) GET /api/health returns 200 {status:'ok'}. (11) GET /api/root returns 200. All endpoints tested through FastAPI proxy at http://localhost:8001. No MongoDB ObjectId (_id) leaks detected in any response (all using UUIDs correctly). No 500 errors or serialization issues. Backend implementation verified at route.js lines 393 (location field in POST), 427 (location field in PATCH), 70-81 (next-auth shims). All backend APIs working correctly and production-ready."
+
+frontend:
+  - task: "Gallery Title+Location on hover; Open story + full-screen lightbox removed everywhere"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/admin/media/page.js, /app/frontend/app/services/weddings/page.js, /app/frontend/app/services/[slug]/ServicePageClient.jsx, /app/frontend/app/gallery/GalleryClient.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "Admin /admin/media Galleries/Service/Portfolio gallery cards now have Title + Location text inputs (auto-save on blur). Public: Weddings mosaic, generic service Portfolio Showcase, and /gallery tiles are now NON-clickable, show Title+Location on hover, and NO 'Open story' text and NO full-screen lightbox. This is part of a FULL-SITE AUDIT — also verify no console 'Application error', all main routes 200, and general navigation works."
+
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Gallery Title+Location on hover; Open story + full-screen lightbox removed everywhere"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
+  - agent: "main"
+    message: "FULL-SITE AUDIT. Backend base URL http://localhost:3000 (or proxy /api). Admin token PKAdmin@2026. Test the new location field on media API, the next-auth session shim (/api/auth/session -> 200 {}), and re-confirm core endpoints (admin login, contact, newsletter, auth/me). Do NOT delete the real user-uploaded media item in weddings-gallery slot (original_filename '0N3A0991 pre wedding') — create your own temp items and clean those up only."
   - agent: "testing"
-    message: "Blog cover image fix verification completed (Aug 10, 2026). Tested that admin-uploaded blog cover images appear as both article hero banner AND thumbnail on /blogs listing. TEST RESULTS (3/3 PASS): ✅ Article hero uses uploaded Cloudinary cover (whtwvovd1vv5cglz58hm). ✅ /blogs listing thumbnail uses uploaded cover for correct post entry. Note: Found duplicate post entry (id='goa-destination' vs 'goa-wedding-guide') in posts.js with same title but different IDs - this is a data issue, not a code bug. ✅ Control article without uploaded cover correctly uses default images. VERDICT: Fix is working correctly and production-ready."
+    message: "FULL-SITE BACKEND AUDIT completed successfully. All 20 backend tests passed (20/20). ✅ MEDIA API with NEW location field: All CRUD operations working correctly - POST creates media with location field, GET retrieves items with location, PATCH updates location and alt fields, DELETE removes items. Location field properly stored and retrieved (tested with 'Goa Beach' -> 'Mandrem Beach'). ✅ NEXT-AUTH SESSION SHIM: All 4 new endpoints working correctly (/api/auth/session, /api/auth/providers, /api/auth/csrf, /api/auth/_log) - returning expected empty responses to prevent console errors from SessionProvider. ✅ CORE ENDPOINTS REGRESSION: All existing endpoints verified working - admin authentication (login/verify), contact form, newsletter subscription, auth/me, health check, root endpoint. No regressions detected. ✅ DATA INTEGRITY: No MongoDB ObjectId (_id) leaks in any response - all using UUIDs correctly. No 500 errors or serialization issues. Protected media item check performed (no item with original_filename '0N3A0991 pre wedding' found in current state). Test data cleaned up successfully. Backend is production-ready. Main agent should now proceed with frontend testing or summarize and finish if backend-only audit was requested."
