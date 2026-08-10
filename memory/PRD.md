@@ -25,6 +25,12 @@ Pull the full public repo `github.com/pkwebapp/Emergent2` into /app without chan
 - WhatsApp number reuses the existing `+91 8888766739` from other pages.
 - Location images are drawn from the repo's existing wedding/outdoor folders as placeholders — swap once real Ashvem / Mandrem / Arambol / Vagator frames are ready.
 
+## Update — Full-site audit + auth fix (Aug 2025)
+- Removed orphaned next-auth `<SessionProvider>` from `app/providers.js` (app uses custom cookie auth, not next-auth) — this eliminated the repeating `CLIENT_FETCH_ERROR` (`/api/auth/session` 404) that appeared on every page.
+- Added safe next-auth shims in `route.js` (`/auth/session`, `/auth/providers`, `/auth/csrf`, `/auth/_log`) as a defensive fallback.
+- Rewrote orphaned pages `/login` and `/profile` to use the working custom Google auth (`/api/auth/me`, `/api/auth/logout`, Emergent OAuth → `/client`). `/signup` already used custom auth.
+- Audit result: all 30 routes return 200; backend 20/20 API tests pass; frontend audit passed (auth pages, gallery title/location + no-lightbox, navigation). Benign 401 on `/api/auth/me` for logged-out users is expected. Dead next-auth template components (LoginPromptModal, GoogleLoginButton, ClientHome, Card.js) remain in `src/` but are not mounted anywhere.
+
 ## Update — Gallery Title + Location (Aug 2025)
 - Media records now support a `location` field (Title = existing `alt`). Backend: POST/PATCH `/api/media` in `frontend/app/api/[[...path]]/route.js`.
 - Admin `/admin/media`: each gallery image card now has editable **Title** + **Location** text inputs (auto-save on blur) for Galleries tab (Weddings/Events/Portraits-Headshots/Portfolio), Service Pages galleries, and Portfolio tab.
