@@ -350,10 +350,11 @@ export default function HeadshotsPageClient() {
             </div>
             <Link href="/gallery?category=headshots" data-testid="headshots-gallery-link" className="inline-flex items-center gap-3 bg-[#161514] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#FF5B22] transition-colors">View portrait gallery <ArrowRight size={14} /></Link>
           </FadeIn>
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
+          <div className="columns-2 md:columns-3 gap-3">
             {galleryImages.map((src, i) => (
-              <FadeIn key={`${src}-${i}`} delay={i * 0.03} className={`${i === 0 || i === 3 ? 'md:col-span-2 md:row-span-2' : 'md:col-span-2'} relative aspect-[4/5] rounded-3xl overflow-hidden bg-[#161514]`}>
-                <Image src={src} alt={`Professional headshot and portrait portfolio frame ${i + 1}, Mumbai studio lighting`} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover hover:scale-105 transition-transform duration-700" unoptimized />
+              <FadeIn key={`${src}-${i}`} delay={i * 0.03} className="relative mb-3 break-inside-avoid rounded-3xl overflow-hidden bg-[#161514]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt={`Professional headshot and portrait portfolio frame ${i + 1}, Mumbai studio lighting`} loading="lazy" className="w-full h-auto block hover:scale-105 transition-transform duration-700" />
               </FadeIn>
             ))}
           </div>

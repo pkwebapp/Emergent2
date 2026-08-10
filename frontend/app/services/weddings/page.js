@@ -346,9 +346,8 @@ function Portfolio({ onOpen }) {
           <Link href="/gallery?category=weddings" className="inline-flex items-center gap-2 text-sm font-semibold text-[#161514] hover:text-[#FF5B22]">View full archive <ArrowRight size={14} /></Link>
         </div>
 
-        <div className="grid grid-cols-12 gap-4 md:gap-5 auto-rows-[200px] md:auto-rows-[280px]">
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 md:gap-5">
           {portfolio.map((p, i) => {
-            const span = p.size === 'lg' ? 'col-span-12 md:col-span-6 row-span-2' : p.size === 'md' ? 'col-span-6 md:col-span-4 row-span-2' : 'col-span-6 md:col-span-3 row-span-1'
             return (
               <motion.button
                 key={i}
@@ -357,9 +356,10 @@ function Portfolio({ onOpen }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.7, delay: (i % 4) * 0.06 }}
-                className={`group relative overflow-hidden rounded-2xl ${span}`}
+                className="group relative block w-full mb-4 md:mb-5 break-inside-avoid overflow-hidden rounded-2xl"
               >
-                <Image src={p.img} alt={`${p.couple} wedding at ${p.place} in candid cinematic style, Mumbai & Goa`} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover transition-transform [transition-duration:1400ms] group-hover:scale-105" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={p.img} alt={`${p.couple} wedding at ${p.place} in candid cinematic style, Mumbai & Goa`} loading="lazy" className="w-full h-auto block transition-transform [transition-duration:1400ms] group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#161514]/85 via-[#161514]/10 to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="absolute inset-0 p-5 md:p-6 flex flex-col justify-end text-left text-white">
                   <div className="opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-500">

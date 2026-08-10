@@ -889,9 +889,8 @@ export default function ServicePageClient({ slug }) {
             </div>
             <Link href="/gallery" className="inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B22]">View full gallery <ArrowRight size={14} /></Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+          <div className="columns-2 md:columns-4 gap-3 md:gap-4">
             {portfolio.slice(0, 8).map((src, i) => {
-              const tall = i === 0 || i === 5
               return (
                 <motion.button
                   key={i}
@@ -900,9 +899,10 @@ export default function ServicePageClient({ slug }) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-40px' }}
                   transition={{ delay: (i % 4) * 0.05 }}
-                  className={`relative overflow-hidden rounded-2xl group ${tall ? 'row-span-2 aspect-[3/5]' : 'aspect-[4/5]'}`}
+                  className="relative block w-full mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl group"
                 >
-                  <Image src={src} alt={localAlt(`${service.t} portfolio frame ${i + 1}`, 'Mumbai or Goa shoot location', 'luxury editorial')} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform [transition-duration:1200ms] group-hover:scale-110" />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={src} alt={localAlt(`${service.t} portfolio frame ${i + 1}`, 'Mumbai or Goa shoot location', 'luxury editorial')} loading="lazy" className="w-full h-auto block transition-transform [transition-duration:1200ms] group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#161514]/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                     <span className="w-14 h-14 rounded-full bg-[#EEEAE1]/95 backdrop-blur text-[#161514] grid place-content-center scale-75 group-hover:scale-100 transition-transform">
