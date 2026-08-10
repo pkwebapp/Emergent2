@@ -9,7 +9,7 @@ import {
   Camera, Video, Film, Plane, BookOpen, Radio, Sparkles, Check, QrCode, Clapperboard, Instagram,
   Calendar, Mail, Phone, User, Send, Loader2, CheckCircle2,
 } from 'lucide-react'
-import { useBlogInside } from '@/hooks/useMediaSlot'
+import { useBlogInside, useBlogCover } from '@/hooks/useMediaSlot'
 
 const POST_ID = 'wedding-package'
 
@@ -597,6 +597,7 @@ export default function Editorial({ faqs }) {
   // Admin-managed inside images (ordered 1,2,3,4… via the "Sort order" field).
   const { pick } = useBlogInside(POST_ID)
   const services = SERVICES.map((s, i) => ({ ...s, image: pick(i + 1, s.image) }))
+  const cover = useBlogCover(POST_ID)
 
   useEffect(() => {
     const ids = TOC.map((t) => t.id)
@@ -633,6 +634,17 @@ export default function Editorial({ faqs }) {
         className="relative h-[100svh] min-h-[640px] w-full overflow-hidden flex items-end"
       >
         <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0">
+          {cover ? (
+            <Image
+              src={cover}
+              alt="Wedding photography package — cover"
+              fill
+              sizes="100vw"
+              className="object-cover"
+              priority
+              unoptimized
+            />
+          ) : (
           <video
             autoPlay
             muted
@@ -643,6 +655,7 @@ export default function Editorial({ faqs }) {
           >
             <source src="/wedding/Wedding.mp4" type="video/mp4" />
           </video>
+          )}
         </motion.div>
         {/* overlays */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d0c0b] via-[#0d0c0b]/40 to-[#0d0c0b]/55" />

@@ -30,7 +30,7 @@ import {
   Star,
   Compass,
 } from 'lucide-react'
-import { useBlogInside } from '@/hooks/useMediaSlot'
+import { useBlogInside, useBlogCover } from '@/hooks/useMediaSlot'
 
 const POST_ID = 'pre-wedding-goa'
 
@@ -583,6 +583,7 @@ export default function GoaEditorial({ faqs }) {
   const services = SERVICES.map((s, i) => ({ ...s, image: pick(i + 1, s.image) }))
   const reelImage = pick(SERVICES.length + 1, REEL.image)
   const locations = LOCATIONS.map((l, i) => ({ ...l, image: pick(SERVICES.length + 2 + i, l.image) }))
+  const cover = useBlogCover(POST_ID)
 
   useEffect(() => {
     const ids = TOC.map((t) => t.id)
@@ -614,12 +615,13 @@ export default function GoaEditorial({ faqs }) {
       >
         <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0">
           <Image
-            src="/wedding/preWedding.jpg"
+            src={cover || '/wedding/preWedding.jpg'}
             alt="Pre-wedding shoot Goa — couple silhouette at golden hour by PK Photography"
             fill
             sizes="100vw"
             className="object-cover"
             priority
+            unoptimized={!!cover}
           />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d0c0b] via-[#0d0c0b]/40 to-[#0d0c0b]/55" />

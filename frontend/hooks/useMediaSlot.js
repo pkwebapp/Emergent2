@@ -46,6 +46,16 @@ export function useMediaCategory(category) {
  * Returns { images: [secure_url, …], pick }.
  *   pick(n, fallback) -> the n-th (1-based) uploaded image, else fallback.
  */
+/**
+ * The admin-uploaded cover/thumbnail image for a blog post
+ * (slot = `blog-cover-<postId>`). Returns the secure_url or null.
+ */
+export function useBlogCover(postId) {
+  const { items } = useMediaSlot(postId ? `blog-cover-${postId}` : null)
+  const cover = items.find((i) => i.resource_type === 'image' && i.secure_url)
+  return cover?.secure_url || null
+}
+
 export function useBlogInside(postId) {
   const { items } = useMediaSlot(postId ? `blog-inside-${postId}` : null)
   const imageItems = items.filter((i) => i.resource_type === 'image' && i.secure_url)

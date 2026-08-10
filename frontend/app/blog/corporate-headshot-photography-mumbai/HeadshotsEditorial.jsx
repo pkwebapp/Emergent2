@@ -28,7 +28,7 @@ import {
   Quote,
   Sparkles,
 } from 'lucide-react'
-import { useBlogInside } from '@/hooks/useMediaSlot'
+import { useBlogInside, useBlogCover } from '@/hooks/useMediaSlot'
 
 const POST_ID = 'headshots-mumbai'
 
@@ -433,6 +433,7 @@ export default function HeadshotsEditorial({ faqs }) {
   // Admin-managed inside images (ordered 1,2,3,4… via the "Sort order" field).
   const { pick } = useBlogInside(POST_ID)
   const craft = CRAFT.map((c, i) => ({ ...c, image: pick(i + 1, c.image) }))
+  const cover = useBlogCover(POST_ID)
 
   useEffect(() => {
     const ids = TOC.map((t) => t.id)
@@ -469,6 +470,17 @@ export default function HeadshotsEditorial({ faqs }) {
           style={{ y: heroY, scale: heroScale }}
           className="absolute inset-0"
         >
+          {cover ? (
+            <Image
+              src={cover}
+              alt="Corporate headshot photography Mumbai — cover"
+              fill
+              sizes="100vw"
+              className="object-cover"
+              priority
+              unoptimized
+            />
+          ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 h-full">
             {[
               '/headshot/Hed_1.jpg',
@@ -488,6 +500,7 @@ export default function HeadshotsEditorial({ faqs }) {
               </div>
             ))}
           </div>
+          )}
         </motion.div>
         <div className="absolute inset-0 bg-[#0d0c0b]/70" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d0c0b] via-[#0d0c0b]/30 to-[#0d0c0b]/60" />

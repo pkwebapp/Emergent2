@@ -9,7 +9,7 @@ import {
   Presentation, Users, Camera, Trophy, Plane, Film, Sparkles, Check,
   Linkedin, Instagram, Clapperboard,
 } from 'lucide-react'
-import { useBlogInside } from '@/hooks/useMediaSlot'
+import { useBlogInside, useBlogCover } from '@/hooks/useMediaSlot'
 
 const POST_ID = 'corporate-playbook'
 
@@ -313,6 +313,7 @@ export default function CorporateEditorial({ faqs }) {
   // Admin-managed inside images (ordered 1,2,3,4… via the "Sort order" field).
   const { pick } = useBlogInside(POST_ID)
   const services = SERVICES.map((s, i) => ({ ...s, image: pick(i + 1, s.image) }))
+  const cover = useBlogCover(POST_ID)
   useEffect(() => {
     const ids = TOC.map((t) => t.id)
     const obs = new IntersectionObserver(
@@ -332,7 +333,7 @@ export default function CorporateEditorial({ faqs }) {
       {/* ---------------- HERO ---------------- */}
       <section ref={heroRef} data-transparent-header="true" data-testid="corporate-hero-section" className="relative h-[100svh] min-h-[620px] w-full overflow-hidden flex items-end">
         <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0">
-          <Image src="/event-photography-cover.jpg" alt="Corporate offsite conference and gala setup at a Goa beach resort" fill priority sizes="100vw" className="object-cover" />
+          <Image src={cover || '/event-photography-cover.jpg'} alt="Corporate offsite conference and gala setup at a Goa beach resort" fill priority sizes="100vw" className="object-cover" unoptimized={!!cover} />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d0f12] via-[#0d0f12]/45 to-[#0d0f12]/55" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0d0f12]/70 via-transparent to-transparent" />

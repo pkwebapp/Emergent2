@@ -36,7 +36,7 @@ import {
   Clock,
   ShieldCheck,
 } from 'lucide-react'
-import { useBlogInside } from '@/hooks/useMediaSlot'
+import { useBlogInside, useBlogCover } from '@/hooks/useMediaSlot'
 
 const POST_ID = 'goa-wedding-guide'
 
@@ -461,6 +461,7 @@ export default function GoaWeddingEditorial({ faqs }) {
   // Admin-managed inside images (ordered 1,2,3,4… via the "Sort order" field).
   const { pick } = useBlogInside(POST_ID)
   const venues = VENUES.map((v, i) => ({ ...v, image: pick(i + 1, v.image) }))
+  const cover = useBlogCover(POST_ID)
 
   useEffect(() => {
     const ids = TOC.map((t) => t.id)
@@ -489,12 +490,13 @@ export default function GoaWeddingEditorial({ faqs }) {
       >
         <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0">
           <Image
-            src="/destination-weddings.jpg"
+            src={cover || '/destination-weddings.jpg'}
             alt="Destination wedding in Goa — beach ceremony at sunset by PK Photography"
             fill
             sizes="100vw"
             className="object-cover"
             priority
+            unoptimized={!!cover}
           />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d0c0b] via-[#0d0c0b]/40 to-[#0d0c0b]/55" />
