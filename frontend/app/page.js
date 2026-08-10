@@ -7,6 +7,16 @@ import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring, 
 import { ArrowUpRight, ArrowRight, Star, MessageCircle, ChevronDown, Mail, MapPin, Play } from 'lucide-react'
 import { IMG, CONTACT } from '@/components/site/Chrome'
 import { SERVICES } from '@/lib/services'
+import { useMediaSlot } from '@/hooks/useMediaSlot'
+
+/* Resolve a service panel image from that service's admin banner slot
+   (`<slug>-banner`), falling back to the hardcoded default image. */
+function PanelImage({ slug, fallback, alt, sizes, className }) {
+  const { items } = useMediaSlot(`${slug}-banner`)
+  const uploaded = items.find((i) => i.resource_type === 'image')?.secure_url
+  const src = uploaded || fallback
+  return <Image src={src} alt={alt} fill sizes={sizes} className={className} unoptimized={!!uploaded} />
+}
 
 /* ================================================================
    Re-export SERVICES so existing imports from '@/app/page' keep working.
@@ -470,10 +480,10 @@ function FeaturedServices() {
                 data-testid={`service-panel-${s.slug}`}
               >
                 <Link href={`/services/${s.slug}`} className="block absolute inset-0">
-                  <Image
-                    src={s.img}
+                  <PanelImage
+                    slug={s.slug}
+                    fallback={s.img}
                     alt={s.t}
-                    fill
                     sizes="(max-width: 1200px) 20vw, 400px"
                     className="object-cover transition-transform [transition-duration:1400ms] ease-out group-hover:scale-105"
                   />
@@ -537,7 +547,7 @@ function FeaturedServices() {
             data-testid={`service-panel-mobile-${s.slug}`}
           >
             <Link href={`/services/${s.slug}`} className="block absolute inset-0">
-              <Image src={s.img} alt={s.t} fill sizes="100vw" className="object-cover" />
+              <PanelImage slug={s.slug} fallback={s.img} alt={s.t} sizes="100vw" className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0e0d0c]/85 via-[#0e0d0c]/10 to-transparent" />
               <div className="absolute top-4 left-5 text-[10px] tracking-[0.35em] uppercase text-white/70">
                 {String(k + 1).padStart(2, '0')}

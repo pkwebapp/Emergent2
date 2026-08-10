@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import ImageUploader from '@/components/media/ImageUploader'
 import { listMedia, deleteMedia, updateMedia } from '@/lib/cloudinary'
+import { POSTS as BLOG_POSTS } from '@/app/blogs/posts'
 
 /* ================================================================
    Slot configuration — organised by section.
@@ -327,24 +328,36 @@ function BlogTab({ adminToken }) {
   return (
     <div>
       <h2 className="text-xl font-semibold text-neutral-100">Blog</h2>
-      <p className="mt-1 text-sm text-neutral-400">Cover images shown on the blog listing page and inside posts.</p>
-      <SlotSection
-        adminToken={adminToken}
-        slot="blog-covers"
-        title="Blog listing cover images"
-        description="Images shown as covers on the Blog listing page."
-        multiple
-        category="blog"
-      />
+      <p className="mt-1 text-sm text-neutral-400">Manage the blog page banner and the cover image of every blog post. New posts you add to the site appear here automatically.</p>
       <SlotSection
         adminToken={adminToken}
         slot="blog-banner"
-        title="Blog page top banner"
-        description="Banner strip at the top of the Blog listing page."
+        title="Blog page top banner (hero)"
+        description="Background media for the hero at the top of the /blogs page (image or video)."
         multiple
         acceptVideo
         category="blog"
       />
+
+      <div className="mt-8 border-t border-neutral-800 pt-6">
+        <h3 className="text-lg font-semibold text-neutral-100">Blog post covers</h3>
+        <p className="mt-1 text-sm text-neutral-400">
+          Each card below is one blog post. Upload a cover image and it replaces the default cover on the
+          <code className="bg-neutral-900 px-1.5 py-0.5 rounded text-orange-300 mx-1">/blogs</code>
+          listing for that post. Leave empty to keep the built-in image. ({BLOG_POSTS.length} posts)
+        </p>
+        {BLOG_POSTS.map((post) => (
+          <SlotSection
+            key={post.id}
+            adminToken={adminToken}
+            slot={`blog-cover-${post.id}`}
+            title={post.title}
+            description={`Cover image for “${post.title}”. Category: ${post.category}. Falls back to ${post.image} if empty.`}
+            multiple={false}
+            category="blog-cover"
+          />
+        ))}
+      </div>
     </div>
   )
 }

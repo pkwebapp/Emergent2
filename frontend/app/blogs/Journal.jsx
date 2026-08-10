@@ -10,7 +10,7 @@ import {
 } from 'lucide-react'
 import { CATEGORIES, catColor, POSTS, EDITORS, SLIDES, INSTA_IMAGES } from './posts'
 import HeroMedia from '@/components/media/HeroMedia'
-import { useMediaSlot } from '@/hooks/useMediaSlot'
+import { useMediaSlot, useMediaCategory } from '@/hooks/useMediaSlot'
 
 const INSTAGRAM = 'https://www.instagram.com/'
 const WHATSAPP = 'https://wa.me/+918888766739'
@@ -182,6 +182,11 @@ export default function Journal() {
     (i) => i.resource_type === 'image' || i.resource_type === 'video'
   )
 
+  // Admin-uploaded per-post cover images (slot = `blog-cover-<post.id>`).
+  const { items: coverItems } = useMediaCategory('blog-cover')
+  const coverMap = {}
+  coverItems.forEach((i) => { if (i.slot && i.secure_url) coverMap[i.slot] = i.secure_url })
+
   const [external, setExternal] = useState([])
   useEffect(() => {
     let on = true
@@ -216,7 +221,10 @@ export default function Journal() {
     return () => { on = false }
   }, [])
 
-  const allPosts = [...POSTS, ...external]
+  const allPosts = [...POSTS, ...external].map((p) => ({
+    ...p,
+    image: coverMap[`blog-cover-${p.id}`] || p.image,
+  }))
   const filtered = active === 'all' ? allPosts : allPosts.filter((p) => p.cats?.includes(active))
 
   const PAGE = 6
