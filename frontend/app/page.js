@@ -372,10 +372,6 @@ function About() {
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#161514]/40 via-transparent to-transparent" />
-              <div className="absolute bottom-6 left-6 text-white text-[10px] tracking-[0.32em] uppercase">
-                Prabhakar Kumar
-                <div className="text-white/70 mt-1 tracking-[0.32em]">Founder & Lead</div>
-              </div>
             </motion.div>
           </div>
 
