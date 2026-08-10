@@ -47,25 +47,8 @@ const SERVICE_PAGES = [
   { key: 'design-services', label: 'Design Services' },
 ]
 
-// Legacy pages (older direct URLs like /wedding, /headshots — still exist on site)
-const LEGACY_PAGES = [
-  { key: 'wedding', label: 'Wedding (legacy /wedding)' },
-  { key: 'headshots', label: 'Headshots (legacy)' },
-  { key: 'portrait', label: 'Portrait (legacy)' },
-  { key: 'boudoir', label: 'Boudoir (legacy)' },
-  { key: 'brandshoot', label: 'Brand shoot (legacy)' },
-  { key: 'editorial', label: 'Editorial (legacy)' },
-  { key: 'festival', label: 'Festival' },
-  { key: 'food', label: 'Food (legacy)' },
-  { key: 'celebrity', label: 'Celebrity (legacy)' },
-  { key: 'realestate', label: 'Real estate (legacy)' },
-  { key: 'outdoor', label: 'Outdoor' },
-  { key: 'baby', label: 'Baby' },
-  { key: 'ads', label: 'Ads' },
-  { key: 'ecommerce', label: 'E-commerce (legacy)' },
-  { key: 'design', label: 'Design (legacy)' },
-  { key: 'wgoa', label: 'Weddings Goa' },
-]
+// Legacy pages removed — the old /wedding, /headshots, … routes have been
+// deleted from the site, so their admin group is no longer needed.
 
 const TABS = [
   { key: 'home', label: 'Home' },
@@ -231,28 +214,16 @@ function HomeTab({ adminToken }) {
 
 /* ================= Service Pages tab ================= */
 function ServicesTab({ adminToken }) {
-  const [group, setGroup] = useState('official') // 'official' | 'legacy'
-  const list = group === 'official' ? SERVICE_PAGES : LEGACY_PAGES
+  const list = SERVICE_PAGES
   const [page, setPage] = useState(list[0].key)
   const active = list.find((p) => p.key === page) || list[0]
   const bannerSlot = `${active.key}-banner`
   const gallerySlot = `${active.key}-gallery`
 
-  // Keep page valid when switching groups
-  useEffect(() => { setPage(list[0].key) /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [group])
-
   return (
     <div>
       <h2 className="text-xl font-semibold text-neutral-100">Service Pages</h2>
       <p className="mt-1 text-sm text-neutral-400">Every service page has a banner strip (top of page) and a gallery. Upload images or videos.</p>
-      <div className="mt-4 inline-flex rounded-full border border-neutral-800 p-1 bg-neutral-950">
-        <button onClick={() => setGroup('official')}
-          className={`text-xs px-4 py-1.5 rounded-full ${group === 'official' ? 'bg-orange-500 text-white' : 'text-neutral-400 hover:text-white'}`}
-        >Official services (/services/…)</button>
-        <button onClick={() => setGroup('legacy')}
-          className={`text-xs px-4 py-1.5 rounded-full ${group === 'legacy' ? 'bg-orange-500 text-white' : 'text-neutral-400 hover:text-white'}`}
-        >Legacy pages (/wedding, /headshots…)</button>
-      </div>
       <div className="mt-4 flex flex-wrap gap-2">
         {list.map((p) => (
           <button key={p.key} onClick={() => setPage(p.key)}
