@@ -20,7 +20,7 @@ const GALLERY_CATEGORIES = [
 const HOME_SLOTS = [
   { slot: 'hero-slides', title: 'Hero slides (rotating — images or videos)', description: 'Big rotating photos/videos in the home hero. Videos autoplay muted and loop.', multiple: true, acceptVideo: true },
   { slot: 'home-about-portrait', title: 'About section portrait', description: 'The portrait shown in the "About the studio" section on Home.', multiple: false },
-  { slot: 'home-portfolio-featured', title: 'Featured portfolio strip', description: 'Photos in the Featured Portfolio strip on the home page.', multiple: true },
+  { slot: 'home-portfolio-featured', title: 'Featured portfolio strip', description: 'Photos in the Featured Portfolio strip on the home page. Add a Title to each image — it appears over the photo.', multiple: true, showMeta: true, titleOnly: true },
   { slot: 'home-clients', title: 'Client logos', description: 'Logo images for the "trusted by" client strip.', multiple: true },
 ]
 
@@ -104,7 +104,7 @@ function LoginGate({ onOK }) {
 }
 
 /* ================= Media Card + Grid ================= */
-function MediaCard({ item, onDelete, onSortSave, sortValue, onSortChange, showMeta, titleValue, locationValue, onTitleChange, onLocationChange, onMetaSave }) {
+function MediaCard({ item, onDelete, onSortSave, sortValue, onSortChange, showMeta, titleOnly, titleValue, locationValue, onTitleChange, onLocationChange, onMetaSave }) {
   const isVideo = item.resource_type === 'video'
   return (
     <div className="group relative rounded-lg overflow-hidden bg-neutral-900 border border-neutral-800">
@@ -121,11 +121,13 @@ function MediaCard({ item, onDelete, onSortSave, sortValue, onSortChange, showMe
             placeholder="Title (e.g. Ananya & Rohan)"
             className="w-full rounded bg-neutral-800 border border-neutral-700 px-2 py-1 text-[11px] text-neutral-100 placeholder:text-neutral-500 focus:outline-none focus:border-orange-500"
             title="Title shown on the image" />
+          {!titleOnly && (
           <input
             type="text" value={locationValue} onChange={(e) => onLocationChange(e.target.value)} onBlur={onMetaSave}
             placeholder="Location (e.g. Taj Land's End · Mumbai)"
             className="w-full rounded bg-neutral-800 border border-neutral-700 px-2 py-1 text-[11px] text-neutral-100 placeholder:text-neutral-500 focus:outline-none focus:border-orange-500"
             title="Location shown on the image" />
+          )}
         </div>
       )}
       <div className="p-2 text-xs text-neutral-400 flex items-center justify-between gap-2">
@@ -141,7 +143,7 @@ function MediaCard({ item, onDelete, onSortSave, sortValue, onSortChange, showMe
   )
 }
 
-function MediaGrid({ items, adminToken, onChanged, showMeta = false }) {
+function MediaGrid({ items, adminToken, onChanged, showMeta = false, titleOnly = false }) {
   const [drafts, setDrafts] = useState({})
   const [metaDrafts, setMetaDrafts] = useState({})
 
@@ -184,6 +186,7 @@ function MediaGrid({ items, adminToken, onChanged, showMeta = false }) {
         <MediaCard key={item.id}
           item={item}
           showMeta={showMeta}
+          titleOnly={titleOnly}
           sortValue={drafts[item.id] ?? item.sort_order}
           onSortChange={(v) => changeSort(item.id, v)}
           onSortSave={() => saveSort(item)}
@@ -199,7 +202,7 @@ function MediaGrid({ items, adminToken, onChanged, showMeta = false }) {
 }
 
 /* ================= Slot Section ================= */
-function SlotSection({ adminToken, slot, title, description, multiple = false, acceptVideo = false, category, startIndex = 0, showMeta = false }) {
+function SlotSection({ adminToken, slot, title, description, multiple = false, acceptVideo = false, category, startIndex = 0, showMeta = false, titleOnly = false }) {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
 

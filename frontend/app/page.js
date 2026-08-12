@@ -682,9 +682,6 @@ function Portfolio() {
                 <div style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-3xl md:text-4xl font-light leading-tight">
                   {p.name}
                 </div>
-                <div className="mt-5 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500 delay-100 flex items-center gap-2 text-[11px] tracking-[0.28em] uppercase text-[#FF5B22]">
-                  View project <ArrowUpRight size={12} />
-                </div>
               </div>
             </Link>
           </motion.div>
