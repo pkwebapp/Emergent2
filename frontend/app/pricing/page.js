@@ -413,7 +413,7 @@ function PricingInner() {
           {/* Wedding travel note */}
           {active === 'weddings' && (
             <p className="mt-10 text-center text-xs text-[#8A857D] max-w-2xl mx-auto italic">
-              Travel within Mumbai is included in all packages. Destination weddings across North Goa, South Goa, Jaipur, Udaipur, Delhi &amp; the rest of India are quoted separately with transparent travel &amp; stay costs.
+              Travel within Mumbai and Goa are included in all packages. Destination weddings across Jaipur, Udaipur, Delhi &amp; the rest of India are quoted separately with transparent travel &amp; stay costs.
             </p>
           )}
 
