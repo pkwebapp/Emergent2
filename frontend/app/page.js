@@ -762,12 +762,20 @@ function Process() {
 
         {/* Timeline */}
         <div className="relative grid grid-cols-1 md:grid-cols-4 gap-y-14 gap-x-8">
-          {/* Progress line (desktop) */}
+          {/* Progress line (desktop, horizontal) */}
           <div aria-hidden className="hidden md:block absolute left-0 right-0 top-[18px] h-px bg-[#DBD4C6]" />
           <motion.div
             aria-hidden
             style={{ scaleX: scrollYProgress, transformOrigin: '0 50%' }}
             className="hidden md:block absolute left-0 right-0 top-[18px] h-px bg-[#FF5B22]"
+          />
+
+          {/* Progress line (mobile, vertical — runs down through the numbered nodes) */}
+          <div aria-hidden className="md:hidden absolute left-[18px] top-2 bottom-2 w-px bg-[#DBD4C6]" />
+          <motion.div
+            aria-hidden
+            style={{ scaleY: scrollYProgress, transformOrigin: '50% 0' }}
+            className="md:hidden absolute left-[18px] top-2 bottom-2 w-px bg-[#FF5B22]"
           />
 
           {steps.map((step, k) => (
@@ -790,7 +798,7 @@ function ProcessStep({ step, index, progress }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-100px' }}
       transition={{ duration: 0.7, delay: index * 0.08 }}
-      className="relative pl-8 md:pl-0"
+      className="relative pl-14 md:pl-0"
       data-testid={`process-step-${step.k}`}
     >
       {/* Node */}

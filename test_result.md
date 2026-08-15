@@ -813,3 +813,39 @@ agent_communication:
     -message: "Homepage Trust counters bug fix verification COMPLETED SUCCESSFULLY ✅. All tests passed (2/2 viewports). MOBILE (390x844): All 4 counters show correct final values (500+, 700+, 1,000+, 10+) - NONE stuck at 0 or 0+. DESKTOP (1440x900): All 4 counters show correct final values (500+, 700+, 1,000+, 10+) - NONE stuck at 0 or 0+. The reported bug (some counters stuck at '0+' on mobile/iOS Safari) is FIXED. The new Counter component using native IntersectionObserver with immediate in-view detection, guaranteed completion, and mobile safety-net polling is working perfectly. Screenshots captured for both viewports. Bug fix is production-ready and verified."
     -agent: "main"
     -message: "BUG FIX: Footer social icon buttons in /app/frontend/components/site/Chrome.jsx were not redirecting — the Instagram and Facebook circular icon buttons in the footer had href='#'. Fixed them to point to the same real URLs used by the nav/fullscreen-menu social links: Instagram=https://www.instagram.com/itspkphotography.in/ and Facebook=https://www.facebook.com/pkfashionphotography (both target=_blank rel=noreferrer). The WhatsApp (chat) and Email icon buttons in the footer already worked. Please TEST the footer social icon buttons on the homepage: (1) The Instagram footer icon button links to instagram.com/itspkphotography.in, (2) Facebook footer icon links to facebook.com/pkfashionphotography, (3) WhatsApp icon links to wa.me/918888766739, (4) Email icon is a mailto:prabhakar@pkphotography.in. Confirm NONE of the footer social icon buttons have href='#'. Verify by checking the anchor href attributes."
+    -agent: "main"
+    -message: "BUG FIX + ENHANCEMENT (Process section, /app/frontend/app/page.js): On MOBILE the numbered node circles (01/02/03/04) overlapped the step titles because the step container had pl-8 (32px) while the circle is w-9 (36px). Fixed by (1) increasing the step container left padding to pl-14 on mobile (md:pl-0 unchanged for desktop), and (2) adding a mobile VERTICAL animated progress line (a grey base line + an orange line that grows via scaleY=scrollYProgress as you scroll) at left-[18px], mirroring the desktop horizontal progress line. Please TEST IN MOBILE VIEWPORT (390x844): scroll to the Process section (data-testid='process-section', heading 'A simple process. No stress.'). Verify (a) the numbered circles (data-testid process-step-story/planning/capture/delivery) NO LONGER overlap the step titles ('Tell Us Your Story', 'Plan Every Detail', etc.) — there is clear spacing between the circle and the title, and (b) a thin vertical line runs down the left through the numbered circles and its orange portion progresses as you scroll. Also confirm desktop (1440x900) still shows the horizontal progress line and is unaffected."
+
+## Feb 2026 update: Process section mobile bug fix + vertical progress line enhancement
+frontend:
+  - task: "Process section mobile overlap fix + vertical progress line"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/page.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "user"
+        comment: "BUG REPORTED: On MOBILE viewport (390x844), the round numbered node circles (01/02/03/04) were overlapping the step title text (e.g. the '01' circle overlapped 'Tell Us Your Story'). ENHANCEMENT REQUESTED: Add a vertical animated progress line on mobile (grey base line with an orange portion that grows as you scroll), mirroring the desktop's horizontal progress line. The Process section has heading 'A simple process. No stress.' with 4 numbered steps (01 Tell Us Your Story, 02 Plan Every Detail, 03 Capture Naturally, 04 Edit & Deliver). Container has data-testid='process-section' and each step has data-testid like process-step-story, process-step-planning, process-step-capture, process-step-delivery."
+      - working: true
+        agent: "testing"
+        comment: "VERIFICATION COMPLETED SUCCESSFULLY (5/5 tests passed). INITIAL ISSUE FOUND: The Tailwind CSS classes (pl-14 and md:pl-0) were NOT compiled in the CSS bundle, causing paddingLeft to be 0px instead of 56px on mobile, which resulted in all 4 numbered circles overlapping their titles by 36px. ROOT CAUSE: Stale Next.js build cache (.next directory) did not include the new Tailwind utility classes. FIX APPLIED: Cleared .next build cache and restarted frontend service to trigger full rebuild with Tailwind CSS compilation. POST-FIX VERIFICATION (ALL TESTS PASSED): ✅ TEST 1 (Mobile overlap fix): All 4 steps have clear 20px horizontal gap between numbered circles and titles. Circle right edge at 60px, title left edge at 80px. NO overlap detected on any step. ✅ TEST 2 (Vertical progress line enhancement): Both grey base line (bg-[#DBD4C6]) and orange animated progress line (bg-[#FF5B22]) are present and visible on mobile. Lines positioned at left-[18px] with scaleY animation tied to scrollYProgress. ✅ TEST 3 (Title readability): All 4 step titles ('Tell Us Your Story', 'Plan Every Detail', 'Capture Naturally', 'Edit & Deliver') are fully readable and not covered by circles. ✅ TEST 4 (Desktop sanity check): Horizontal layout intact with all 4 steps in a single row (Y variance: 0.0px). Desktop layout unaffected by mobile changes. ✅ TEST 5 (Desktop progress line): Horizontal grey base line and orange animated progress line present and visible on desktop (top-[18px], scaleX animation). IMPLEMENTATION VERIFIED: Code at /app/frontend/app/page.js lines 773-779 (mobile vertical lines with md:hidden), lines 766-771 (desktop horizontal lines with hidden md:block), line 801 (step container with pl-14 md:pl-0 padding), line 805 (circle with absolute left-0 positioning). Screenshots captured: process-mobile-verified.png (shows clear spacing and vertical orange line), process-desktop-verified.png (shows horizontal layout with progress line). Bug fix and enhancement are production-ready and working exactly as specified."
+
+metadata:
+  created_by: "testing_agent"
+  version: "1.0"
+  test_sequence: 9
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Process section mobile overlap fix + vertical progress line"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "testing"
+    message: "Process section bug fix + enhancement verification COMPLETED SUCCESSFULLY. All 5 tests passed (5/5). CRITICAL ISSUE FOUND AND RESOLVED: The initial test revealed that Tailwind CSS classes (pl-14, md:pl-0) were NOT compiled in the CSS bundle due to stale Next.js build cache. This caused all 4 numbered circles to overlap their titles by 36px on mobile. Applied fix: Cleared .next directory and restarted frontend to trigger full rebuild with Tailwind compilation. POST-FIX RESULTS: ✅ Mobile numbered circles NO LONGER overlap titles (20px clear gap on all 4 steps). ✅ Vertical progress line enhancement verified (grey base + orange animated line present and visible on mobile). ✅ All step titles fully readable. ✅ Desktop horizontal layout intact (4 steps in a row, Y variance 0.0px). ✅ Desktop horizontal progress line working. The reported bug is FIXED and the enhancement is IMPLEMENTED. Both mobile and desktop layouts are working correctly. No further action required."
