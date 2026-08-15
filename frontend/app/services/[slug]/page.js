@@ -7,7 +7,7 @@ import PageBanner from '@/components/media/PageBanner'
 // Pre-render generic service slugs at build-time.
 // Custom handcrafted pages (currently /services/events and /services/weddings) live in their own folders.
 export function generateStaticParams() {
-  return SERVICES.filter((s) => !['events', 'weddings', 'portraits-headshots', 'editorial-portfolio', 'drone-services', 'live-streaming'].includes(s.slug)).map((s) => ({ slug: s.slug }))
+  return SERVICES.filter((s) => !['events', 'weddings', 'portraits-headshots', 'editorial-portfolio', 'drone-services', 'live-streaming', 'boudoir-shoots'].includes(s.slug)).map((s) => ({ slug: s.slug }))
 }
 
 // Per-slug SEO metadata (title / description / keywords / OG / canonical)

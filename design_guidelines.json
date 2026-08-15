@@ -1,0 +1,126 @@
+{
+  "theme": "Light theme with alternating dark intimate sections",
+  "typography": {
+    "primary_font": "Inter (sans-serif) for body, labels, buttons",
+    "primary_font_class": ".font-inter",
+    "heading_font": "Cormorant Garamond (serif) for main elegant headings",
+    "heading_font_class": ".font-cormorant",
+    "rules": [
+      "Use delicate serif italics (.italic) for romantic subheadings or quotes.",
+      "Use Inter with tight tracking (.tracking-tight or .tracking-tighter) for tiny uppercase labels/eyebrows (.uppercase.text-xs).",
+      "Avoid large sans-serif headers. Stick to Cormorant Garamond for main section H2s (text-4xl to text-6xl)."
+    ]
+  },
+  "colors": {
+    "background_cream_1": "#EEEAE1",
+    "background_cream_2": "#E6E1D5",
+    "ink": "#161514",
+    "accent_orange": "#FF5B22",
+    "borders": "#DBD4C6",
+    "muted_text": "#8A857D",
+    "cyan_micro_accent": "#67E8F9"
+  },
+  "visual_enhancers": {
+    "corners": "rounded-2xl or rounded-3xl for cards and images. Pill shapes (rounded-full) for buttons.",
+    "borders": "Fine lines using #DBD4C6 (e.g. border border-[#DBD4C6]).",
+    "shadows": "Very soft ambient shadows for cream cards, but rely mostly on 1px borders.",
+    "spacing": "Airy spacing. Generous padding (p-8, p-12, py-20, py-32) to create breathing room."
+  },
+  "component_patterns": {
+    "buttons": "Pill-shaped, using ink (#161514) or accent orange (#FF5B22) backgrounds for primary, or transparent with fine borders for secondary.",
+    "cards": "Cream #E6E1D5 or Ink #161514 for alternating dark intimate sections.",
+    "eyebrows": "Tiny uppercase, tight tracking, muted text or accent orange.",
+    "icons": "Use lucide-react with thin stroke widths (e.g., strokeWidth={1}) for elegance."
+  },
+  "layouts": {
+    "MUST_STAY_IDENTICAL": [
+      "Hero section: full-screen video/image, breadcrumb, H1, booking CTA.",
+      "Packages & Pricing: 3-card section.",
+      "Final CTA: dark card.",
+      "SEO body copy block: Mumbai/Goa."
+    ],
+    "REDESIGN_SECTIONS": {
+      "About This Service": {
+        "layout": "Split 50/50. Left: delicate serif text, romantic phrasing, generous line-height. Right: elegant portrait image.",
+        "bg_color": "cream (#EEEAE1)"
+      },
+      "What We Cover": {
+        "layout": "Bento grid (4 groups: Session Styles, Comfort & Privacy, Styling & Preparation, Confidential Delivery). Mix of cream and dark ink cards.",
+        "style": "Cards with rounded-2xl, 1px border. Use elegant icons or abstract fabric textures as card backgrounds."
+      },
+      "Who Is This For": {
+        "layout": "Grid of 4 (Brides-to-be, Personal Milestones, Anniversary Gifts, Maternity).",
+        "style": "Use image-led cards or large text with delicate dividers. Alternating dark and light elements."
+      },
+      "Why Choose Us": {
+        "layout": "Dark intimate feature section (bg-ink #161514).",
+        "style": "Privacy-first trust points. High contrast, cream serif text. Numbered list with large fine-line numbers."
+      },
+      "Our Process": {
+        "layout": "Vertical or horizontal timeline/stepper (Consultation → Prep & Styling → Guided Session → Private Reveal).",
+        "style": "Airy spacing, fine connecting lines, delicate serif italics."
+      },
+      "Portfolio Showcase": {
+        "layout": "Masonry or asymmetrical grid (The 'Tetris' grid).",
+        "style": "Tasteful boudoir images. Large negative space."
+      },
+      "FAQs": {
+        "layout": "Accordion list.",
+        "style": "Minimalist, fine borders (#DBD4C6) between items, no background."
+      }
+    }
+  },
+  "media": {
+    "images": {
+      "About This Service": {
+        "url": "https://images.unsplash.com/photo-1616639943825-e0fbad20a3d3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwd29tYW4lMjBwb3J0cmFpdCUyMHNvZnQlMjBsaWdodHxlbnwwfHx8fDE3ODY3MDk3NDl8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Woman in white long sleeve dress, soft light, elegant."
+      },
+      "What We Cover Background": {
+        "url": "https://images.unsplash.com/photo-1732869415090-179de017b6d6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwZmFicmljJTIwYWVzdGhldGljfGVufDB8fHx8MTc4Njc4MjI4OXww&ixlib=rb-4.1.0&q=85",
+        "description": "Close up view of white fabric, soft folds."
+      },
+      "Who Is This For / Process": {
+        "url": "https://images.unsplash.com/photo-1615672969142-42262c119036?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NjZ8MHwxfHNlYXJjaHwzfHx0YXN0ZWZ1bCUyMGJvdWRvaXIlMjBwaG90b2dyYXBoeXxlbnwwfHx8fDE3ODY3ODIyOTB8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Tasteful silhouette or woman in black tank top on bed."
+      },
+      "Why Choose Us / Privacy": {
+        "url": "https://images.unsplash.com/photo-1508153460964-48ffffcb0829?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzOTB8MHwxfHNlYXJjaHwxfHxzaWxob3VldHRlJTIwd29tYW4lMjBzb2Z0JTIwbGlnaHR8ZW58MHx8fHwxNzg2NzgyMjkwfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Silhouette of woman under orange sky."
+      },
+      "Portfolio Showcase Fallbacks": [
+        "https://images.unsplash.com/photo-1766601118898-5f4bdbf49c00?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxNzV8MHwxfHNlYXJjaHwxfHx3b21hbiUyMHNvZnQlMjBtb3JuaW5nJTIwbGlnaHR8ZW58MHx8fHwxNzg2NzgyMjg5fDA&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1684361436003-aa575b96bc2d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHw0fHxlbGVnYW50JTIwd29tYW4lMjBwb3J0cmFpdCUyMHNvZnQlMjBsaWdodHxlbnwwfHx8fDE3ODY3MDk3NDl8MA&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1440589473619-3cde28941638?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHwyfHxlbGVnYW50JTIwd29tYW4lMjBwb3J0cmFpdCUyMHNvZnQlMjBsaWdodHxlbnwwfHx8fDE3ODY3MDk3NDl8MA&ixlib=rb-4.1.0&q=85"
+      ]
+    }
+  },
+  "motion": {
+    "library": "framer-motion",
+    "style": "Slow fades, gentle upward y-axis reveals. Nothing bouncy or fast. It should feel like a deep breath.",
+    "scroll": "Consider lenis for smooth scrolling if permitted by the stack."
+  },
+  "accessibility": {
+    "contrast": "Ensure muted text (#8A857D) meets contrast on cream (#EEEAE1). On ink backgrounds, use cream text.",
+    "aria": "Include aria-labels on all images, ensuring decorative boudoir textures are marked aria-hidden='true'."
+  },
+  "instructions_to_main_agent": [
+    "You are redesigning a single Next.js page (.js extension, not .tsx) for a luxury photography service.",
+    "DO NOT alter the sections marked as 'MUST_STAY_IDENTICAL'. Wrap them or keep their JSX completely intact.",
+    "Implement the new redesigned sections ('About', 'What We Cover', 'Who Is This For', 'Why Choose Us', 'Our Process', 'Portfolio', 'FAQs') using Tailwind CSS.",
+    "Ensure 'Cormorant Garamond' is applied via a specific class (like className='font-cormorant') for headings, while Inter is applied for small labels.",
+    "Alternate background colors between cream (#EEEAE1, #E6E1D5) and dark ink (#161514) to create an intimate, rhythmic scroll experience.",
+    "Rely heavily on thin borders (border border-[#DBD4C6]) instead of box shadows to keep it elegant.",
+    "Use 'framer-motion' for simple elegant reveals."
+  ],
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": [
+    "You tend to converge toward generic outputs. Avoid this: make creative, distinctive frontends that surprise and delight.",
+    "Do not use generic centered layouts or uniform styling. Create tension with asymmetry and negative space.",
+    "Never apply universal transition (e.g., transition: all).",
+    "Never center align the app container in CSS.",
+    "Use 2-3x more spacing than feels comfortable. Cramped designs look cheap.",
+    "Never use placeholder URLs (like placehold.co). Always use the provided media URLs.",
+    "All interactive elements MUST include a data-testid attribute.",
+    "Do not use fully transparent backgrounds on elements that float over content (e.g. headers, dropdowns)."
+  ]
+}

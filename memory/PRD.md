@@ -48,3 +48,9 @@ Pull the full public repo `github.com/pkwebapp/Emergent2` into /app without chan
 - Media records now support a `location` field (Title = existing `alt`). Backend: POST/PATCH `/api/media` in `frontend/app/api/[[...path]]/route.js`.
 - Admin `/admin/media`: each gallery image card now has editable **Title** + **Location** text inputs (auto-save on blur) for Galleries tab (Weddings/Events/Portraits-Headshots/Portfolio), Service Pages galleries, and Portfolio tab.
 - Public pages: removed the "Open story" link and the full-screen lightbox from the Weddings mosaic (`services/weddings/page.js`), the generic service Portfolio Showcase (`services/[slug]/ServicePageClient.jsx`), and the `/gallery` page (`gallery/GalleryClient.jsx`). Tiles are now non-clickable and show Title + Location on hover.
+
+## Update — Boudoir Page Redesign (Jun 2026)
+- New dedicated route `frontend/app/services/boudoir-shoots/` (page.js + BoudoirPageClient.jsx); slug excluded from generic `[slug]` generateStaticParams.
+- KEPT IDENTICAL per user: hero section, pricing (Essential/Signature/Luxe), final CTA, Mumbai/Goa SEO body block, sticky book CTA, admin media override (`boudoir-shoots-gallery` slot + `boudoir-shoots-banner` hero slot).
+- REDESIGNED (boudoir feel, site palette + Cormorant Garamond serif): About split-editorial w/ drop cap, serif pull-quote divider (replaced stats strip), bento "What Your Session Includes" (cream+ink cards), Who Is This For (roman numerals, staggered), dark "Trust" section w/ consent badge, airy 4-step timeline, asymmetric portfolio grid, minimal serif FAQ.
+- 8 AI-generated tasteful boudoir images self-hosted at `frontend/public/images/boudoir/`.
