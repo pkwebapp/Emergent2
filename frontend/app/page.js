@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion'
 import { ArrowUpRight, ArrowRight, Star, MessageCircle, ChevronDown, Mail, MapPin, Play } from 'lucide-react'
-import { IMG, CONTACT } from '@/components/site/Chrome'
+import { IMG, CONTACT, waLink } from '@/components/site/Chrome'
 import { SERVICES } from '@/lib/services'
 import { useMediaSlot } from '@/hooks/useMediaSlot'
 
@@ -434,7 +434,7 @@ function About() {
                 <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <a
-                href={CONTACT.whatsapp}
+                href={waLink({ page: 'Home' })}
                 target="_blank"
                 rel="noreferrer"
                 className="text-[11px] tracking-[0.28em] uppercase text-[#8A857D] hover:text-[#FF5B22] transition-colors"
@@ -1167,7 +1167,7 @@ function FAQ() {
               Questions, <span className="italic text-[#FF5B22]">answered.</span>
             </h2>
             <p className="mt-6 text-[#4C4A46] font-light leading-relaxed">Still unsure? WhatsApp us and we&rsquo;ll respond within the hour.</p>
-            <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="faq-whatsapp" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B22] border-b border-[#FF5B22]/50 pb-1 hover:border-[#FF5B22]"><MessageCircle size={16} /> Chat on WhatsApp</a>
+            <a href={waLink({ page: 'Home' })} target="_blank" rel="noreferrer" data-testid="faq-whatsapp" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B22] border-b border-[#FF5B22]/50 pb-1 hover:border-[#FF5B22]"><MessageCircle size={16} /> Chat on WhatsApp</a>
           </div>
           <div className="col-span-1 md:col-span-8 min-w-0 overflow-hidden">
             {FAQS.map((f, k) => (
@@ -1231,7 +1231,7 @@ function CTA() {
               Planning a wedding? Launching a brand? Need professional photos for your business? We&rsquo;re here to make the process simple&mdash;from planning the shoot to delivering beautifully edited photographs and videos.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row sm:flex-wrap gap-3 max-w-full">
-              <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="cta-whatsapp" className="group inline-flex w-full sm:w-auto justify-center items-center gap-3 bg-[#FF5B22] text-white pl-6 pr-2 py-2 rounded-full text-sm font-semibold hover:pr-6 transition-[padding] duration-500">
+              <a href={waLink({ page: 'Home' })} target="_blank" rel="noreferrer" data-testid="cta-whatsapp" className="group inline-flex w-full sm:w-auto justify-center items-center gap-3 bg-[#FF5B22] text-white pl-6 pr-2 py-2 rounded-full text-sm font-semibold hover:pr-6 transition-[padding] duration-500">
                 <span className="tracking-wide">Chat on WhatsApp</span>
                 <span className="w-10 h-10 rounded-full bg-white/20 grid place-content-center group-hover:bg-white group-hover:text-[#FF5B22] transition-colors">
                   <MessageCircle size={16} />

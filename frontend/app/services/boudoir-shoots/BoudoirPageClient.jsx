@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { ArrowRight, ArrowUpRight, Check, MessageCircle, Clock, Lock, EyeOff, Heart, KeyRound, Feather, ShieldCheck } from 'lucide-react'
-import { CONTACT } from '@/components/site/Chrome'
+import { waLink } from '@/components/site/Chrome'
 import { ReadingProgress } from '@/components/services/ServiceExtras'
 import HeroMedia from '@/components/media/HeroMedia'
 import { SERVICES } from '@/lib/services'
@@ -168,7 +168,7 @@ export default function BoudoirPageClient() {
               <Link href={`/booking?service=${SLUG}`} data-testid="service-hero-booking-link" className="group inline-flex items-center gap-3 bg-[#EEEAE1] text-[#161514] px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#FF5B22] hover:text-white transition-colors">
                 Book this service <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="service-hero-whatsapp-link" className="inline-flex items-center gap-3 text-white/90 hover:text-white text-sm font-semibold">
+              <a href={waLink({ service: 'Boudoir Photography', page: 'Boudoir Shoots' })} target="_blank" rel="noreferrer" data-testid="service-hero-whatsapp-link" className="inline-flex items-center gap-3 text-white/90 hover:text-white text-sm font-semibold">
                 <MessageCircle size={15} /> Chat on WhatsApp
               </a>
             </div>
@@ -569,7 +569,7 @@ export default function BoudoirPageClient() {
                 Everything you&apos;re <span className="italic text-[#FF5B22] font-normal">wondering.</span>
               </h2>
               <p className="mt-5 text-[#8A857D] font-light text-sm leading-[1.9]">Every enquiry is handled discreetly. Message us privately on WhatsApp — no obligation, no pressure.</p>
-              <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="boudoir-faq-whatsapp-link" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B22]"><MessageCircle size={16} /> Chat privately on WhatsApp</a>
+              <a href={waLink({ service: 'Boudoir Photography', page: 'Boudoir Shoots' })} target="_blank" rel="noreferrer" data-testid="boudoir-faq-whatsapp-link" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B22]"><MessageCircle size={16} /> Chat privately on WhatsApp</a>
             </div>
             <div className="col-span-12 md:col-span-8 border-t border-[#DBD4C6]">
               {FAQS.map((f, i) => <FAQItem key={i} q={f.q} a={f.a} />)}

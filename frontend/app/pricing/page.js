@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, Calendar, MessageCircle, Link as LinkIcon, Check, Plus } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { IMG, CONTACT } from '@/components/site/Chrome'
+import { IMG, CONTACT, waLink } from '@/components/site/Chrome'
 
 const CATEGORIES = [
   { key: 'portraits', label: 'Portraits, Portfolio & Headshots' },
@@ -460,7 +460,7 @@ function PricingInner() {
                 Multi-day productions, destination weddings, and enterprise events get custom scoping. Share your brief and we&apos;ll respond within a few hours.
               </p>
             </div>
-            <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="pricing-custom-quote-whatsapp" className="inline-flex items-center gap-3 bg-[#FF5B22] text-white px-7 py-4 rounded-full text-sm font-semibold hover:bg-[#E24A12] transition-colors shrink-0">
+            <a href={waLink({ service: 'a Custom Quote', page: 'Pricing' })} target="_blank" rel="noreferrer" data-testid="pricing-custom-quote-whatsapp" className="inline-flex items-center gap-3 bg-[#FF5B22] text-white px-7 py-4 rounded-full text-sm font-semibold hover:bg-[#E24A12] transition-colors shrink-0">
               <MessageCircle size={16} /> Request Custom Quote
             </a>
           </div>

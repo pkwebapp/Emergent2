@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, ArrowUpRight, Check, Globe, MessageCircle, Mic, MonitorPlay, Play, Radio, ShieldCheck, Video, Wifi } from 'lucide-react'
-import { CONTACT } from '@/components/site/Chrome'
+import { waLink } from '@/components/site/Chrome'
 import { ReadingProgress, RelatedServices } from '@/components/services/ServiceExtras'
 import HeroMedia from '@/components/media/HeroMedia'
 import { backendUrl } from '@/lib/backend'
@@ -249,7 +249,7 @@ export default function LiveStreamingPageClient({ faqs }) {
                 <Link href="/booking?service=live-streaming" data-testid="livestream-hero-booking-link" className="inline-flex justify-center items-center gap-3 bg-[#FF5B22] text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors">
                   Book your stream <ArrowRight size={14} />
                 </Link>
-                <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="livestream-hero-whatsapp-link" className="inline-flex justify-center items-center gap-3 border border-white/25 text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors">
+                <a href={waLink({ service: 'Live Streaming', page: 'Live Streaming' })} target="_blank" rel="noreferrer" data-testid="livestream-hero-whatsapp-link" className="inline-flex justify-center items-center gap-3 border border-white/25 text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors">
                   <MessageCircle size={15} /> Chat on WhatsApp
                 </a>
               </div>
@@ -328,7 +328,7 @@ export default function LiveStreamingPageClient({ faqs }) {
                   <div className="display text-4xl text-[#FF5B22]/70">{s.n}</div>
                   <h3 className="text-xl font-semibold mt-2">{s.t}</h3>
                   <p className="mt-2.5 text-sm text-white/70 leading-relaxed">{s.d}</p>
-                  <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B22] group-hover:gap-3 transition-[gap]">
+                  <a href={waLink({ service: 'Live Streaming', page: 'Live Streaming' })} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B22] group-hover:gap-3 transition-[gap]">
                     Enquire about this service <ArrowUpRight size={14} />
                   </a>
                 </div>
@@ -464,7 +464,7 @@ export default function LiveStreamingPageClient({ faqs }) {
                     <li key={item} className="flex gap-3 text-sm leading-relaxed"><Check size={15} className={`mt-0.5 shrink-0 ${plan.featured ? 'text-[#FF5B22]' : 'text-[#FF5B22]'}`} />{item}</li>
                   ))}
                 </ul>
-                <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" className={`mt-7 inline-flex justify-center items-center gap-2 px-5 py-3 rounded-full text-sm font-semibold transition-colors ${plan.featured ? 'bg-[#FF5B22] text-white hover:bg-white hover:text-[#161514]' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`} data-testid={`livestream-pricing-whatsapp-${plan.name.toLowerCase().replaceAll(' ', '-')}`}>
+                <a href={waLink({ service: 'Live Streaming', page: 'Live Streaming' })} target="_blank" rel="noreferrer" className={`mt-7 inline-flex justify-center items-center gap-2 px-5 py-3 rounded-full text-sm font-semibold transition-colors ${plan.featured ? 'bg-[#FF5B22] text-white hover:bg-white hover:text-[#161514]' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`} data-testid={`livestream-pricing-whatsapp-${plan.name.toLowerCase().replaceAll(' ', '-')}`}>
                   <MessageCircle size={14} /> Get exact quote
                 </a>
               </FadeIn>
@@ -568,7 +568,7 @@ export default function LiveStreamingPageClient({ faqs }) {
             </FadeIn>
             <FadeIn className="relative flex flex-col sm:flex-row md:flex-col gap-3 md:items-start">
               <Link href="/booking?service=live-streaming" data-testid="livestream-final-booking-link" className="inline-flex justify-center items-center gap-3 bg-white text-[#161514] px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#161514] hover:text-white transition-colors">Book live streaming <ArrowRight size={14} /></Link>
-              <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="livestream-final-whatsapp-link" className="inline-flex justify-center items-center gap-3 border border-white/35 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors"><MessageCircle size={15} /> WhatsApp the team</a>
+              <a href={waLink({ service: 'Live Streaming', page: 'Live Streaming' })} target="_blank" rel="noreferrer" data-testid="livestream-final-whatsapp-link" className="inline-flex justify-center items-center gap-3 border border-white/35 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors"><MessageCircle size={15} /> WhatsApp the team</a>
             </FadeIn>
           </div>
         </div>

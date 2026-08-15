@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Check, MessageCircle, Sparkles } from 'lucide-react'
-import { CONTACT } from '@/components/site/Chrome'
+import { waLink } from '@/components/site/Chrome'
 import { ReadingProgress, RelatedServices } from '@/components/services/ServiceExtras'
 import HeroMedia from '@/components/media/HeroMedia'
 import { backendUrl } from '@/lib/backend'
@@ -156,7 +156,7 @@ function Hero() {
             <Link href="/booking?service=editorial-portfolio" data-testid="service-hero-booking-link" className="group inline-flex items-center gap-3 bg-[#EEEAE1] text-[#161514] px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#FF5B22] hover:text-white transition-colors">
               Book this service <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
             </Link>
-            <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="service-hero-whatsapp-link" className="inline-flex items-center gap-3 text-white/90 hover:text-white text-sm font-semibold">
+            <a href={waLink({ service: 'Editorial Portfolio', page: 'Editorial Portfolio' })} target="_blank" rel="noreferrer" data-testid="service-hero-whatsapp-link" className="inline-flex items-center gap-3 text-white/90 hover:text-white text-sm font-semibold">
               <MessageCircle size={15} /> Chat on WhatsApp
             </a>
           </div>
@@ -400,7 +400,7 @@ export default function EditorialPortfolioPageClient() {
             <FadeIn className="relative flex flex-col sm:flex-row md:flex-col gap-3 md:items-start">
               <Link href="/booking?service=editorial-portfolio" data-testid="editorial-final-booking-link" className="inline-flex justify-center items-center gap-3 bg-white text-[#161514] px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#161514] hover:text-white transition-colors">Book your portfolio shoot <ArrowRight size={14} /></Link>
               <Link href="/booking?service=editorial-portfolio" data-testid="editorial-final-concept-link" className="inline-flex justify-center items-center gap-3 border border-white/35 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors">Discuss your creative concept</Link>
-              <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="editorial-final-whatsapp-link" className="inline-flex justify-center items-center gap-3 border border-white/35 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors"><MessageCircle size={15} /> WhatsApp us</a>
+              <a href={waLink({ service: 'Editorial Portfolio', page: 'Editorial Portfolio' })} target="_blank" rel="noreferrer" data-testid="editorial-final-whatsapp-link" className="inline-flex justify-center items-center gap-3 border border-white/35 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors"><MessageCircle size={15} /> WhatsApp us</a>
             </FadeIn>
           </div>
         </div>

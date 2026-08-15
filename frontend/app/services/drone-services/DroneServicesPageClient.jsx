@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight, Check, CloudSun, Film, Map, MessageCircle, ShieldCheck, Sparkles, Wind, Zap } from 'lucide-react'
-import { CONTACT } from '@/components/site/Chrome'
+import { waLink } from '@/components/site/Chrome'
 import { ReadingProgress, RelatedServices } from '@/components/services/ServiceExtras'
 import HeroMedia from '@/components/media/HeroMedia'
 import { backendUrl } from '@/lib/backend'
@@ -318,7 +318,7 @@ export default function DroneServicesPageClient() {
             </FadeIn>
             <FadeIn className="relative flex flex-col sm:flex-row md:flex-col gap-3 md:items-start">
               <Link href="/booking?service=drone-services" data-testid="drone-final-booking-link" className="inline-flex justify-center items-center gap-3 bg-white text-[#071014] px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#071014] hover:text-white transition-colors">Book drone coverage <ArrowRight size={14} /></Link>
-              <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="drone-final-whatsapp-link" className="inline-flex justify-center items-center gap-3 border border-white/35 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#071014] transition-colors"><MessageCircle size={15} /> WhatsApp the team</a>
+              <a href={waLink({ service: 'Drone Services', page: 'Drone Services' })} target="_blank" rel="noreferrer" data-testid="drone-final-whatsapp-link" className="inline-flex justify-center items-center gap-3 border border-white/35 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#071014] transition-colors"><MessageCircle size={15} /> WhatsApp the team</a>
             </FadeIn>
           </div>
         </div>

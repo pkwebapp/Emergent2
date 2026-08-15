@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Check, Mail, Phone, MapPin, MessageCircle, Calendar } from 'lucide-react'
-import { CONTACT } from '@/components/site/Chrome'
+import { CONTACT, waLink } from '@/components/site/Chrome'
 
 function BookingHero() {
   return (
@@ -24,7 +24,7 @@ function BookingHero() {
               <a href="#booking-form" data-testid="booking-hero-start-link" className="inline-flex justify-center items-center gap-3 bg-[#161514] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#FF5B22] transition-colors">
                 Start enquiry <ArrowRight size={14} />
               </a>
-              <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="booking-hero-whatsapp-link" className="inline-flex justify-center items-center gap-3 border border-[#DBD4C6] bg-[#EEEAE1] text-[#161514] px-6 py-3 rounded-full text-sm font-semibold hover:border-[#25D366] hover:text-[#25D366] transition-colors">
+              <a href={waLink({ page: 'Booking' })} target="_blank" rel="noreferrer" data-testid="booking-hero-whatsapp-link" className="inline-flex justify-center items-center gap-3 border border-[#DBD4C6] bg-[#EEEAE1] text-[#161514] px-6 py-3 rounded-full text-sm font-semibold hover:border-[#25D366] hover:text-[#25D366] transition-colors">
                 WhatsApp us
               </a>
             </div>
@@ -188,7 +188,7 @@ export default function BookingPage() {
                   <div className="eyebrow mb-3">Prefer to talk?</div>
                   <h3 className="display text-2xl">We&apos;re one message away.</h3>
                   <div className="mt-5 space-y-3">
-                    <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="booking-whatsapp-link" className="flex items-center gap-3 p-3 rounded-xl bg-[#EEEAE1] border border-[#DBD4C6] hover:border-[#FF5B22] transition">
+                    <a href={waLink({ page: 'Booking' })} target="_blank" rel="noreferrer" data-testid="booking-whatsapp-link" className="flex items-center gap-3 p-3 rounded-xl bg-[#EEEAE1] border border-[#DBD4C6] hover:border-[#FF5B22] transition">
                       <span className="w-10 h-10 rounded-lg bg-[#25D366] text-white grid place-content-center"><MessageCircle size={16} /></span>
                       <div className="flex-1"><div className="text-[10px] uppercase tracking-widest text-[#8A857D]">WhatsApp</div><div className="font-semibold text-sm">{CONTACT.phone}</div></div>
                     </a>

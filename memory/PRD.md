@@ -1,62 +1,24 @@
-# PK Photography — Emergent2 (Next.js) Site + Goa Editorial Blog
+# PK Photography — Product Requirements & Changelog
 
-## Problem statement
-Pull the full public repo `github.com/pkwebapp/Emergent2` into /app without changing anything, then add a new editorial blog article — "Pre-Wedding, Couple & Portrait Shoots in Goa" at `/blog/pre-wedding-couple-portrait-shoot-locations-goa` — as one of the posts on the existing blog index.
+## Product
+Marketing/portfolio website for PK Photography (Mumbai · Goa · India).
+Stack: Next.js 15.5 (frontend + API routes at `/app/frontend`), FastAPI reverse-proxy on :8001 → Next :3000, MongoDB. Cloudinary for media (signed uploads).
 
-## Architecture
-- Next.js 15.5 (App Router) frontend, FastAPI reverse-proxy backend that forwards `/api/*` to Next.js API routes on port 3000, MongoDB.
-- Supervisor already runs `yarn start` (= `next dev`) in `/app/frontend`.
-- Existing blog posts live at `/app/frontend/app/blog/{slug}/page.js` and are indexed by `/app/frontend/app/blogs/posts.js` (rendered by `Journal.jsx`).
+## Architecture notes
+- API logic: `/app/frontend/app/api/[[...path]]/route.js`
+- Shared site chrome + contact + helpers: `/app/frontend/components/site/Chrome.jsx`
+- Generic service page: `/app/frontend/app/services/[slug]/ServicePageClient.jsx`
+- Dedicated service pages: `weddings/page.js`, `boudoir-shoots/`, `live-streaming/`, `events/`, `editorial-portfolio/`, `drone-services/`, `portraits-headshots/`
+- SEO: `/app/frontend/lib/seo.js`; Services: `/app/frontend/lib/services.js`
 
-## What was added (untouched: everything else)
-- `/app/frontend/app/blog/pre-wedding-couple-portrait-shoot-locations-goa/page.js` — server component with metadata, OG, FAQPage & Article JSON-LD, keywords.
-- `/app/frontend/app/blog/pre-wedding-couple-portrait-shoot-locations-goa/GoaEditorial.jsx` — full client component (hero, sticky TOC + mobile pill bar, intro w/ animated stat counters, 5 zig-zag services, iPhone reel highlight, 4 parallax location cards, 3-package pricing w/ "Most Popular" badge, FAQ accordion, final CTA with Book / WhatsApp).
-- `/app/frontend/app/blogs/posts.js` — one new entry prepended for the Goa blog (Category = Goa, 9 min read, Dec 1 2025).
+## Implemented (chronological)
+- Boudoir page redesign (dedicated route, Indian touch, testimonials) — screenshot-tested.
+- Cloudinary signed uploads + delete flow — API-tested.
+- ESLint flat config added (`eslint.config.mjs` at `/app` and `/app/frontend`).
+- **2026-06 Wedding films**: wired 4 YouTube links to the "Cinematic stories" cards on `/services/weddings` (`WeddingFilms`/`VideoModal` in `weddings/page.js`). Links: pTd55VFy8JM, Z58zTK4h34s, p7lVQdeQFpM, 1dovh9ArbEk. FINDING: only 1dovh9ArbEk has "Allow embedding" ON; other 3 show "Video unavailable" (owner disabled embedding; p7lVQdeQFpM belongs to another channel "Shaadi Films"). Awaiting user decision (enable embedding / open-in-new-tab fallback / hybrid).
+- **2026-06 WhatsApp enquiry auto-text**: added `waLink({service,page})` + `pageLabel()` in `Chrome.jsx`. All WhatsApp enquire links now open with a pre-filled message containing service name + page name. Global float + footer auto-derive page via `usePathname`. Updated: home, services listing, all service pages, pricing custom-quote, booking. Pricing cards already had detailed prefilled messages. Verified live.
 
-## Design fit
-- Reused the exact same visual system as the wedding-package editorial: Cormorant Garamond headlines, `#EEEAE1` cream base, `#161514` ink, `#FF5B22`/`#FF7A4d` orange accents, `.eyebrow` / `.link-underline` / `.lift` utilities, framer-motion Reveal/ParallaxImage/Counter patterns.
-- Imagery pulled from the repo's existing `/public` assets (`/wedding/*`, `/outdoors/*`, `/destination-weddings.jpg`).
-
-## SEO
-- Canonical URL, OG, Twitter, keyword list, article + FAQPage JSON-LD, semantic H1 → H2 → H3, alt text with location + "pre-wedding shoot Goa".
-
-## Known caveats
-- Placeholder starting prices (₹18k / ₹42k / ₹75k) — swap for the real values.
-- WhatsApp number reuses the existing `+91 8888766739` from other pages.
-- Location images are drawn from the repo's existing wedding/outdoor folders as placeholders — swap once real Ashvem / Mandrem / Arambol / Vagator frames are ready.
-
-## Update — Full-site audit + auth fix (Aug 2025)
-- Removed orphaned next-auth `<SessionProvider>` from `app/providers.js` (app uses custom cookie auth, not next-auth) — this eliminated the repeating `CLIENT_FETCH_ERROR` (`/api/auth/session` 404) that appeared on every page.
-- Added safe next-auth shims in `route.js` (`/auth/session`, `/auth/providers`, `/auth/csrf`, `/auth/_log`) as a defensive fallback.
-- Rewrote orphaned pages `/login` and `/profile` to use the working custom Google auth (`/api/auth/me`, `/api/auth/logout`, Emergent OAuth → `/client`). `/signup` already used custom auth.
-- Audit result: all 30 routes return 200; backend 20/20 API tests pass; frontend audit passed (auth pages, gallery title/location + no-lightbox, navigation). Benign 401 on `/api/auth/me` for logged-out users is expected. Dead next-auth template components (LoginPromptModal, GoogleLoginButton, ClientHome, Card.js) remain in `src/` but are not mounted anywhere.
-
-## Update — SEO polish (title/description/hero/schema/favicon)
-- Root `layout.js` metadata: shortened Title to 57 chars ("Photography, Videography & Drone Services in Mumbai & Goa") and meta description to 138 chars (both were flagged as too long in an SEO audit). Aligned OpenGraph + Twitter. Added `alternates.languages` hreflang (en-IN + x-default). Added drone/aerial keywords.
-- Homepage hero (`app/page.js`): H1 now "Professional photography, videography & drone services in Mumbai & Goa."; subheadline expanded to include aerial drone coverage + "across Mumbai, Goa and Pan India".
-- Homepage `HomeJsonLd` (`ProfessionalService`): added Drone Photography/Videography, Aerial Photography, Product, Fashion, Real Estate serviceType entries.
-- Added `app/icon.svg` (branded PK favicon) — audit flagged missing favicon.
-- Raised frontend `start` NODE_OPTIONS max-old-space-size 1024→4096 (container has 47GB free) to reduce dev-server memory restarts.
-- NOTE: Headless screenshot tool shows the homepage hero dark because Playwright captures framer-motion's pre-animation opacity:0 state; troubleshoot_agent confirmed the hero renders fine for real users.
-- STILL PENDING (need user input): Google Analytics (GA4 ID), Meta/Facebook Pixel ID. DMARC/SPF are DNS-level (outside app).
-
-## Update — Google Business Profiles + inline-style cleanup
-- Added both GBP listings (Mumbai `share.google/KRRlSGRe31W2g95nU`, Goa `share.google/Ej67vDaFeSCl2Zp4U`). Homepage `HomeJsonLd` rewritten to a two-location `PhotographyBusiness` @graph (each with address, phone, `hasMap`, `sameAs` = GBP + Instagram/Facebook/LinkedIn/YouTube/X). Footer studio `mapsUrl` now point to the real GBP links.
-- Inline-style cleanup: converted all 40 repeated `style={{ fontFamily: "'Cormorant Garamond', serif" }}` → `data-font="display"` attribute + CSS rule in `globals.css`. Files: page.js, services/page.js, talents/page.js, signup/page.js, Chrome.jsx. Remaining ~98 `style={}` are dynamic framer-motion/background/shadcn-ui and intentionally kept.
-
-## Update — Gallery Title + Location (Aug 2025)
-- Media records now support a `location` field (Title = existing `alt`). Backend: POST/PATCH `/api/media` in `frontend/app/api/[[...path]]/route.js`.
-- Admin `/admin/media`: each gallery image card now has editable **Title** + **Location** text inputs (auto-save on blur) for Galleries tab (Weddings/Events/Portraits-Headshots/Portfolio), Service Pages galleries, and Portfolio tab.
-- Public pages: removed the "Open story" link and the full-screen lightbox from the Weddings mosaic (`services/weddings/page.js`), the generic service Portfolio Showcase (`services/[slug]/ServicePageClient.jsx`), and the `/gallery` page (`gallery/GalleryClient.jsx`). Tiles are now non-clickable and show Title + Location on hover.
-
-## Update — Boudoir Page Redesign (Jun 2026)
-- New dedicated route `frontend/app/services/boudoir-shoots/` (page.js + BoudoirPageClient.jsx); slug excluded from generic `[slug]` generateStaticParams.
-- KEPT IDENTICAL per user: hero section, pricing (Essential/Signature/Luxe), final CTA, Mumbai/Goa SEO body block, sticky book CTA, admin media override (`boudoir-shoots-gallery` slot + `boudoir-shoots-banner` hero slot).
-- REDESIGNED (boudoir feel, site palette + Cormorant Garamond serif): About split-editorial w/ drop cap, serif pull-quote divider (replaced stats strip), bento "What Your Session Includes" (cream+ink cards), Who Is This For (roman numerals, staggered), dark "Trust" section w/ consent badge, airy 4-step timeline, asymmetric portfolio grid, minimal serif FAQ.
-- 8 AI-generated tasteful boudoir images self-hosted at `frontend/public/images/boudoir/`.
-- (Jun 2026, follow-up) Boudoir hero now uses AI-generated Indian saree window-light image (`/images/boudoir/hero.jpg`, admin `boudoir-shoots-banner` slot still overrides). Added "Client Words" first-name-only testimonials strip (Priya/Meera/Ananya/Sana, Indian context) between Trust and Process sections. Brides-to-be + Styling images swapped to Indian bridal lehenga/dupatta + Indian vanity (gajra, jhumkas, bangles).
-
-## Update — Cloudinary Connected (Jun 2026)
-- User's Cloudinary account (cloud: jeoj8k1t) wired via frontend/.env (CLOUDINARY_CLOUD_NAME/API_KEY/API_SECRET + NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME).
-- Switched uploads from unsigned-preset to SIGNED uploads: new admin-gated `POST /api/cloudinary/sign` in `app/api/[[...path]]/route.js`; `lib/cloudinary.js#uploadToCloudinary` now fetches signature (requires adminToken); ImageUploader passes adminToken. No upload preset needed.
-- E2E verified via curl: sign → upload → media record → DELETE (signed destroy confirmed, CDN 404).
+## Backlog / open
+- P1: Decide embedding approach for the 3 non-embeddable wedding films (recommended: hybrid inline+new-tab fallback). Also consider updating card titles/durations to match real videos (Aspen & Tyrone, Yogesh & Niyati).
+- P2: User verification of boudoir redesign visuals and admin Cloudinary upload/delete in the admin UI.
+- Blog inline WhatsApp CTAs still use a raw `WHATSAPP` constant (global float already adds page context on those pages).

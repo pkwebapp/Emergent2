@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { motion, useScroll, useTransform, useSpring, AnimatePresence, useMotionValue, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import { SERVICES } from '@/app/page'
+import { waLink } from '@/components/site/Chrome'
 import { useMediaSlot } from '@/hooks/useMediaSlot'
 
 /**
@@ -287,7 +288,7 @@ function Header({ reduce }) {
                 </span>
               </Link>
               <a
-                href="https://wa.me/918888766739"
+                href={waLink({ page: 'Services' })}
                 target="_blank"
                 rel="noreferrer"
                 data-magnetic
@@ -789,7 +790,7 @@ function Cta() {
           </StaggerItem>
           <StaggerItem delay={0.14}>
             <a
-              href="https://wa.me/918888766739"
+              href={waLink({ page: 'Services' })}
               target="_blank"
               rel="noreferrer"
               data-magnetic

@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { ArrowRight, ArrowUpRight, Check, Award, Zap, Users, Star, MessageCircle, Play, Camera, Video, Sparkles, Calendar, Clock, ChevronDown, MapPin } from 'lucide-react'
-import { CONTACT } from '@/components/site/Chrome'
+import { waLink } from '@/components/site/Chrome'
 import { ReadingProgress } from '@/components/services/ServiceExtras'
 import HeroMedia from '@/components/media/HeroMedia'
 import { SERVICES } from '@/lib/services'
@@ -615,7 +615,7 @@ export default function ServicePageClient({ slug }) {
               <Link href={`/booking?service=${slug}`} data-testid="service-hero-booking-link" className="group inline-flex items-center gap-3 bg-[#EEEAE1] text-[#161514] px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#FF5B22] hover:text-white transition-colors">
                 Book this service <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="service-hero-whatsapp-link" className="inline-flex items-center gap-3 text-white/90 hover:text-white text-sm font-semibold">
+              <a href={waLink({ service: service.t, page: shortTitle })} target="_blank" rel="noreferrer" data-testid="service-hero-whatsapp-link" className="inline-flex items-center gap-3 text-white/90 hover:text-white text-sm font-semibold">
                 <MessageCircle size={15} /> Chat on WhatsApp
               </a>
             </div>
@@ -920,7 +920,7 @@ export default function ServicePageClient({ slug }) {
               <div className="eyebrow mb-3">FAQs</div>
               <h2 className="display text-3xl md:text-5xl">Common <span className="text-[#FF5B22] italic font-medium">questions.</span></h2>
               <p className="mt-4 text-[#8A857D]">Something else on your mind? Message us on WhatsApp and we'll reply within the hour.</p>
-              <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B22]"><MessageCircle size={16} /> Chat on WhatsApp</a>
+              <a href={waLink({ service: service.t, page: shortTitle })} target="_blank" rel="noreferrer" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B22]"><MessageCircle size={16} /> Chat on WhatsApp</a>
             </div>
             <div className="col-span-12 md:col-span-8">
               {visibleFaqs.map((f, i) => <FAQItem key={i} q={f.q} a={f.a} i={i} />)}

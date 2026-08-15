@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion'
 import { ArrowRight, MessageCircle, Play, Camera, Video, Film, Sparkles, MapPin, Clock, X, Check, Heart, Star, Award } from 'lucide-react'
-import { CONTACT } from '@/components/site/Chrome'
+import { waLink } from '@/components/site/Chrome'
 import { ReadingProgress, RelatedServices } from '@/components/services/ServiceExtras'
 
 /* ---------- Assets ---------- */
@@ -106,7 +106,7 @@ function Hero({ onPlayFilm }) {
             <Link href="/booking?service=weddings" className="group inline-flex items-center gap-3 bg-[#EEEAE1] text-[#161514] px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#FF5B22] hover:text-white transition-colors">
               Book your wedding <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
             </Link>
-            <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 bg-[#EEEAE1]/10 backdrop-blur border border-white/25 text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#25D366] hover:border-[#25D366] transition-colors">
+            <a href={waLink({ service: 'Wedding Photography & Films', page: 'Weddings' })} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 bg-[#EEEAE1]/10 backdrop-blur border border-white/25 text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#25D366] hover:border-[#25D366] transition-colors">
               <MessageCircle size={15} /> Chat on WhatsApp
             </a>
           </motion.div>
@@ -378,10 +378,10 @@ function Portfolio() {
 /* ---------- Wedding Films ---------- */
 function WeddingFilms({ onPlay }) {
   const films = [
-    { t: 'The Vows · Rohit &amp; Rasmi', dur: '02:01', img: IMG.w1 },
-    { t: 'A Marathi Morning', dur: '03:22', img: IMG.w6 },
-    { t: 'By the Arabian Sea', dur: '04:11', img: IMG.w5 },
-    { t: 'Baraat &amp; Beyond', dur: '02:45', img: IMG.w11 },
+    { t: 'The Vows · Rohit &amp; Rasmi', dur: '02:01', img: IMG.w1, videoId: 'pTd55VFy8JM' },
+    { t: 'A Marathi Morning', dur: '03:22', img: IMG.w6, videoId: 'Z58zTK4h34s' },
+    { t: 'By the Arabian Sea', dur: '04:11', img: IMG.w5, videoId: 'p7lVQdeQFpM' },
+    { t: 'Baraat &amp; Beyond', dur: '02:45', img: IMG.w11, videoId: '1dovh9ArbEk' },
   ]
   return (
     <section className="relative py-24 md:py-32 bg-[#FDFBF7]">
@@ -395,7 +395,7 @@ function WeddingFilms({ onPlay }) {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           {films.map((f, i) => (
-            <motion.button key={i} onClick={onPlay} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: (i % 2) * 0.1 }} className="group relative aspect-[16/10] rounded-3xl overflow-hidden shadow-lg text-left">
+            <motion.button key={i} onClick={() => onPlay(f.videoId)} data-testid={`wedding-film-card-${i}`} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: (i % 2) * 0.1 }} className="group relative aspect-[16/10] rounded-3xl overflow-hidden shadow-lg text-left">
               <Image src={f.img} alt={`${f.t} at wedding venue in cinematic film style, Mumbai & Goa`} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform [transition-duration:1400ms] group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#161514]/85 via-[#161514]/20 to-transparent" />
               <div className="absolute inset-0 grid place-content-center">
@@ -548,7 +548,7 @@ function Pricing() {
                 ))}
               </ul>
 
-              <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" className={`mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full py-3.5 font-semibold text-sm transition-colors ${t.featured ? 'bg-[#EEEAE1] text-[#161514] hover:bg-[#FF5B22] hover:text-white' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`}>
+              <a href={waLink({ service: 'Wedding Photography & Films', page: 'Weddings' })} target="_blank" rel="noreferrer" className={`mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full py-3.5 font-semibold text-sm transition-colors ${t.featured ? 'bg-[#EEEAE1] text-[#161514] hover:bg-[#FF5B22] hover:text-white' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`}>
                 <MessageCircle size={14} /> Enquire on WhatsApp
               </a>
             </motion.div>
@@ -593,7 +593,7 @@ function AddOns() {
               <h3 className="display text-2xl mt-3">{a.t}</h3>
               <div className="mt-2 text-lg font-semibold text-[#161514]">{a.p}</div>
               <p className="mt-4 text-sm text-[#8A857D] leading-relaxed">{a.d}</p>
-              <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B22] link-underline">Ask about this <ArrowRight size={13} /></a>
+              <a href={waLink({ service: 'Wedding Photography & Films', page: 'Weddings' })} target="_blank" rel="noreferrer" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B22] link-underline">Ask about this <ArrowRight size={13} /></a>
             </motion.div>
           ))}
         </div>
@@ -730,7 +730,7 @@ function FAQ() {
             <div className="eyebrow mb-3">Common Questions</div>
             <h2 className="display text-4xl md:text-5xl">You&apos;ve <span className="font-cormorant italic text-[#FF5B22] font-light">wondered.</span><br /> We&apos;ve <span className="font-cormorant italic text-[#FF5B22] font-light">answered.</span></h2>
             <p className="mt-6 text-[#8A857D]">Something else on your mind? Message us on WhatsApp and we&apos;ll reply within the hour.</p>
-            <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B22]"><MessageCircle size={16} /> Chat on WhatsApp</a>
+            <a href={waLink({ service: 'Wedding Photography & Films', page: 'Weddings' })} target="_blank" rel="noreferrer" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B22]"><MessageCircle size={16} /> Chat on WhatsApp</a>
           </div>
           <div className="col-span-12 md:col-span-8">
             {items.map((f, i) => (
@@ -777,7 +777,7 @@ function FinalCTA() {
           <Link href="/booking?service=weddings" className="group inline-flex items-center gap-3 bg-[#EEEAE1] text-[#161514] px-8 py-4 rounded-full text-sm font-semibold hover:bg-[#FF5B22] hover:text-white transition-colors">
             Book Your Wedding <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </Link>
-          <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 bg-[#EEEAE1]/10 backdrop-blur border border-white/25 text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-[#25D366] hover:border-[#25D366] transition-colors">
+          <a href={waLink({ service: 'Wedding Photography & Films', page: 'Weddings' })} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 bg-[#EEEAE1]/10 backdrop-blur border border-white/25 text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-[#25D366] hover:border-[#25D366] transition-colors">
             <MessageCircle size={16} /> Talk on WhatsApp
           </a>
         </motion.div>
@@ -787,13 +787,13 @@ function FinalCTA() {
 }
 
 /* ---------- Video Lightbox ---------- */
-function VideoModal({ open, onClose }) {
+function VideoModal({ videoId, onClose }) {
   return (
     <AnimatePresence>
-      {open && (
+      {videoId && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="fixed inset-0 z-[150] bg-black/95 backdrop-blur-sm grid place-content-center p-4">
           <motion.div initial={{ scale: 0.85, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.85, y: 20 }} onClick={(e) => e.stopPropagation()} className="relative w-[min(92vw,1200px)] aspect-video rounded-2xl overflow-hidden shadow-2xl">
-            <iframe src="https://www.youtube-nocookie.com/embed/22SExhaXwi0?autoplay=1&rel=0&modestbranding=1" title="PK Photography Wedding Film" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen className="absolute inset-0 w-full h-full" />
+            <iframe src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`} title="PK Photography Wedding Film" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen className="absolute inset-0 w-full h-full" />
           </motion.div>
           <button onClick={onClose} aria-label="Close" className="absolute top-6 right-6 w-12 h-12 rounded-full bg-[#EEEAE1]/10 backdrop-blur text-white grid place-content-center hover:bg-[#EEEAE1]/20"><X size={20} /></button>
         </motion.div>
@@ -876,17 +876,17 @@ function WeddingLocalSeoBlock() {
 }
 
 export default function WeddingsPage() {
-  const [videoOpen, setVideoOpen] = useState(false)
+  const [videoId, setVideoId] = useState(null)
 
   return (
     <main className="bg-[#EEEAE1]">
       <ReadingProgress />
-      <Hero onPlayFilm={() => setVideoOpen(true)} />
+      <Hero onPlayFilm={() => setVideoId('pTd55VFy8JM')} />
       <Storytelling />
       <ServiceBlocks />
       <JourneyTimeline />
       <Portfolio />
-      <WeddingFilms onPlay={() => setVideoOpen(true)} />
+      <WeddingFilms onPlay={(id) => setVideoId(id)} />
       <WhyUs />
       <Deliverables />
       <Pricing />
@@ -899,7 +899,7 @@ export default function WeddingsPage() {
       <FinalCTA />
 
       <StickyEnquire />
-      <VideoModal open={videoOpen} onClose={() => setVideoOpen(false)} />
+      <VideoModal videoId={videoId} onClose={() => setVideoId(null)} />
     </main>
   )
 }
