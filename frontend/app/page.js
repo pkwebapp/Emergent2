@@ -183,7 +183,7 @@ function Hero() {
             className="text-white text-[2rem] sm:text-[2.6rem] md:text-[3.15rem] lg:text-[3.65rem] leading-[1.02] font-light tracking-[-0.02em]"
             data-testid="hero-headline"
           >
-            Professional photography &amp; videography <span className="italic text-[#FF5B22]">in Mumbai &amp; Goa.</span>
+            Professional photography, videography &amp; drone services <span className="italic text-[#FF5B22]">in Mumbai &amp; Goa.</span>
           </motion.h1>
         </div>
 
@@ -195,7 +195,7 @@ function Hero() {
           className="mt-5 max-w-[58ch] text-white/75 text-[13px] md:text-[13.5px] font-light leading-[1.65]"
           data-testid="hero-subheadline"
         >
-          Real moments. Clean edits. Timeless photographs you&rsquo;ll still love years from now. From weddings and pre-wedding shoots to corporate events, product photography, fashion campaigns and real estate, PK Photography creates images and films that tell your story naturally&mdash;without forced poses or overdone editing.
+          Real moments. Clean edits. Timeless photographs you&rsquo;ll still love years from now. From weddings and pre-wedding shoots to corporate events, product photography, fashion campaigns, real estate and aerial drone coverage, PK Photography creates images and cinematic films across Mumbai, Goa and Pan India&mdash;capturing your story naturally, without forced poses or overdone editing.
         </motion.p>
 
         {/* CTAs */}
@@ -1270,8 +1270,14 @@ function HomeJsonLd() {
       'Wedding Videographer Mumbai',
       'Wedding Photography Goa',
       'Destination Wedding Photographer Goa',
+      'Drone Photography Mumbai',
+      'Drone Videography Goa',
+      'Aerial Photography India',
       'Corporate Photographer Mumbai',
       'Event Photographer Mumbai',
+      'Product Photography Mumbai',
+      'Fashion Photography Mumbai',
+      'Real Estate Photography Mumbai',
       'Luxury Wedding Photographer India',
     ],
   }
