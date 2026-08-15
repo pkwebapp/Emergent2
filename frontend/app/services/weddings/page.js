@@ -131,7 +131,7 @@ function Hero({ onPlayFilm }) {
       </motion.div>
 
       {/* Wave divider */}
-      <svg className="absolute bottom-0 left-0 right-0 w-full z-10" viewBox="0 0 1440 100" preserveAspectRatio="none" style={{ height: '90px' }}>
+      <svg className="absolute bottom-0 left-0 right-0 w-full z-10 pointer-events-none" viewBox="0 0 1440 100" preserveAspectRatio="none" style={{ height: '90px' }}>
         <path d="M0,100 C240,20 720,80 1440,10 L1440,100 Z" fill="#EEEAE1" />
       </svg>
     </section>

@@ -163,7 +163,7 @@ function Hero() {
         </motion.div>
       </div>
 
-      <svg className="absolute bottom-0 left-0 right-0 w-full z-10" viewBox="0 0 1440 120" preserveAspectRatio="none" style={{ height: '100px' }}>
+      <svg className="absolute bottom-0 left-0 right-0 w-full z-10 pointer-events-none" viewBox="0 0 1440 120" preserveAspectRatio="none" style={{ height: '100px' }}>
         <path d="M0,120 C240,20 720,100 1440,10 L1440,120 Z" fill="#EEEAE1" />
       </svg>
     </section>
