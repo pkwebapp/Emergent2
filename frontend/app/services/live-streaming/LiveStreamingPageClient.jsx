@@ -464,9 +464,12 @@ export default function LiveStreamingPageClient({ faqs }) {
                     <li key={item} className="flex gap-3 text-sm leading-relaxed"><Check size={15} className={`mt-0.5 shrink-0 ${plan.featured ? 'text-[#FF5B22]' : 'text-[#FF5B22]'}`} />{item}</li>
                   ))}
                 </ul>
-                <a href={waLink({ service: 'Live Streaming', page: 'Live Streaming', pkg: plan.name, price: plan.was ? `${plan.price} (was ${plan.was})` : plan.price })} target="_blank" rel="noreferrer" className={`mt-7 inline-flex justify-center items-center gap-2 px-5 py-3 rounded-full text-sm font-semibold transition-colors ${plan.featured ? 'bg-[#FF5B22] text-white hover:bg-white hover:text-[#161514]' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`} data-testid={`livestream-pricing-whatsapp-${plan.name.toLowerCase().replaceAll(' ', '-')}`}>
-                  <MessageCircle size={14} /> Get exact quote
-                </a>
+                <div className="mt-7 flex flex-col gap-2.5">
+                  <Link href="/booking?service=live-streaming" data-testid={`livestream-pricing-book-${plan.name.toLowerCase().replaceAll(' ', '-')}`} className={`inline-flex justify-center items-center gap-2 px-5 py-3 rounded-full text-sm font-semibold transition-colors ${plan.featured ? 'bg-[#FF5B22] text-white hover:bg-white hover:text-[#161514]' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`}>Book this package <ArrowRight size={14} /></Link>
+                  <a href={waLink({ service: 'Live Streaming', page: 'Live Streaming', pkg: plan.name, price: plan.was ? `${plan.price} (was ${plan.was})` : plan.price })} target="_blank" rel="noreferrer" className={`inline-flex justify-center items-center gap-2 px-5 py-3 rounded-full text-sm font-semibold border transition-colors ${plan.featured ? 'border-white/30 text-white hover:bg-white/10' : 'border-[#161514]/20 text-[#161514] hover:border-[#FF5B22] hover:text-[#FF5B22]'}`} data-testid={`livestream-pricing-whatsapp-${plan.name.toLowerCase().replaceAll(' ', '-')}`}>
+                    <MessageCircle size={14} /> Enquire on WhatsApp
+                  </a>
+                </div>
               </FadeIn>
             ))}
           </div>

@@ -256,13 +256,17 @@ export default function DroneServicesPageClient() {
           </FadeIn>
           <div className="grid md:grid-cols-3 gap-4">
             {packages.map((plan) => (
-              <FadeIn key={plan.name} className={`rounded-[1.75rem] p-6 border ${plan.featured ? 'bg-[#FF5B22] border-[#FF5B22] text-white' : 'bg-white/5 border-white/10'}`} data-testid={`drone-pricing-${plan.name.toLowerCase().replaceAll(' ', '-')}`}>
+              <FadeIn key={plan.name} className={`rounded-[1.75rem] p-6 border flex flex-col ${plan.featured ? 'bg-[#FF5B22] border-[#FF5B22] text-white' : 'bg-white/5 border-white/10'}`} data-testid={`drone-pricing-${plan.name.toLowerCase().replaceAll(' ', '-')}`}>
                 <div className="text-[11px] uppercase tracking-[0.22em] opacity-65">{plan.bestFor}</div>
                 <h3 className="display text-3xl mt-4">{plan.name}</h3>
                 <div className="text-3xl font-bold mt-3">{plan.price}</div>
-                <ul className="mt-6 space-y-3">
+                <ul className="mt-6 space-y-3 flex-1">
                   {plan.items.map((item) => <li key={item} className="flex gap-3 text-sm leading-relaxed"><Check size={15} className="mt-0.5 shrink-0" />{item}</li>)}
                 </ul>
+                <div className="mt-6 flex flex-col gap-2.5">
+                  <Link href="/booking?service=drone-services" data-testid={`drone-pricing-book-${plan.name.toLowerCase().replaceAll(' ', '-')}`} className="inline-flex justify-center items-center gap-2 bg-white text-[#071014] px-5 py-3 rounded-full text-sm font-semibold hover:bg-[#071014] hover:text-white transition-colors">Book this package <ArrowRight size={14} /></Link>
+                  <a href={waLink({ service: 'Drone Services', page: 'Drone Services', pkg: plan.name, price: plan.price })} target="_blank" rel="noreferrer" data-testid={`drone-pricing-whatsapp-${plan.name.toLowerCase().replaceAll(' ', '-')}`} className="inline-flex justify-center items-center gap-2 border border-white/40 text-white px-5 py-3 rounded-full text-sm font-semibold hover:bg-white/10 transition-colors"><MessageCircle size={14} /> Enquire on WhatsApp</a>
+                </div>
               </FadeIn>
             ))}
           </div>

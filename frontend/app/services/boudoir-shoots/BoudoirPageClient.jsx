@@ -511,7 +511,10 @@ export default function BoudoirPageClient() {
                     </li>
                   ))}
                 </ul>
-                <Link href={`/booking?service=${SLUG}`} className={`mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full py-3.5 font-semibold text-sm transition-colors ${p.popular ? 'bg-[#FF5B22] text-white hover:bg-[#E24A12]' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`}>Book Now <ArrowRight size={14} /></Link>
+                <div className="mt-8 flex flex-col gap-2.5">
+                  <Link href={`/booking?service=${SLUG}`} className={`inline-flex w-full items-center justify-center gap-2 rounded-full py-3.5 font-semibold text-sm transition-colors ${p.popular ? 'bg-[#FF5B22] text-white hover:bg-[#E24A12]' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`}>Book Now <ArrowRight size={14} /></Link>
+                  <a href={waLink({ service: 'Boudoir Photography', page: 'Boudoir Shoots', pkg: p.name, price: p.original ? `${p.price} (was ${p.original})` : p.price })} target="_blank" rel="noreferrer" className="inline-flex w-full items-center justify-center gap-2 rounded-full py-3 font-semibold text-sm border border-[#161514]/20 text-[#161514] hover:border-[#FF5B22] hover:text-[#FF5B22] transition-colors"><MessageCircle size={14} /> Enquire on WhatsApp</a>
+                </div>
               </motion.div>
             ))}
           </div>
