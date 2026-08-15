@@ -274,16 +274,28 @@ frontend:
         agent: "testing"
         comment: "Comprehensive testing completed successfully. All test cases passed: (1) Footer verification - Both 'Mumbai Studio' and 'Goa Studio' labels present with complete addresses: Mumbai (C1302, Evershine Cosmic, / Opp. Infiniti Mall, Veera Desai Industrial Estate, / Andheri West, Mumbai, Maharashtra 400053) and Goa (House No. 1053 A, Madhlavaddo, / Morjim, Goa 403512). Both phones verified: Mumbai (+91 8888766739) and Goa (+91 81888 81165). (2) Footer phone links verified correct: Mumbai (tel:+918888766739) and Goa (tel:+918188881165). (3) Footer address Google Maps links verified: Both Mumbai and Goa addresses wrapped in anchor tags with target=_blank pointing to maps.google.com. (4) Booking page contact card verified - Both studios displayed with same content as footer: labels, full addresses (3 lines for Mumbai, 2 lines for Goa), and phones. (5) Booking page top 'Call' button verified - Shows Mumbai primary phone (+91 8888766739) with correct href (tel:+918888766739). (6) Booking page WhatsApp link verified - Correct href (https://wa.me/918888766739). (7) Booking page studio cards verified - Both Mumbai and Goa studio cards have data-testid attributes (booking-studio-mumbai, booking-studio-goa), clickable Google Maps links, correct labels, full addresses, and phones. (8) Mobile viewport (390x844) verified - Both footer and booking page display both studios in stacked layout with no horizontal scroll. All content visible and usable on mobile. (9) No console errors related to CONTACT.address or CONTACT.studios. Screenshots captured for desktop and mobile views of both footer and booking page. Implementation verified in CONTACT constant (Chrome.jsx lines 41-72), Footer component (lines 492-507), and booking page contact card (booking/page.js lines 165-187)."
 
+  - task: "Footer social icon buttons bug fix (Instagram & Facebook hrefs)"
+    implemented: true
+    working: true
+    file: "/app/frontend/components/site/Chrome.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Bug fix verification completed successfully. All 7 tests passed (7/7). Tested the footer's 4 circular social icon buttons on homepage (http://localhost:3000/) at desktop viewport 1440x900. BUG CONTEXT: Instagram and Facebook icon buttons previously had href='#' (dead links). FIX VERIFIED: ✅ (1) Instagram button href: https://www.instagram.com/itspkphotography.in/ (NOT '#'). ✅ (2) Instagram has target='_blank'. ✅ (3) Facebook button href: https://www.facebook.com/pkfashionphotography (NOT '#'). ✅ (4) Facebook has target='_blank'. ✅ (5) WhatsApp button href: https://wa.me/918888766739 (correct). ✅ (6) Email button href: mailto:prabhakar@pkphotography.in (correct). ✅ (7) NONE of the 4 footer social icon buttons has href='#'. All 4 buttons are visible in the footer below the 'Based in Andheri West, Mumbai...' paragraph. Implementation verified at Chrome.jsx lines 455-458: Instagram and Facebook buttons now point to real URLs with target='_blank', WhatsApp points to wa.me link, Email points to mailto link. Screenshots captured: footer-social-icons.png, footer-with-social-icons.png. VERDICT: The reported bug is FIXED. Instagram and Facebook buttons NO LONGER have href='#' and now correctly redirect to their respective social media pages in a new tab."
+
 
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 7
+  test_sequence: 8
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Services index cards use each service's hero banner media (photo+video)"
+    - "Footer social icon buttons bug fix (Instagram & Facebook hrefs)"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -292,6 +304,8 @@ test_plan:
 agent_communication:
   - agent: "testing"
     message: "Completed smoke test after vercel.json addition. All tests passed (2/2). FastAPI /health endpoint and proxy to Next.js /api/root both working correctly. The vercel.json file (Vercel deployment config) does not affect local runtime as expected. No issues found."
+  - agent: "testing"
+    message: "Footer social icon buttons bug fix verification completed successfully. All 7 tests passed (7/7). The reported bug where Instagram and Facebook icon buttons had href='#' (dead links) is now FIXED. Verified on homepage footer at desktop viewport 1440x900. Instagram button now correctly points to https://www.instagram.com/itspkphotography.in/ with target='_blank'. Facebook button now correctly points to https://www.facebook.com/pkfashionphotography with target='_blank'. WhatsApp and Email buttons also verified correct (https://wa.me/918888766739 and mailto:prabhakar@pkphotography.in). NONE of the 4 footer social icon buttons has href='#'. All buttons are visible and functional. Implementation verified at Chrome.jsx lines 455-458. Screenshots captured. Bug fix is production-ready and working as specified."
   - agent: "testing"
     message: "Footer links bug fix verification completed successfully. All three policy page links (Privacy Policy, Terms & Conditions, Refund Policy) now work correctly with proper href attributes and page navigation. Bug fix is working as expected. No issues found."
   - agent: "testing"
@@ -786,7 +800,8 @@ frontend:
         -comment: "BUG FIX VERIFIED SUCCESSFULLY ✅ (All tests passed 2/2). Tested homepage Trust section counter animations on both mobile (390x844) and desktop (1440x900) viewports. MOBILE VIEWPORT (390x844): All four counters animated correctly to their final non-zero values: counter-weddings='500+', counter-corp='700+', counter-port='1,000+', counter-years='10+'. NO counters stuck at '0' or '0+'. DESKTOP VIEWPORT (1440x900): All four counters animated correctly to their final non-zero values: counter-weddings='500+', counter-corp='700+', counter-port='1,000+', counter-years='10+'. NO counters stuck at '0' or '0+'. The reported bug (counters stuck at 0+ on mobile/iOS Safari) is FIXED. The new Counter component implementation using native IntersectionObserver with immediate in-view detection, guaranteed completion, and mobile safety-net polling is working perfectly on both mobile and desktop. Screenshots captured: mobile-trust-counters.png and desktop-trust-counters.png. Bug fix is production-ready."
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Footer social icon buttons redirect correctly (Instagram/Facebook were href='#')"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -796,3 +811,5 @@ agent_communication:
     -message: "Fixed homepage Trust counters stuck at '0+' on mobile. Rewrote the Counter component in /app/frontend/app/page.js to use a native IntersectionObserver (immediate in-view detection + guaranteed final value + mobile safety-net poll) instead of framer-motion useInView. Please TEST IN MOBILE VIEWPORT (390x844): load homepage, scroll to 'Trust' stats section (data-testid='trust-section'), confirm all four counters reach final values — counter-weddings=500+, counter-corp=700+, counter-port=1000+, counter-years=10+ — none stuck at 0. Also quick desktop sanity check."
     -agent: "testing"
     -message: "Homepage Trust counters bug fix verification COMPLETED SUCCESSFULLY ✅. All tests passed (2/2 viewports). MOBILE (390x844): All 4 counters show correct final values (500+, 700+, 1,000+, 10+) - NONE stuck at 0 or 0+. DESKTOP (1440x900): All 4 counters show correct final values (500+, 700+, 1,000+, 10+) - NONE stuck at 0 or 0+. The reported bug (some counters stuck at '0+' on mobile/iOS Safari) is FIXED. The new Counter component using native IntersectionObserver with immediate in-view detection, guaranteed completion, and mobile safety-net polling is working perfectly. Screenshots captured for both viewports. Bug fix is production-ready and verified."
+    -agent: "main"
+    -message: "BUG FIX: Footer social icon buttons in /app/frontend/components/site/Chrome.jsx were not redirecting — the Instagram and Facebook circular icon buttons in the footer had href='#'. Fixed them to point to the same real URLs used by the nav/fullscreen-menu social links: Instagram=https://www.instagram.com/itspkphotography.in/ and Facebook=https://www.facebook.com/pkfashionphotography (both target=_blank rel=noreferrer). The WhatsApp (chat) and Email icon buttons in the footer already worked. Please TEST the footer social icon buttons on the homepage: (1) The Instagram footer icon button links to instagram.com/itspkphotography.in, (2) Facebook footer icon links to facebook.com/pkfashionphotography, (3) WhatsApp icon links to wa.me/918888766739, (4) Email icon is a mailto:prabhakar@pkphotography.in. Confirm NONE of the footer social icon buttons have href='#'. Verify by checking the anchor href attributes."
