@@ -222,7 +222,7 @@ function Hero() {
           className="mt-5 max-w-[58ch] text-white/75 text-[13px] md:text-[13.5px] font-light leading-[1.65]"
           data-testid="hero-subheadline"
         >
-          Real moments. Clean edits. Timeless photographs you&rsquo;ll still love years from now. From weddings and pre-wedding shoots to corporate events, product photography, fashion campaigns, real estate and aerial drone coverage, PK Photography creates images and cinematic films across Mumbai, Goa and Pan India&mdash;capturing your story naturally, without forced poses or overdone editing.
+          PK Photography specialises in wedding, pre-wedding, corporate, product, fashion, and real estate photography and videography, along with professional drone photography and aerial videography. Based in Mumbai and Goa, we create high-quality, natural, and cinematic visuals for clients across India.
         </motion.p>
 
         {/* CTAs */}
