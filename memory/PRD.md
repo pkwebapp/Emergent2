@@ -38,7 +38,11 @@ Pull the full public repo `github.com/pkwebapp/Emergent2` into /app without chan
 - Added `app/icon.svg` (branded PK favicon) — audit flagged missing favicon.
 - Raised frontend `start` NODE_OPTIONS max-old-space-size 1024→4096 (container has 47GB free) to reduce dev-server memory restarts.
 - NOTE: Headless screenshot tool shows the homepage hero dark because Playwright captures framer-motion's pre-animation opacity:0 state; troubleshoot_agent confirmed the hero renders fine for real users.
-- STILL PENDING (need user input): Google Analytics (GA4 ID), Meta/Facebook Pixel ID, Google Business Profile URL. DMARC/SPF are DNS-level (outside app). Inline-styles/PageSpeed refactor deliberately skipped (low SEO ROI, high risk).
+- STILL PENDING (need user input): Google Analytics (GA4 ID), Meta/Facebook Pixel ID. DMARC/SPF are DNS-level (outside app).
+
+## Update — Google Business Profiles + inline-style cleanup
+- Added both GBP listings (Mumbai `share.google/KRRlSGRe31W2g95nU`, Goa `share.google/Ej67vDaFeSCl2Zp4U`). Homepage `HomeJsonLd` rewritten to a two-location `PhotographyBusiness` @graph (each with address, phone, `hasMap`, `sameAs` = GBP + Instagram/Facebook/LinkedIn/YouTube/X). Footer studio `mapsUrl` now point to the real GBP links.
+- Inline-style cleanup: converted all 40 repeated `style={{ fontFamily: "'Cormorant Garamond', serif" }}` → `data-font="display"` attribute + CSS rule in `globals.css`. Files: page.js, services/page.js, talents/page.js, signup/page.js, Chrome.jsx. Remaining ~98 `style={}` are dynamic framer-motion/background/shadcn-ui and intentionally kept.
 
 ## Update — Gallery Title + Location (Aug 2025)
 - Media records now support a `location` field (Title = existing `alt`). Backend: POST/PATCH `/api/media` in `frontend/app/api/[[...path]]/route.js`.

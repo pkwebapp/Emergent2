@@ -76,7 +76,7 @@ export default function TalentsPage() {
           </div>
           <h1
             className="text-5xl md:text-7xl leading-[1.02] tracking-tight"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            data-font="display"
           >
             Faces, <span className="italic text-[#FF5B22]">voices</span> &amp;<br />movement, cast-ready.
           </h1>
@@ -164,7 +164,7 @@ export default function TalentsPage() {
           <div className="relative grid md:grid-cols-2 gap-8 p-8 md:p-14 items-center">
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/60 mb-3">Join the roster</div>
-              <h2 className="text-4xl md:text-5xl leading-tight tracking-tight" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+              <h2 className="text-4xl md:text-5xl leading-tight tracking-tight" data-font="display">
                 Are you a <span className="italic text-[#FF5B22]">talent?</span>
               </h2>
               <p className="mt-4 text-white/70 leading-relaxed max-w-md">
@@ -220,7 +220,7 @@ function TalentCard({ talent, onOpen, index }) {
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#161514]/70 to-transparent" />
           <div className="absolute bottom-3 left-4 right-4 text-white">
             <div className="text-[10px] uppercase tracking-[0.24em] opacity-80">{prettyCategory(talent.category)}</div>
-            <div className="text-xl leading-tight" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+            <div className="text-xl leading-tight" data-font="display">
               {talent.name}
             </div>
           </div>
@@ -278,7 +278,7 @@ function EmptyState({ onApply }) {
       <div className="w-14 h-14 mx-auto rounded-full bg-[#FF5B22]/10 grid place-content-center text-[#FF5B22] mb-4">
         <Search size={22} />
       </div>
-      <h3 className="text-2xl mb-1" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+      <h3 className="text-2xl mb-1" data-font="display">
         No talents matched
       </h3>
       <p className="text-sm text-[#8A857D] max-w-md mx-auto">
@@ -356,7 +356,7 @@ function TalentDetailModal({ talent, onClose }) {
               <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#FF5B22]">
                 {prettyCategory(talent.category)}
               </div>
-              <h2 className="mt-1 text-4xl md:text-5xl leading-tight" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+              <h2 className="mt-1 text-4xl md:text-5xl leading-tight" data-font="display">
                 {talent.name}
               </h2>
               {talent.tagline && <p className="mt-2 text-sm md:text-base text-[#5b5851]">{talent.tagline}</p>}
@@ -537,7 +537,7 @@ function ApplyModal({ open, onClose }) {
                   <div className="w-12 h-12 rounded-full bg-[#FF5B22] text-white grid place-content-center mx-auto mb-4">
                     <Check size={22} />
                   </div>
-                  <h3 className="text-2xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+                  <h3 className="text-2xl" data-font="display">
                     Application received
                   </h3>
                   <p className="mt-2 text-sm text-[#5b5851] max-w-sm mx-auto">
@@ -554,7 +554,7 @@ function ApplyModal({ open, onClose }) {
               ) : (
                 <>
                   <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#FF5B22] mb-2">Join the roster</div>
-                  <h3 className="text-3xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+                  <h3 className="text-3xl" data-font="display">
                     Apply as talent
                   </h3>
                   <p className="mt-2 text-sm text-[#5b5851]">A quick 60-second application. We only need the basics — you can share full portfolio after we get in touch.</p>

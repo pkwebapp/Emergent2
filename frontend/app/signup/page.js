@@ -74,7 +74,7 @@ export default function SignupPage() {
           </div>
           <h1
             className="text-4xl md:text-5xl leading-[1.05] tracking-tight"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            data-font="display"
           >
             Create your <span className="italic text-[#FF5B22]">account</span>
           </h1>
@@ -88,7 +88,7 @@ export default function SignupPage() {
             <div className="w-12 h-12 rounded-full bg-[#FF5B22] text-white grid place-content-center mx-auto mb-4">
               <Check size={22} />
             </div>
-            <h2 className="text-2xl mb-2" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+            <h2 className="text-2xl mb-2" data-font="display">
               You&apos;re on the list
             </h2>
             <p className="text-sm text-[#5b5851] mb-6">

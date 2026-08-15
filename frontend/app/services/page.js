@@ -228,7 +228,7 @@ function Header({ reduce }) {
 
             <h1
               className="text-[2.6rem] sm:text-[3.6rem] lg:text-[4.2rem] xl:text-[5rem] leading-[0.98] tracking-[-0.02em] font-light"
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              data-font="display"
             >
               <span className="block">Crafting visual stories</span>
 
@@ -478,7 +478,7 @@ function FeaturedRow({ item, index, total, reverse, reduce }) {
 
         <StaggerHeadline
           className="text-4xl md:text-5xl lg:text-6xl font-light tracking-[-0.02em] leading-[0.98] max-w-[15ch]"
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          data-font="display"
         >
           {head && <span>{head} </span>}
           <span className="italic text-[#FF5B22]">{tail}</span>
@@ -569,7 +569,7 @@ function SectionDivider({ label, small }) {
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 1, ease: [0.7, 0, 0.2, 1] }}
             className="text-3xl md:text-5xl font-light tracking-[-0.01em]"
-            style={{ fontFamily: "'Cormorant Garamond', serif", willChange: 'transform, opacity' }}
+            data-font="display" style={{ willChange: 'transform, opacity' }}
           >
             {label}
           </motion.h2>
@@ -722,7 +722,7 @@ function RestCard({ item, index, col, reduce }) {
           <div className="absolute bottom-5 left-5 right-5 rounded-2xl bg-black/10 p-1" data-testid={`service-card-copy-${item.slug}`}>
             <h3
               className="text-2xl md:text-[2rem] font-light tracking-[-0.02em] leading-[1.02] text-white max-w-[15ch]"
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              data-font="display"
             >
               {head && <span>{head} </span>}
               <span className="italic text-[#FF5B22]">{tail}</span>
@@ -770,7 +770,7 @@ function Cta() {
       <div className="container mx-auto max-w-[1400px] px-6 md:px-14 relative">
         <StaggerHeadline
           className="text-6xl md:text-8xl lg:text-[10vw] font-light tracking-[-0.02em] leading-[0.95] max-w-[14ch]"
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          data-font="display"
         >
           Ready to <span className="italic text-[#FF5B22]">shoot?</span>
         </StaggerHeadline>

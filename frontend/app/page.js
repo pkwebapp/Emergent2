@@ -179,7 +179,7 @@ function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 1.1, ease: [0.7, 0, 0.2, 1] }}
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            data-font="display"
             className="text-white text-[2rem] sm:text-[2.6rem] md:text-[3.15rem] lg:text-[3.65rem] leading-[1.02] font-light tracking-[-0.02em]"
             data-testid="hero-headline"
           >
@@ -290,7 +290,7 @@ function Trust() {
               data-testid={`trust-stat-${st.k}`}
             >
               <div
-                style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                data-font="display"
                 className="text-[#161514] text-[3rem] md:text-[4.5rem] leading-none font-light tracking-[-0.02em]"
               >
                 <Counter to={st.n} suffix={st.s} testid={`counter-${st.k}`} />
@@ -310,7 +310,7 @@ function Trust() {
             data-testid="trust-stat-locations"
           >
             <div
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              data-font="display"
               className="text-[#161514] text-[2rem] md:text-[2.6rem] leading-[1.05] italic font-light tracking-tight"
             >
               Mumbai · Goa
@@ -352,7 +352,7 @@ function About() {
       {/* Backdrop editorial word */}
       <div aria-hidden className="absolute left-0 right-0 top-16 md:top-24 pointer-events-none flex justify-center">
         <div
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          data-font="display"
           className="text-[18vw] md:text-[15vw] leading-none italic text-[#161514]/[0.045] tracking-tighter select-none whitespace-nowrap"
         >
           the studio
@@ -386,7 +386,7 @@ function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 1, ease: [0.7, 0, 0.2, 1] }}
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              data-font="display"
               className="text-[#161514] text-[2.4rem] sm:text-[3.2rem] md:text-[4.4rem] lg:text-[5.2rem] leading-[0.98] tracking-[-0.02em] font-light"
             >
               Photography that <span className="italic text-[#FF5B22]">feels natural.</span>
@@ -447,7 +447,7 @@ function FeaturedServices() {
               What we shoot
             </div>
             <h2
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              data-font="display"
               className="text-white text-[2.4rem] sm:text-[3.4rem] md:text-[5rem] leading-[0.98] font-light tracking-[-0.02em] max-w-[16ch]"
             >
               Professional photography services
@@ -497,7 +497,7 @@ function FeaturedServices() {
                       style={isActive ? {} : { writingMode: 'vertical-rl', transform: 'rotate(180deg)', transformOrigin: 'center' }}
                     >
                       <div
-                        style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                        data-font="display"
                         className={`text-white font-light tracking-tight leading-[1] ${isActive ? 'text-[2.2rem] lg:text-[2.6rem]' : 'text-[1.1rem] lg:text-[1.25rem]'}`}
                       >
                         {s.t}
@@ -549,7 +549,7 @@ function FeaturedServices() {
                 {String(k + 1).padStart(2, '0')}
               </div>
               <div className="absolute inset-x-5 bottom-5">
-                <div style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-white text-2xl font-light">
+                <div data-font="display" className="text-white text-2xl font-light">
                   {s.t}
                 </div>
                 <div className="mt-2 text-white/70 text-xs leading-relaxed">{serviceCopy[s.slug] || s.d}</div>
@@ -620,7 +620,7 @@ function Portfolio() {
               Featured work
             </div>
             <h2
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              data-font="display"
               className="text-[#161514] text-[2.4rem] sm:text-[3.4rem] md:text-[5rem] leading-[0.98] font-light tracking-[-0.02em]"
             >
               Frames we keep coming
@@ -679,7 +679,7 @@ function Portfolio() {
                 <div className="text-[10px] tracking-[0.35em] uppercase text-white/70 mb-3">
                   {p.cat} · {p.loc}
                 </div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-3xl md:text-4xl font-light leading-tight">
+                <div data-font="display" className="text-3xl md:text-4xl font-light leading-tight">
                   {p.name}
                 </div>
               </div>
@@ -720,7 +720,7 @@ function Process() {
               How we work
             </div>
             <h2
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              data-font="display"
               className="text-[#161514] text-[2.4rem] sm:text-[3.4rem] md:text-[4.4rem] leading-[0.98] font-light tracking-[-0.02em]"
             >
               A simple process.
@@ -771,7 +771,7 @@ function ProcessStep({ step, index, progress }) {
         <span className="text-[11px] font-semibold tabular">{String(index + 1).padStart(2, '0')}</span>
       </div>
       <div className="md:mt-8">
-        <div style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-[#161514] text-2xl md:text-3xl font-light leading-tight">
+        <div data-font="display" className="text-[#161514] text-2xl md:text-3xl font-light leading-tight">
           {step.t}
         </div>
         <p className="mt-3 text-[#4C4A46] text-[14px] leading-relaxed font-light max-w-xs">
@@ -841,7 +841,7 @@ function WhyChooseUs() {
               Why PK Photography
             </div>
             <h2
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              data-font="display"
               className="text-[#161514] text-[2.4rem] sm:text-[3.4rem] md:text-[5rem] leading-[0.98] font-light tracking-[-0.02em] max-w-[18ch]"
             >
               Why clients choose
@@ -854,12 +854,12 @@ function WhyChooseUs() {
             </p>
             <div className="mt-6 flex items-center gap-6">
               <div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-3xl leading-none text-[#161514]">98%</div>
+                <div data-font="display" className="text-3xl leading-none text-[#161514]">98%</div>
                 <div className="text-[10px] tracking-[0.28em] uppercase text-[#8A857D] mt-1">Repeat / referral</div>
               </div>
               <div className="h-8 w-px bg-[#DBD4C6]" />
               <div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-3xl leading-none text-[#161514]">4.9<span className="text-[#FF5B22]">★</span></div>
+                <div data-font="display" className="text-3xl leading-none text-[#161514]">4.9<span className="text-[#FF5B22]">★</span></div>
                 <div className="text-[10px] tracking-[0.28em] uppercase text-[#8A857D] mt-1">380+ Google reviews</div>
               </div>
             </div>
@@ -904,7 +904,7 @@ function WhyRow({ item, index, total }) {
         >
           <div className="text-[11px] tracking-[0.28em] uppercase text-[#FF5B22] mb-4 font-medium">{item.stat}</div>
           <h3
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            data-font="display"
             className="text-[#161514] text-[2rem] sm:text-[2.6rem] md:text-[3.2rem] leading-[1.02] font-light tracking-[-0.02em]"
           >
             {item.t}
@@ -993,7 +993,7 @@ function Testimonials() {
               Kind words · Real Google reviews
             </div>
             <h2
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              data-font="display"
               className="text-[#161514] text-[2.8rem] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.02] font-light break-words"
             >
               From the clients
@@ -1007,7 +1007,7 @@ function Testimonials() {
                 </div>
                 <div>
                   <div className="flex items-baseline gap-2">
-                    <span style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-3xl leading-none text-[#161514]">4.9</span>
+                    <span data-font="display" className="text-3xl leading-none text-[#161514]">4.9</span>
                     <span className="text-xs text-[#8A857D]">/ 5</span>
                   </div>
                   <div className="text-[10px] sm:text-[11px] tracking-[0.14em] sm:tracking-[0.22em] uppercase text-[#8A857D] mt-1 break-words">Based on 380+ Google reviews</div>
@@ -1028,12 +1028,12 @@ function Testimonials() {
             <div className="relative min-h-[300px] md:min-h-[340px] max-w-full overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.div key={i} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: 0.7, ease: [0.7, 0, 0.2, 1] }}>
-                  <blockquote style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-[#161514] text-[1.55rem] md:text-3xl lg:text-[2rem] leading-[1.4] italic font-light max-w-full break-words overflow-wrap-anywhere">
+                  <blockquote data-font="display" className="text-[#161514] text-[1.55rem] md:text-3xl lg:text-[2rem] leading-[1.4] italic font-light max-w-full break-words overflow-wrap-anywhere">
                     &ldquo;{items[i].q}&rdquo;
                   </blockquote>
                   <figcaption className="mt-12 flex items-end justify-between gap-6 flex-wrap max-w-full">
                     <div className="min-w-0">
-                      <div style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-2xl text-[#161514] leading-none mb-2">{items[i].n}</div>
+                      <div data-font="display" className="text-2xl text-[#161514] leading-none mb-2">{items[i].n}</div>
                       <div className="text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.28em] uppercase text-[#8A857D] font-medium break-words">{items[i].meta}</div>
                     </div>
                     <div className="flex items-center gap-1.5">
@@ -1070,7 +1070,7 @@ function PricingTeaser() {
               <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B22]" />
               Shoot pricing
             </div>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-[#161514] text-[2.4rem] sm:text-[3rem] md:text-[4.2rem] leading-[0.98] font-light tracking-[-0.02em]">
+            <h2 data-font="display" className="text-[#161514] text-[2.4rem] sm:text-[3rem] md:text-[4.2rem] leading-[0.98] font-light tracking-[-0.02em]">
               Transparent <span className="italic text-[#FF5B22]">packages.</span>
             </h2>
           </div>
@@ -1093,7 +1093,7 @@ function PricingTeaser() {
                 <span className={`text-[10px] font-bold uppercase tracking-widest ${t.featured ? 'text-[#FF5B22]' : 'text-[#FF5B22]'}`}>{t.badge}</span>
                 {t.featured && <span className="text-[10px] font-bold uppercase tracking-widest bg-[#FF5B22] text-white px-2.5 py-1 rounded-full">Popular</span>}
               </div>
-              <div style={{ fontFamily: "'Cormorant Garamond', serif" }} className="mt-6 text-5xl md:text-6xl font-light">{t.price}</div>
+              <div data-font="display" className="mt-6 text-5xl md:text-6xl font-light">{t.price}</div>
               <div className={`mt-2 ${t.featured ? 'text-white/70' : 'text-[#8A857D]'}`}>{t.name}</div>
               <Link href="/pricing" className={`mt-10 inline-flex items-center gap-2 text-sm font-semibold ${t.featured ? 'text-white group-hover:text-[#FF5B22]' : 'text-[#161514] group-hover:text-[#FF5B22]'} transition-colors`}>
                 View details <ArrowRight size={14} />
@@ -1128,7 +1128,7 @@ function FAQ() {
               <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B22]" />
               FAQs
             </div>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-[#161514] text-[2.35rem] md:text-5xl font-light leading-[1.02] break-words">
+            <h2 data-font="display" className="text-[#161514] text-[2.35rem] md:text-5xl font-light leading-[1.02] break-words">
               Questions, <span className="italic text-[#FF5B22]">answered.</span>
             </h2>
             <p className="mt-6 text-[#4C4A46] font-light leading-relaxed">Still unsure? WhatsApp us and we&rsquo;ll respond within the hour.</p>
@@ -1144,7 +1144,7 @@ function FAQ() {
                   data-testid={`faq-toggle-${k}`}
                   className="w-full flex items-start justify-between gap-4 py-7 text-left group min-w-0"
                 >
-                  <span style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-xl md:text-[1.6rem] font-light text-[#161514] group-hover:text-[#FF5B22] transition-colors flex-1 min-w-0 break-words">
+                  <span data-font="display" className="text-xl md:text-[1.6rem] font-light text-[#161514] group-hover:text-[#FF5B22] transition-colors flex-1 min-w-0 break-words">
                     {f.q}
                   </span>
                   <span className={`w-9 h-9 rounded-full grid place-content-center shrink-0 transition-all duration-500 ${open === k ? 'bg-[#FF5B22] text-white rotate-45' : 'bg-transparent border border-[#161514]/25 text-[#161514]'}`}>
@@ -1189,7 +1189,7 @@ function CTA() {
               <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B22] animate-pulse" />
               Booking open · {new Date().toLocaleString('en-IN', { month: 'long', year: 'numeric' })}
             </div>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-white text-[2.35rem] sm:text-[3.8rem] md:text-[5.6rem] leading-[0.98] font-light tracking-[-0.02em] break-words max-w-full">
+            <h2 data-font="display" className="text-white text-[2.35rem] sm:text-[3.8rem] md:text-[5.6rem] leading-[0.98] font-light tracking-[-0.02em] break-words max-w-full">
               Let&rsquo;s create something <span className="italic text-[#FF5B22]">worth remembering.</span>
             </h2>
             <p className="mt-8 max-w-lg text-white/70 text-[15px] md:text-base leading-relaxed font-light break-words">

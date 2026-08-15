@@ -132,7 +132,7 @@ export function Logo({ dark = false, size = 'md' }) {
       {/* Wordmark */}
       <div className="flex flex-col leading-none">
         <span
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          data-font="display"
           className={`${s.txt} font-medium tracking-tight ${dark ? 'text-white' : 'text-[#161514]'} relative overflow-hidden inline-block`}
         >
           <span className="inline-block transition-transform duration-500 ease-out group-hover:-translate-y-full">PK Photography</span>

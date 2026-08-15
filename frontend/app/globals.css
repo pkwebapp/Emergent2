@@ -37,6 +37,8 @@ img, video, canvas, svg {
 
 .font-inter { font-family: 'Inter', sans-serif; }
 .font-cormorant { font-family: 'Cormorant Garamond', 'Cormorant', Georgia, serif; }
+/* Display serif via data attribute — lets us drop repeated inline fontFamily styles */
+[data-font="display"] { font-family: 'Cormorant Garamond', 'Cormorant', Georgia, serif; }
 
 .display {
   font-family: 'Inter', sans-serif;
