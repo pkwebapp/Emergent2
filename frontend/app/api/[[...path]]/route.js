@@ -499,6 +499,39 @@ async function handleRoute(request, { params }) {
       return handleCORS(NextResponse.json({ deleted: true, id }))
     }
 
+    // ---------- WhatsApp enquiry tracking ----------
+    // POST /api/enquiries/track — public; logs a WhatsApp enquiry click
+    if (route === '/enquiries/track' && method === 'POST') {
+      const body = await request.json().catch(() => ({}))
+      const doc = {
+        id: uuidv4(),
+        path: String(body.path || '/').slice(0, 300) || '/',
+        page: body.page ? String(body.page).slice(0, 120) : null,
+        text: body.text ? String(body.text).slice(0, 600) : null,
+        href: body.href ? String(body.href).slice(0, 900) : null,
+        referrer: body.referrer ? String(body.referrer).slice(0, 400) : null,
+        user_agent: (request.headers.get('user-agent') || '').slice(0, 400),
+        created_at: new Date().toISOString(),
+      }
+      await db.collection('whatsapp_enquiries').insertOne({ ...doc })
+      return handleCORS(NextResponse.json({ ok: true }, { status: 201 }))
+    }
+
+    // GET /api/enquiries/stats — admin required; counts grouped by page
+    if (route === '/enquiries/stats' && method === 'GET') {
+      if (!requireAdmin()) return handleCORS(NextResponse.json({ error: 'unauthorized' }, { status: 401 }))
+      const col = db.collection('whatsapp_enquiries')
+      const grouped = await col.aggregate([
+        { $group: { _id: { path: '$path', page: '$page' }, count: { $sum: 1 }, last: { $max: '$created_at' } } },
+        { $sort: { count: -1 } },
+        { $limit: 300 },
+      ]).toArray()
+      const pages = grouped.map((r) => ({ path: r._id.path || '/', page: r._id.page || null, count: r.count, last: r.last }))
+      const total = await col.countDocuments()
+      const recent = await col.find({}, { projection: { _id: 0 } }).sort({ created_at: -1 }).limit(50).toArray()
+      return handleCORS(NextResponse.json({ total, pages, recent }))
+    }
+
     // Route not found
     return handleCORS(NextResponse.json(
       { error: `Route ${route} not found` }, 

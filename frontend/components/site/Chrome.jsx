@@ -576,6 +576,36 @@ function ScrollProgress() {
 }
 
 /* -------- Site chrome wrapper -------- */
+/* -------- Enquiry tracker: logs every WhatsApp click (page-level analytics) -------- */
+function EnquiryTracker() {
+  const pathname = usePathname()
+  useEffect(() => {
+    const onClick = (e) => {
+      const a = e.target?.closest?.('a[href*="wa.me"]')
+      if (!a) return
+      let text = ''
+      try { text = new URL(a.href).searchParams.get('text') || '' } catch (err) {}
+      const path = pathname || window.location.pathname
+      const payload = {
+        path,
+        page: pageLabel(path),
+        text,
+        href: a.href,
+        referrer: document.referrer || '',
+      }
+      try {
+        const url = '/api/enquiries/track'
+        const bodyStr = JSON.stringify(payload)
+        if (navigator.sendBeacon) navigator.sendBeacon(url, new Blob([bodyStr], { type: 'text/plain;charset=UTF-8' }))
+        else fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: bodyStr, keepalive: true }).catch(() => {})
+      } catch (err) {}
+    }
+    document.addEventListener('click', onClick, true)
+    return () => document.removeEventListener('click', onClick, true)
+  }, [pathname])
+  return null
+}
+
 export function SiteShell({ children }) {
   return (
     <>
@@ -585,6 +615,7 @@ export function SiteShell({ children }) {
       <div>{children}</div>
       <Footer />
       <WhatsAppFloat />
+      <EnquiryTracker />
     </>
   )
 }
