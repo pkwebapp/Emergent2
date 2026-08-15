@@ -8,40 +8,53 @@ function detectResourceType(file) {
   return 'image'
 }
 
-export function uploadToCloudinary(file, { onProgress } = {}) {
-  return new Promise((resolve, reject) => {
-    const cloud = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
-    const preset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
-    if (!cloud || !preset) {
-      reject(new Error('Cloudinary env vars missing (NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME / _UPLOAD_PRESET)'))
-      return
-    }
-    const resourceType = detectResourceType(file)
-    const xhr = new XMLHttpRequest()
-    xhr.open('POST', `https://api.cloudinary.com/v1_1/${cloud}/${resourceType}/upload`)
-    xhr.upload.onprogress = (event) => {
-      if (event.lengthComputable && onProgress) {
-        onProgress(Math.round((event.loaded * 100) / event.total))
+export function uploadToCloudinary(file, { onProgress, adminToken } = {}) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const backend = process.env.NEXT_PUBLIC_BACKEND_URL || ''
+      const signRes = await fetch(`${backend}/api/cloudinary/sign`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${adminToken}` },
+        body: JSON.stringify({ folder: 'pk-media' }),
+      })
+      if (!signRes.ok) {
+        const err = await signRes.json().catch(() => ({}))
+        reject(new Error(err.error || 'Could not get Cloudinary upload signature'))
+        return
       }
-    }
-    xhr.onload = () => {
-      try {
-        const body = JSON.parse(xhr.responseText)
-        if (xhr.status >= 200 && xhr.status < 300) {
-          body._resource_type = resourceType
-          resolve(body)
-        } else {
-          reject(new Error(body?.error?.message || `Upload failed (${xhr.status})`))
+      const sign = await signRes.json()
+      const resourceType = detectResourceType(file)
+      const xhr = new XMLHttpRequest()
+      xhr.open('POST', `https://api.cloudinary.com/v1_1/${sign.cloud_name}/${resourceType}/upload`)
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable && onProgress) {
+          onProgress(Math.round((event.loaded * 100) / event.total))
         }
-      } catch (e) {
-        reject(new Error('Invalid Cloudinary response'))
       }
+      xhr.onload = () => {
+        try {
+          const body = JSON.parse(xhr.responseText)
+          if (xhr.status >= 200 && xhr.status < 300) {
+            body._resource_type = resourceType
+            resolve(body)
+          } else {
+            reject(new Error(body?.error?.message || `Upload failed (${xhr.status})`))
+          }
+        } catch (e) {
+          reject(new Error('Invalid Cloudinary response'))
+        }
+      }
+      xhr.onerror = () => reject(new Error('Network error uploading to Cloudinary'))
+      const form = new FormData()
+      form.append('file', file)
+      form.append('api_key', sign.api_key)
+      form.append('timestamp', String(sign.timestamp))
+      form.append('signature', sign.signature)
+      form.append('folder', sign.folder)
+      xhr.send(form)
+    } catch (e) {
+      reject(new Error(e.message || 'Upload failed'))
     }
-    xhr.onerror = () => reject(new Error('Network error uploading to Cloudinary'))
-    const form = new FormData()
-    form.append('file', file)
-    form.append('upload_preset', preset)
-    xhr.send(form)
   })
 }
 

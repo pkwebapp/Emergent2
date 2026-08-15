@@ -54,6 +54,7 @@ export default function ImageUploader({
         const key = `${file.name}-${i}`
         const result = await uploadToCloudinary(file, {
           onProgress: (p) => setProgress((old) => ({ ...old, [key]: p })),
+          adminToken,
         })
         const record = await saveMediaRecord({
           cloudinaryResult: result,

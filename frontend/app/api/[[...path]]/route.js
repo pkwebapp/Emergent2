@@ -362,6 +362,24 @@ async function handleRoute(request, { params }) {
     }
 
     // ---------- Media (Cloudinary-backed) ----------
+    // POST /api/cloudinary/sign — signed upload params (admin required)
+    if (route === '/cloudinary/sign' && method === 'POST') {
+      if (!requireAdmin()) return handleCORS(NextResponse.json({ error: 'unauthorized' }, { status: 401 }))
+      const cloudName = process.env.CLOUDINARY_CLOUD_NAME
+      const apiKey = process.env.CLOUDINARY_API_KEY
+      const apiSecret = process.env.CLOUDINARY_API_SECRET
+      if (!cloudName || !apiKey || !apiSecret) {
+        return handleCORS(NextResponse.json({ error: 'Cloudinary is not configured on the server' }, { status: 503 }))
+      }
+      const body = await request.json().catch(() => ({}))
+      const folder = String(body.folder || 'pk-media').trim().replace(/[^a-zA-Z0-9_\/-]/g, '') || 'pk-media'
+      const crypto = await import('crypto')
+      const timestamp = Math.floor(Date.now() / 1000)
+      const paramsToSign = `folder=${folder}&timestamp=${timestamp}`
+      const signature = crypto.createHash('sha1').update(paramsToSign + apiSecret).digest('hex')
+      return handleCORS(NextResponse.json({ cloud_name: cloudName, api_key: apiKey, timestamp, signature, folder }))
+    }
+
     // POST /api/media  — record an uploaded asset (admin required)
     if (route === '/media' && method === 'POST') {
       if (!requireAdmin()) return handleCORS(NextResponse.json({ error: 'unauthorized' }, { status: 401 }))

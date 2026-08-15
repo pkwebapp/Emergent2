@@ -55,3 +55,8 @@ Pull the full public repo `github.com/pkwebapp/Emergent2` into /app without chan
 - REDESIGNED (boudoir feel, site palette + Cormorant Garamond serif): About split-editorial w/ drop cap, serif pull-quote divider (replaced stats strip), bento "What Your Session Includes" (cream+ink cards), Who Is This For (roman numerals, staggered), dark "Trust" section w/ consent badge, airy 4-step timeline, asymmetric portfolio grid, minimal serif FAQ.
 - 8 AI-generated tasteful boudoir images self-hosted at `frontend/public/images/boudoir/`.
 - (Jun 2026, follow-up) Boudoir hero now uses AI-generated Indian saree window-light image (`/images/boudoir/hero.jpg`, admin `boudoir-shoots-banner` slot still overrides). Added "Client Words" first-name-only testimonials strip (Priya/Meera/Ananya/Sana, Indian context) between Trust and Process sections. Brides-to-be + Styling images swapped to Indian bridal lehenga/dupatta + Indian vanity (gajra, jhumkas, bangles).
+
+## Update — Cloudinary Connected (Jun 2026)
+- User's Cloudinary account (cloud: jeoj8k1t) wired via frontend/.env (CLOUDINARY_CLOUD_NAME/API_KEY/API_SECRET + NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME).
+- Switched uploads from unsigned-preset to SIGNED uploads: new admin-gated `POST /api/cloudinary/sign` in `app/api/[[...path]]/route.js`; `lib/cloudinary.js#uploadToCloudinary` now fetches signature (requires adminToken); ImageUploader passes adminToken. No upload preset needed.
+- E2E verified via curl: sign → upload → media record → DELETE (signed destroy confirmed, CDN 404).
