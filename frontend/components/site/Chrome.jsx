@@ -55,7 +55,7 @@ export const CONTACT = {
       ],
       phone: '+91 8888766739',
       phoneRaw: '+918888766739',
-      mapsUrl: 'https://maps.google.com/?q=Evershine+Cosmic+Andheri+West+Mumbai',
+      mapsUrl: 'https://share.google/KRRlSGRe31W2g95nU',
     },
     {
       city: 'Goa',
@@ -66,7 +66,7 @@ export const CONTACT = {
       ],
       phone: '+91 81888 81165',
       phoneRaw: '+918188881165',
-      mapsUrl: 'https://maps.google.com/?q=Madhlavaddo+Morjim+Goa',
+      mapsUrl: 'https://share.google/Ej67vDaFeSCl2Zp4U',
     },
   ],
 }
