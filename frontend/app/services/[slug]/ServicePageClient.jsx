@@ -612,7 +612,7 @@ export default function ServicePageClient({ slug }) {
             <span className="mt-7 block w-11 h-px bg-[#EEEAE1]/55" aria-hidden="true" />
             <p className="mt-6 text-white/80 text-[15px] md:text-base max-w-[52ch] leading-relaxed font-light" data-testid="service-page-hero-copy">{seo.hero || seo.description || extra.hero}</p>
             <div className="mt-10 flex flex-wrap items-center gap-4">
-              <Link href="/booking" data-testid="service-hero-booking-link" className="group inline-flex items-center gap-3 bg-[#EEEAE1] text-[#161514] px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#FF5B22] hover:text-white transition-colors">
+              <Link href={`/booking?service=${slug}`} data-testid="service-hero-booking-link" className="group inline-flex items-center gap-3 bg-[#EEEAE1] text-[#161514] px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#FF5B22] hover:text-white transition-colors">
                 Book this service <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="service-hero-whatsapp-link" className="inline-flex items-center gap-3 text-white/90 hover:text-white text-sm font-semibold">
@@ -658,7 +658,7 @@ export default function ServicePageClient({ slug }) {
               <Link href="/pricing" data-testid="service-internal-pricing-link" className="rounded-2xl border border-[#DBD4C6] bg-[#E6E1D5] p-4 text-sm font-semibold hover:border-[#FF5B22] hover:text-[#FF5B22] transition-colors">
                 Compare packages & prices →
               </Link>
-              <Link href="/booking" data-testid="service-internal-booking-link" className="rounded-2xl border border-[#DBD4C6] bg-[#161514] text-white p-4 text-sm font-semibold hover:bg-[#FF5B22] transition-colors">
+              <Link href={`/booking?service=${slug}`} data-testid="service-internal-booking-link" className="rounded-2xl border border-[#DBD4C6] bg-[#161514] text-white p-4 text-sm font-semibold hover:bg-[#FF5B22] transition-colors">
                 Book this service online →
               </Link>
             </div>
@@ -867,7 +867,7 @@ export default function ServicePageClient({ slug }) {
                     </li>
                   ))}
                 </ul>
-                <Link href="/booking" className={`mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full py-3.5 font-semibold text-sm transition-colors ${p.popular ? 'bg-[#FF5B22] text-white hover:bg-[#E24A12]' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`}>Book Now <ArrowRight size={14} /></Link>
+                <Link href={`/booking?service=${slug}`} className={`mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full py-3.5 font-semibold text-sm transition-colors ${p.popular ? 'bg-[#FF5B22] text-white hover:bg-[#E24A12]' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`}>Book Now <ArrowRight size={14} /></Link>
               </motion.div>
             ))}
           </div>
@@ -941,7 +941,7 @@ export default function ServicePageClient({ slug }) {
                 <p className="mt-4 text-white/70 max-w-xl">Tell us your dates and vision — we'll confirm within a few hours.</p>
               </div>
               <div className="col-span-12 md:col-span-4 flex md:justify-end">
-                <Link href="/booking" className="inline-flex items-center gap-2 bg-[#FF5B22] text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-[#E24A12] transition-colors">Inquire Now <ArrowRight size={16} /></Link>
+                <Link href={`/booking?service=${slug}`} className="inline-flex items-center gap-2 bg-[#FF5B22] text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-[#E24A12] transition-colors">Inquire Now <ArrowRight size={16} /></Link>
               </div>
             </div>
           </div>
@@ -984,7 +984,7 @@ export default function ServicePageClient({ slug }) {
                   <div className="font-semibold">{service.t}?</div>
                 </div>
               </div>
-              <Link href="/booking" className="inline-flex items-center gap-2 bg-[#FF5B22] hover:bg-[#E24A12] text-white px-5 py-2.5 rounded-full text-xs font-semibold transition-colors">Book Now <ArrowRight size={12} /></Link>
+              <Link href={`/booking?service=${slug}`} className="inline-flex items-center gap-2 bg-[#FF5B22] hover:bg-[#E24A12] text-white px-5 py-2.5 rounded-full text-xs font-semibold transition-colors">Book Now <ArrowRight size={12} /></Link>
             </div>
           </motion.div>
         )}

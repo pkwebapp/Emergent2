@@ -153,7 +153,7 @@ function Hero() {
           <span className="mt-7 block w-11 h-px bg-[#EEEAE1]/55" aria-hidden="true" />
           <p className="mt-6 text-white/80 text-[15px] md:text-base max-w-[52ch] leading-relaxed font-light" data-testid="service-page-hero-copy">{seo.hero}</p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <Link href="/booking" data-testid="service-hero-booking-link" className="group inline-flex items-center gap-3 bg-[#EEEAE1] text-[#161514] px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#FF5B22] hover:text-white transition-colors">
+            <Link href="/booking?service=editorial-portfolio" data-testid="service-hero-booking-link" className="group inline-flex items-center gap-3 bg-[#EEEAE1] text-[#161514] px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#FF5B22] hover:text-white transition-colors">
               Book this service <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
             </Link>
             <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="service-hero-whatsapp-link" className="inline-flex items-center gap-3 text-white/90 hover:text-white text-sm font-semibold">
@@ -398,8 +398,8 @@ export default function EditorialPortfolioPageClient() {
               <p className="mt-5 text-white/82 leading-relaxed max-w-xl">Whether you are stepping into the industry or refreshing your personal brand, we will help create photographs that feel confident, creative and unforgettable.</p>
             </FadeIn>
             <FadeIn className="relative flex flex-col sm:flex-row md:flex-col gap-3 md:items-start">
-              <Link href="/booking" data-testid="editorial-final-booking-link" className="inline-flex justify-center items-center gap-3 bg-white text-[#161514] px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#161514] hover:text-white transition-colors">Book your portfolio shoot <ArrowRight size={14} /></Link>
-              <Link href="/booking" data-testid="editorial-final-concept-link" className="inline-flex justify-center items-center gap-3 border border-white/35 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors">Discuss your creative concept</Link>
+              <Link href="/booking?service=editorial-portfolio" data-testid="editorial-final-booking-link" className="inline-flex justify-center items-center gap-3 bg-white text-[#161514] px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#161514] hover:text-white transition-colors">Book your portfolio shoot <ArrowRight size={14} /></Link>
+              <Link href="/booking?service=editorial-portfolio" data-testid="editorial-final-concept-link" className="inline-flex justify-center items-center gap-3 border border-white/35 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors">Discuss your creative concept</Link>
               <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="editorial-final-whatsapp-link" className="inline-flex justify-center items-center gap-3 border border-white/35 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors"><MessageCircle size={15} /> WhatsApp us</a>
             </FadeIn>
           </div>

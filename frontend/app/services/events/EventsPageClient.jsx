@@ -207,7 +207,7 @@ export default function EventsPageClient() {
                 Documentary-style photos and films for conferences, product launches, award ceremonies, networking events, exhibitions and private celebrations—captured naturally, delivered ready for PR, social and campaigns.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                <Link href="/booking" data-testid="events-hero-booking-link" className="inline-flex justify-center items-center gap-3 bg-[#FF5B22] text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors">
+                <Link href="/booking?service=events" data-testid="events-hero-booking-link" className="inline-flex justify-center items-center gap-3 bg-[#FF5B22] text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors">
                   Check availability <ArrowRight size={14} />
                 </Link>
                 <Link href="/gallery?category=events" data-testid="events-hero-gallery-link" className="inline-flex justify-center items-center gap-3 border border-white/25 text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors">
@@ -471,7 +471,7 @@ export default function EventsPageClient() {
               <p className="mt-5 text-white/82 leading-relaxed max-w-xl">Planning a conference, product launch, exhibition, corporate celebration or networking event? Tell us your date, venue and goals—we&rsquo;ll recommend the right team, timeline and package.</p>
             </FadeIn>
             <FadeIn className="relative flex flex-col sm:flex-row md:flex-col gap-3 md:items-start">
-              <Link href="/booking" data-testid="events-final-booking-link" className="inline-flex justify-center items-center gap-3 bg-white text-[#161514] px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#161514] hover:text-white transition-colors">Book event coverage <ArrowRight size={14} /></Link>
+              <Link href="/booking?service=events" data-testid="events-final-booking-link" className="inline-flex justify-center items-center gap-3 bg-white text-[#161514] px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#161514] hover:text-white transition-colors">Book event coverage <ArrowRight size={14} /></Link>
               <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="events-final-whatsapp-link" className="inline-flex justify-center items-center gap-3 border border-white/35 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors"><MessageCircle size={15} /> WhatsApp the team</a>
             </FadeIn>
           </div>

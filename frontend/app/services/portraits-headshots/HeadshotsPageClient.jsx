@@ -172,7 +172,7 @@ function Hero() {
           <span className="mt-7 block w-11 h-px bg-[#EEEAE1]/55" aria-hidden="true" />
           <p className="mt-6 text-white/80 text-[15px] md:text-base max-w-[52ch] leading-relaxed font-light" data-testid="service-page-hero-copy">{seo.hero}</p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <Link href="/booking" data-testid="service-hero-booking-link" className="group inline-flex items-center gap-3 bg-[#EEEAE1] text-[#161514] px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#FF5B22] hover:text-white transition-colors">
+            <Link href="/booking?service=portraits-headshots" data-testid="service-hero-booking-link" className="group inline-flex items-center gap-3 bg-[#EEEAE1] text-[#161514] px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#FF5B22] hover:text-white transition-colors">
               Book this service <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
             </Link>
             <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="service-hero-whatsapp-link" className="inline-flex items-center gap-3 text-white/90 hover:text-white text-sm font-semibold">
@@ -390,7 +390,7 @@ export default function HeadshotsPageClient() {
                 <h3 className="display text-4xl mt-3">On-site corporate headshot day</h3>
                 <p className="mt-4 text-[#4C4A46] leading-relaxed">We bring a mobile studio to your office for consistent employee portraits. Pricing depends on team size, office locations, shooting hours, background requirements and travel.</p>
               </div>
-              <Link href="/booking" data-testid="headshots-corporate-quote-link" className="inline-flex justify-center items-center gap-3 bg-[#FF5B22] text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#161514] transition-colors md:justify-self-end">Request a custom quote <ArrowRight size={14} /></Link>
+              <Link href="/booking?service=portraits-headshots" data-testid="headshots-corporate-quote-link" className="inline-flex justify-center items-center gap-3 bg-[#FF5B22] text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#161514] transition-colors md:justify-self-end">Request a custom quote <ArrowRight size={14} /></Link>
             </div>
           </FadeIn>
 
@@ -456,8 +456,8 @@ export default function HeadshotsPageClient() {
               <p className="mt-5 text-white/82 leading-relaxed max-w-xl">Book one standout LinkedIn portrait, schedule a studio branding session, or plan consistent headshots for your entire organization.</p>
             </FadeIn>
             <FadeIn className="relative flex flex-col sm:flex-row md:flex-col gap-3 md:items-start">
-              <Link href="/booking" data-testid="headshots-final-booking-link" className="inline-flex justify-center items-center gap-3 bg-white text-[#161514] px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#161514] hover:text-white transition-colors">Book your headshot session <ArrowRight size={14} /></Link>
-              <Link href="/booking" data-testid="headshots-final-corporate-link" className="inline-flex justify-center items-center gap-3 border border-white/35 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors"><Users size={15} /> Schedule corporate headshots</Link>
+              <Link href="/booking?service=portraits-headshots" data-testid="headshots-final-booking-link" className="inline-flex justify-center items-center gap-3 bg-white text-[#161514] px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#161514] hover:text-white transition-colors">Book your headshot session <ArrowRight size={14} /></Link>
+              <Link href="/booking?service=portraits-headshots" data-testid="headshots-final-corporate-link" className="inline-flex justify-center items-center gap-3 border border-white/35 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors"><Users size={15} /> Schedule corporate headshots</Link>
               <Link href="/gallery?category=headshots" data-testid="headshots-final-gallery-link" className="inline-flex justify-center items-center gap-3 border border-white/35 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors">View portfolio</Link>
             </FadeIn>
           </div>

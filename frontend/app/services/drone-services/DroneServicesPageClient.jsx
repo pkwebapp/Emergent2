@@ -113,7 +113,7 @@ function DroneHero() {
             Aerial films and photographs for weddings, events, real estate, resorts and commercial projects—planned safely, shot cinematically and delivered ready for campaigns.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
-            <Link href="/booking" data-testid="drone-hero-booking-link" className="inline-flex justify-center items-center gap-3 bg-[#FF5B22] text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#071014] transition-colors">Plan an aerial shoot <ArrowRight size={14} /></Link>
+            <Link href="/booking?service=drone-services" data-testid="drone-hero-booking-link" className="inline-flex justify-center items-center gap-3 bg-[#FF5B22] text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#071014] transition-colors">Plan an aerial shoot <ArrowRight size={14} /></Link>
             <Link href="/gallery" data-testid="drone-hero-gallery-link" className="inline-flex justify-center items-center gap-3 border border-white/25 text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#071014] transition-colors">View aerial work</Link>
           </div>
         </motion.div>
@@ -317,7 +317,7 @@ export default function DroneServicesPageClient() {
               <p className="mt-5 text-white/82 leading-relaxed max-w-xl">Send your location, date, project type and intended use. We will recommend the right flight plan, crew and deliverables.</p>
             </FadeIn>
             <FadeIn className="relative flex flex-col sm:flex-row md:flex-col gap-3 md:items-start">
-              <Link href="/booking" data-testid="drone-final-booking-link" className="inline-flex justify-center items-center gap-3 bg-white text-[#071014] px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#071014] hover:text-white transition-colors">Book drone coverage <ArrowRight size={14} /></Link>
+              <Link href="/booking?service=drone-services" data-testid="drone-final-booking-link" className="inline-flex justify-center items-center gap-3 bg-white text-[#071014] px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#071014] hover:text-white transition-colors">Book drone coverage <ArrowRight size={14} /></Link>
               <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="drone-final-whatsapp-link" className="inline-flex justify-center items-center gap-3 border border-white/35 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#071014] transition-colors"><MessageCircle size={15} /> WhatsApp the team</a>
             </FadeIn>
           </div>

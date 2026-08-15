@@ -246,7 +246,7 @@ export default function LiveStreamingPageClient({ faqs }) {
                 For everyone who couldn&rsquo;t be in the room—bring them into the moment. Weddings, conferences, concerts and ceremonies broadcast in HD to a private link that works anywhere in the world.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                <Link href="/booking" data-testid="livestream-hero-booking-link" className="inline-flex justify-center items-center gap-3 bg-[#FF5B22] text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors">
+                <Link href="/booking?service=live-streaming" data-testid="livestream-hero-booking-link" className="inline-flex justify-center items-center gap-3 bg-[#FF5B22] text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors">
                   Book your stream <ArrowRight size={14} />
                 </Link>
                 <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="livestream-hero-whatsapp-link" className="inline-flex justify-center items-center gap-3 border border-white/25 text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors">
@@ -567,7 +567,7 @@ export default function LiveStreamingPageClient({ faqs }) {
               <p className="mt-5 text-white/82 leading-relaxed max-w-xl">Share your event date, venue and where you want it streamed—we&rsquo;ll confirm the setup, run a connectivity check and send an exact quote within hours.</p>
             </FadeIn>
             <FadeIn className="relative flex flex-col sm:flex-row md:flex-col gap-3 md:items-start">
-              <Link href="/booking" data-testid="livestream-final-booking-link" className="inline-flex justify-center items-center gap-3 bg-white text-[#161514] px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#161514] hover:text-white transition-colors">Book live streaming <ArrowRight size={14} /></Link>
+              <Link href="/booking?service=live-streaming" data-testid="livestream-final-booking-link" className="inline-flex justify-center items-center gap-3 bg-white text-[#161514] px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#161514] hover:text-white transition-colors">Book live streaming <ArrowRight size={14} /></Link>
               <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" data-testid="livestream-final-whatsapp-link" className="inline-flex justify-center items-center gap-3 border border-white/35 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-white hover:text-[#161514] transition-colors"><MessageCircle size={15} /> WhatsApp the team</a>
             </FadeIn>
           </div>

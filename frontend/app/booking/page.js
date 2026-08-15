@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Check, Mail, Phone, MapPin, MessageCircle, Calendar } from 'lucide-react'
 import { CONTACT } from '@/components/site/Chrome'
@@ -58,11 +58,51 @@ function BookingHero() {
   )
 }
 
+const SERVICES = ['Wedding', 'Events', 'Portrait', 'Headshots', 'Portfolio', 'Fashion', 'Editorial', 'Celebrity', 'Family', 'Ads', 'Boudoir', 'Food', 'E-Commerce', 'Real Estate', 'Design', 'Live Streaming', 'Drone']
+
+// Maps values coming from "Book Now" links (?service= slug or ?category=) to a dropdown option.
+const SERVICE_ALIASES = {
+  wedding: 'Wedding', weddings: 'Wedding', 'wedding-photography': 'Wedding', 'pre-wedding': 'Wedding', 'pre wedding': 'Wedding',
+  event: 'Events', events: 'Events', corporate: 'Events', 'corporate events': 'Events', 'corporate-industrial': 'Events',
+  portrait: 'Portrait', portraits: 'Portrait', 'portraits-headshots': 'Portrait',
+  'family-kids': 'Family', family: 'Family', kids: 'Family',
+  headshot: 'Headshots', headshots: 'Headshots', 'corporate-headshots': 'Headshots',
+  portfolio: 'Portfolio', 'editorial-portfolio': 'Portfolio', 'model-portfolio': 'Portfolio',
+  fashion: 'Fashion', 'fashion-shoots': 'Fashion',
+  editorial: 'Editorial',
+  celebrity: 'Celebrity', 'influencer-celebrity': 'Celebrity', influencer: 'Celebrity',
+  ads: 'Ads', advertising: 'Ads', commercial: 'Ads', 'brand-content': 'Ads', brand: 'Ads',
+  boudoir: 'Boudoir', 'boudoir-shoots': 'Boudoir',
+  food: 'Food', 'food-photography': 'Food',
+  'e-commerce': 'E-Commerce', ecommerce: 'E-Commerce', product: 'E-Commerce', products: 'E-Commerce', 'product-ecommerce': 'E-Commerce',
+  'real-estate': 'Real Estate', 'real estate': 'Real Estate', realestate: 'Real Estate', 'real-estate-architectural': 'Real Estate', architectural: 'Real Estate',
+  design: 'Design', 'design-services': 'Design', 'album-design': 'Design', 'editing-retouching': 'Design', editing: 'Design', retouching: 'Design',
+  'live-streaming': 'Live Streaming', 'live streaming': 'Live Streaming', livestream: 'Live Streaming', streaming: 'Live Streaming', 'podcast-production': 'Live Streaming', podcast: 'Live Streaming',
+  drone: 'Drone', 'drone-services': 'Drone', aerial: 'Drone',
+}
+
+function normalizeService(raw) {
+  if (!raw) return null
+  const key = String(raw).trim().toLowerCase()
+  const direct = SERVICES.find((s) => s.toLowerCase() === key)
+  if (direct) return direct
+  return SERVICE_ALIASES[key] || null
+}
+
 export default function BookingPage() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', date: '', service: 'Wedding', message: '' })
   const [sent, setSent] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+
+  // Auto-select the service based on where the visitor came from (?service= or ?category=)
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search)
+      const match = normalizeService(params.get('service') || params.get('category') || '')
+      if (match) setForm((f) => ({ ...f, service: match }))
+    } catch { /* ignore */ }
+  }, [])
 
   const submit = async (e) => {
     e.preventDefault()
@@ -86,8 +126,6 @@ export default function BookingPage() {
       setSubmitting(false)
     }
   }
-
-  const services = ['Wedding', 'Events', 'Portrait', 'Headshots', 'Portfolio', 'Editorial', 'Celebrity', 'Ads', 'Boudoir', 'Food', 'E-Commerce', 'Real Estate', 'Design', 'Live Streaming']
 
   return (
     <main className="bg-[#EEEAE1]">
@@ -118,7 +156,7 @@ export default function BookingPage() {
                 <label className="flex flex-col gap-2">
                   <span className="text-xs font-semibold uppercase tracking-widest text-[#8A857D]">Service</span>
                   <select data-testid="booking-service-select" value={form.service} onChange={(e) => setForm({ ...form, service: e.target.value })} className="h-12 px-4 rounded-xl border border-[#DBD4C6] focus:border-[#FF5B22] focus:outline-none bg-[#EEEAE1]">
-                    {services.map(s => <option key={s}>{s}</option>)}
+                    {SERVICES.map(s => <option key={s}>{s}</option>)}
                   </select>
                 </label>
                 <label className="flex flex-col gap-2 md:col-span-2">

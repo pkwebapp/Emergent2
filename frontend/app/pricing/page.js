@@ -405,7 +405,7 @@ function PricingInner() {
               data-testid="pricing-cards"
             >
               {tiers.map((t, i) => (
-                <PricingCard key={t.name + '-' + i} tier={t} index={i} categoryLabel={activeCategory.label} />
+                <PricingCard key={t.name + '-' + i} tier={t} index={i} categoryLabel={activeCategory.label} bookingCategory={active} />
               ))}
             </motion.div>
           </AnimatePresence>
@@ -470,7 +470,7 @@ function PricingInner() {
   )
 }
 
-function PricingCard({ tier, index, categoryLabel }) {
+function PricingCard({ tier, index, categoryLabel, bookingCategory }) {
   const featured = !!tier.featured
   const waMessage = [
     `Hi Prabhakar, I want to book for this service:`,
@@ -557,7 +557,7 @@ function PricingCard({ tier, index, categoryLabel }) {
             Enquire on WhatsApp
           </a>
           <Link
-            href="/booking"
+            href={`/booking?category=${bookingCategory}`}
             data-testid={`pricing-card-${index}-form`}
             className={`inline-flex w-full items-center justify-center gap-2 rounded-full py-3.5 font-semibold text-sm transition-colors ${
               featured ? 'bg-[#FF5B22] text-white hover:bg-[#E24A12]' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'

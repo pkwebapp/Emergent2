@@ -103,7 +103,7 @@ function Hero({ onPlayFilm }) {
           </motion.p>
 
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }} className="mt-10 flex flex-wrap items-center gap-4">
-            <Link href="/booking" className="group inline-flex items-center gap-3 bg-[#EEEAE1] text-[#161514] px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#FF5B22] hover:text-white transition-colors">
+            <Link href="/booking?service=weddings" className="group inline-flex items-center gap-3 bg-[#EEEAE1] text-[#161514] px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#FF5B22] hover:text-white transition-colors">
               Book your wedding <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
             </Link>
             <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 bg-[#EEEAE1]/10 backdrop-blur border border-white/25 text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#25D366] hover:border-[#25D366] transition-colors">
@@ -221,7 +221,7 @@ function ServiceBlock({ block, reverse }) {
           <h3 className="display text-4xl md:text-5xl mt-4 leading-[1.05]">{block.t}</h3>
           <p className="mt-6 text-[#8A857D] text-lg leading-relaxed">{block.d}</p>
           <div className="mt-8 flex items-center gap-3 text-sm">
-            <Link href="/booking" className="link-underline font-semibold text-[#161514]">Enquire about this service &rarr;</Link>
+            <Link href="/booking?service=weddings" className="link-underline font-semibold text-[#161514]">Enquire about this service &rarr;</Link>
           </div>
         </motion.div>
       </div>
@@ -774,7 +774,7 @@ function FinalCTA() {
           Whether you&apos;re planning a luxury celebration in Mumbai or a destination wedding anywhere in India, our team is ready to tell your story through timeless photography and cinematic films.
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 }} className="mt-12 flex flex-wrap items-center justify-center gap-4">
-          <Link href="/booking" className="group inline-flex items-center gap-3 bg-[#EEEAE1] text-[#161514] px-8 py-4 rounded-full text-sm font-semibold hover:bg-[#FF5B22] hover:text-white transition-colors">
+          <Link href="/booking?service=weddings" className="group inline-flex items-center gap-3 bg-[#EEEAE1] text-[#161514] px-8 py-4 rounded-full text-sm font-semibold hover:bg-[#FF5B22] hover:text-white transition-colors">
             Book Your Wedding <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </Link>
           <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 bg-[#EEEAE1]/10 backdrop-blur border border-white/25 text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-[#25D366] hover:border-[#25D366] transition-colors">
@@ -819,7 +819,7 @@ function StickyEnquire() {
               <div className="text-white/60 text-[9px] uppercase tracking-widest">Ready when you are</div>
               <div className="font-semibold">Reserve your wedding date</div>
             </div>
-            <Link href="/booking" className="inline-flex items-center gap-2 bg-[#FF5B22] hover:bg-[#E24A12] text-white px-5 py-2.5 rounded-full text-xs font-semibold transition-colors">Enquire <ArrowRight size={12} /></Link>
+            <Link href="/booking?service=weddings" className="inline-flex items-center gap-2 bg-[#FF5B22] hover:bg-[#E24A12] text-white px-5 py-2.5 rounded-full text-xs font-semibold transition-colors">Enquire <ArrowRight size={12} /></Link>
           </div>
         </motion.div>
       )}
@@ -861,7 +861,7 @@ function WeddingLocalSeoBlock() {
           <Link href="/pricing?category=weddings" data-testid="service-internal-pricing-link" className="rounded-2xl border border-[#DBD4C6] bg-[#E6E1D5] p-4 text-sm font-semibold hover:border-[#FF5B22] hover:text-[#FF5B22] transition-colors">
             Compare wedding packages →
           </Link>
-          <Link href="/booking" data-testid="service-internal-booking-link" className="rounded-2xl border border-[#DBD4C6] bg-[#161514] text-white p-4 text-sm font-semibold hover:bg-[#FF5B22] transition-colors">
+          <Link href="/booking?service=weddings" data-testid="service-internal-booking-link" className="rounded-2xl border border-[#DBD4C6] bg-[#161514] text-white p-4 text-sm font-semibold hover:bg-[#FF5B22] transition-colors">
             Book your wedding date →
           </Link>
         </div>
