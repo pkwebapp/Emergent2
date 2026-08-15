@@ -100,6 +100,7 @@ async function handleRoute(request, { params }) {
         phone: String(body.phone).trim(),
         date: String(body.date).trim(),
         service: String(body.service).trim(),
+        package: String(body.package || '').trim() || null,
         message: String(body.message || '').trim(),
         source: 'booking-page',
         status: 'new',

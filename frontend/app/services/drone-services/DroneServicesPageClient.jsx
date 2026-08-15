@@ -264,7 +264,7 @@ export default function DroneServicesPageClient() {
                   {plan.items.map((item) => <li key={item} className="flex gap-3 text-sm leading-relaxed"><Check size={15} className="mt-0.5 shrink-0" />{item}</li>)}
                 </ul>
                 <div className="mt-6 flex flex-col gap-2.5">
-                  <Link href="/booking?service=drone-services" data-testid={`drone-pricing-book-${plan.name.toLowerCase().replaceAll(' ', '-')}`} className="inline-flex justify-center items-center gap-2 bg-white text-[#071014] px-5 py-3 rounded-full text-sm font-semibold hover:bg-[#071014] hover:text-white transition-colors">Book this package <ArrowRight size={14} /></Link>
+                  <Link href={`/booking?service=drone-services&package=${encodeURIComponent(plan.name)}&price=${encodeURIComponent(plan.price)}`} data-testid={`drone-pricing-book-${plan.name.toLowerCase().replaceAll(' ', '-')}`} className="inline-flex justify-center items-center gap-2 bg-white text-[#071014] px-5 py-3 rounded-full text-sm font-semibold hover:bg-[#071014] hover:text-white transition-colors">Book this package <ArrowRight size={14} /></Link>
                   <a href={waLink({ service: 'Drone Services', page: 'Drone Services', pkg: plan.name, price: plan.price })} target="_blank" rel="noreferrer" data-testid={`drone-pricing-whatsapp-${plan.name.toLowerCase().replaceAll(' ', '-')}`} className="inline-flex justify-center items-center gap-2 border border-white/40 text-white px-5 py-3 rounded-full text-sm font-semibold hover:bg-white/10 transition-colors"><MessageCircle size={14} /> Enquire on WhatsApp</a>
                 </div>
               </FadeIn>

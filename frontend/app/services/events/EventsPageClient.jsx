@@ -414,7 +414,7 @@ export default function EventsPageClient() {
                   ))}
                 </ul>
                 <div className="mt-6 flex flex-col gap-2.5">
-                  <Link href="/booking?service=events" data-testid={`events-pricing-book-${plan.name.toLowerCase().replaceAll(' ', '-')}`} className="inline-flex justify-center items-center gap-2 bg-white text-[#161514] px-5 py-3 rounded-full text-sm font-semibold hover:bg-[#161514] hover:text-white transition-colors">Book this package <ArrowRight size={14} /></Link>
+                <Link href={`/booking?service=events&package=${encodeURIComponent(plan.name)}&price=${encodeURIComponent(plan.price)}`} data-testid={`events-pricing-book-${plan.name.toLowerCase().replaceAll(' ', '-')}`} className="inline-flex justify-center items-center gap-2 bg-white text-[#161514] px-5 py-3 rounded-full text-sm font-semibold hover:bg-[#161514] hover:text-white transition-colors">Book this package <ArrowRight size={14} /></Link>
                   <a href={waLink({ service: 'Event Photography', page: 'Events', pkg: plan.name, price: plan.price })} target="_blank" rel="noreferrer" data-testid={`events-pricing-whatsapp-${plan.name.toLowerCase().replaceAll(' ', '-')}`} className="inline-flex justify-center items-center gap-2 border border-white/40 text-white px-5 py-3 rounded-full text-sm font-semibold hover:bg-white/10 transition-colors"><MessageCircle size={14} /> Enquire on WhatsApp</a>
                 </div>
               </FadeIn>

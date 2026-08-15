@@ -90,17 +90,28 @@ function normalizeService(raw) {
 }
 
 export default function BookingPage() {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', date: '', service: 'Wedding', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', date: '', service: 'Wedding', package: '', message: '' })
   const [sent, setSent] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
-  // Auto-select the service based on where the visitor came from (?service= or ?category=)
+  // Auto-select the service + package based on where the visitor came from
+  // (?service= / ?category= and ?package= / ?price= from a "Book this package" link)
   useEffect(() => {
     try {
       const params = new URLSearchParams(window.location.search)
       const match = normalizeService(params.get('service') || params.get('category') || '')
-      if (match) setForm((f) => ({ ...f, service: match }))
+      const pkg = (params.get('package') || '').trim()
+      const price = (params.get('price') || '').trim()
+      setForm((f) => {
+        const next = { ...f }
+        if (match) next.service = match
+        if (pkg) {
+          next.package = price ? `${pkg} — ${price}` : pkg
+          if (!f.message) next.message = `I'm interested in the ${pkg} package${price ? ` (${price})` : ''}. Please share availability and next steps.`
+        }
+        return next
+      })
     } catch { /* ignore */ }
   }, [])
 
@@ -119,7 +130,7 @@ export default function BookingPage() {
       const data = await res.json().catch(() => ({}))
       if (!res.ok || !data.ok) throw new Error(data.error || 'Could not send enquiry')
       setSent(true)
-      setForm({ name: '', email: '', phone: '', date: '', service: 'Wedding', message: '' })
+      setForm({ name: '', email: '', phone: '', date: '', service: 'Wedding', package: '', message: '' })
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try WhatsApp or email.')
     } finally {
@@ -136,6 +147,15 @@ export default function BookingPage() {
             <motion.form id="booking-form" data-testid="booking-form" action="/api/contact" method="post" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} onSubmit={submit} className="col-span-12 lg:col-span-7 rounded-3xl border border-[#DBD4C6] bg-[#EEEAE1] p-8 md:p-10 shadow-sm">
               <div className="eyebrow mb-2">Enquiry Form</div>
               <h2 className="display text-3xl md:text-4xl">A few quick details.</h2>
+              {form.package && (
+                <div data-testid="booking-selected-package" className="mt-6 flex items-center justify-between gap-3 rounded-2xl border border-[#FF5B22]/40 bg-[#F3E4DC] px-4 py-3">
+                  <div className="flex items-center gap-2 text-sm">
+                    <span className="w-6 h-6 rounded-full bg-[#FF5B22] text-white grid place-content-center shrink-0"><Check size={12} /></span>
+                    <span className="text-[#161514]">Selected package: <strong data-testid="booking-selected-package-name">{form.package}</strong></span>
+                  </div>
+                  <button type="button" data-testid="booking-clear-package" onClick={() => setForm((f) => ({ ...f, package: '' }))} className="text-xs font-semibold text-[#8A857D] hover:text-[#FF5B22] shrink-0">Clear</button>
+                </div>
+              )}
               <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
                 <label className="flex flex-col gap-2">
                   <span className="text-xs font-semibold uppercase tracking-widest text-[#8A857D]">Full name</span>

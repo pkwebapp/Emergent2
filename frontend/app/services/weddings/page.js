@@ -549,7 +549,7 @@ function Pricing() {
               </ul>
 
               <div className="mt-8 flex flex-col gap-2.5">
-                <Link href="/booking?service=weddings" className={`inline-flex w-full items-center justify-center gap-2 rounded-full py-3.5 font-semibold text-sm transition-colors ${t.featured ? 'bg-[#FF5B22] text-white hover:bg-[#E24A12]' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`}>Book this package <ArrowRight size={14} /></Link>
+                <Link href={`/booking?service=weddings&package=${encodeURIComponent(t.name)}&price=${encodeURIComponent(t.price)}`} className={`inline-flex w-full items-center justify-center gap-2 rounded-full py-3.5 font-semibold text-sm transition-colors ${t.featured ? 'bg-[#FF5B22] text-white hover:bg-[#E24A12]' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`}>Book this package <ArrowRight size={14} /></Link>
                 <a href={waLink({ service: 'Wedding Photography & Films', page: 'Weddings', pkg: t.name, price: t.original ? `${t.price} (was ${t.original})` : t.price })} target="_blank" rel="noreferrer" className={`inline-flex w-full items-center justify-center gap-2 rounded-full py-3 font-semibold text-sm border transition-colors ${t.featured ? 'border-white/30 text-white hover:bg-white/10' : 'border-[#161514]/20 text-[#161514] hover:border-[#FF5B22] hover:text-[#FF5B22]'}`}>
                   <MessageCircle size={14} /> Enquire on WhatsApp
                 </a>
