@@ -464,7 +464,7 @@ export default function LiveStreamingPageClient({ faqs }) {
                     <li key={item} className="flex gap-3 text-sm leading-relaxed"><Check size={15} className={`mt-0.5 shrink-0 ${plan.featured ? 'text-[#FF5B22]' : 'text-[#FF5B22]'}`} />{item}</li>
                   ))}
                 </ul>
-                <a href={waLink({ service: 'Live Streaming', page: 'Live Streaming' })} target="_blank" rel="noreferrer" className={`mt-7 inline-flex justify-center items-center gap-2 px-5 py-3 rounded-full text-sm font-semibold transition-colors ${plan.featured ? 'bg-[#FF5B22] text-white hover:bg-white hover:text-[#161514]' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`} data-testid={`livestream-pricing-whatsapp-${plan.name.toLowerCase().replaceAll(' ', '-')}`}>
+                <a href={waLink({ service: 'Live Streaming', page: 'Live Streaming', pkg: plan.name, price: plan.was ? `${plan.price} (was ${plan.was})` : plan.price })} target="_blank" rel="noreferrer" className={`mt-7 inline-flex justify-center items-center gap-2 px-5 py-3 rounded-full text-sm font-semibold transition-colors ${plan.featured ? 'bg-[#FF5B22] text-white hover:bg-white hover:text-[#161514]' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`} data-testid={`livestream-pricing-whatsapp-${plan.name.toLowerCase().replaceAll(' ', '-')}`}>
                   <MessageCircle size={14} /> Get exact quote
                 </a>
               </FadeIn>

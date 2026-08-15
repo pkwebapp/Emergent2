@@ -74,9 +74,11 @@ export const CONTACT = {
 /* -------- WhatsApp enquiry link with pre-filled message (service + page) -------- */
 const WA_NUMBER = '918888766739'
 
-export function waLink({ service, page } = {}) {
+export function waLink({ service, page, pkg, price } = {}) {
   const bits = ["Hi PK Photography, I'd like to enquire"]
   if (service) bits.push(`about ${service}`)
+  if (pkg) bits.push(`— the ${pkg} package`)
+  if (price) bits.push(`priced ${price}`)
   if (page) bits.push(`(via the ${page} page)`)
   const message = bits.join(' ') + '.'
   return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`

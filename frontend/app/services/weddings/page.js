@@ -548,7 +548,7 @@ function Pricing() {
                 ))}
               </ul>
 
-              <a href={waLink({ service: 'Wedding Photography & Films', page: 'Weddings' })} target="_blank" rel="noreferrer" className={`mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full py-3.5 font-semibold text-sm transition-colors ${t.featured ? 'bg-[#EEEAE1] text-[#161514] hover:bg-[#FF5B22] hover:text-white' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`}>
+              <a href={waLink({ service: 'Wedding Photography & Films', page: 'Weddings', pkg: t.name, price: t.original ? `${t.price} (was ${t.original})` : t.price })} target="_blank" rel="noreferrer" className={`mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full py-3.5 font-semibold text-sm transition-colors ${t.featured ? 'bg-[#EEEAE1] text-[#161514] hover:bg-[#FF5B22] hover:text-white' : 'bg-[#161514] text-white hover:bg-[#FF5B22]'}`}>
                 <MessageCircle size={14} /> Enquire on WhatsApp
               </a>
             </motion.div>
@@ -593,7 +593,7 @@ function AddOns() {
               <h3 className="display text-2xl mt-3">{a.t}</h3>
               <div className="mt-2 text-lg font-semibold text-[#161514]">{a.p}</div>
               <p className="mt-4 text-sm text-[#8A857D] leading-relaxed">{a.d}</p>
-              <a href={waLink({ service: 'Wedding Photography & Films', page: 'Weddings' })} target="_blank" rel="noreferrer" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B22] link-underline">Ask about this <ArrowRight size={13} /></a>
+              <a href={waLink({ service: 'Wedding Photography & Films', page: 'Weddings', pkg: `${a.t} add-on`, price: a.p })} target="_blank" rel="noreferrer" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B22] link-underline">Ask about this <ArrowRight size={13} /></a>
             </motion.div>
           ))}
         </div>
