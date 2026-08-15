@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring, AnimatePresence } from 'framer-motion'
+import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion'
 import { ArrowUpRight, ArrowRight, Star, MessageCircle, ChevronDown, Mail, MapPin, Play } from 'lucide-react'
 import { IMG, CONTACT } from '@/components/site/Chrome'
 import { SERVICES } from '@/lib/services'
@@ -29,23 +29,50 @@ export { SERVICES }
 ================================================================ */
 function Counter({ to, suffix = '', duration = 1.8, testid }) {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-80px' })
   const [val, setVal] = useState(0)
+  const started = useRef(false)
+
   useEffect(() => {
-    if (!inView) return
-    const reduce = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduce) { setVal(to); return }
-    const start = performance.now()
-    let raf = 0
-    const tick = (now) => {
-      const p = Math.min(1, (now - start) / (duration * 1000))
-      const eased = 1 - Math.pow(1 - p, 3)
-      setVal(Math.round(to * eased))
-      if (p < 1) raf = requestAnimationFrame(tick)
+    const el = ref.current
+    if (!el) return
+    const reduce = typeof window !== 'undefined' && window.matchMedia
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    const run = () => {
+      if (started.current) return
+      started.current = true
+      if (reduce) { setVal(to); return }
+      const start = performance.now()
+      const tick = (now) => {
+        const p = Math.min(1, Math.max(0, (now - start) / (duration * 1000)))
+        const eased = 1 - Math.pow(1 - p, 3)
+        setVal(Math.round(to * eased))
+        if (p < 1) requestAnimationFrame(tick)
+        else setVal(to)
+      }
+      requestAnimationFrame(tick)
     }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [inView, to, duration])
+
+    const inViewNow = () => {
+      const r = el.getBoundingClientRect()
+      const vh = window.innerHeight || document.documentElement.clientHeight
+      return r.top < vh && r.bottom > 0
+    }
+
+    // Already visible on mount (e.g. short mobile pages) — start immediately.
+    if (inViewNow()) { run(); return }
+
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) { run(); io.disconnect() }
+    }, { threshold: 0 })
+    io.observe(el)
+
+    // Safety net: some mobile browsers can miss the IO callback — poll briefly.
+    const fb = setInterval(() => { if (inViewNow()) { run() } if (started.current) clearInterval(fb) }, 400)
+
+    return () => { io.disconnect(); clearInterval(fb) }
+  }, [to, duration])
+
   return <span ref={ref} data-testid={testid}>{val.toLocaleString('en-IN')}{suffix}</span>
 }
 

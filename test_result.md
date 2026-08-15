@@ -770,8 +770,29 @@ frontend:
         -agent: "testing"
         -comment: "Auth pages verification completed successfully (Aug 10, 2026). All 4 tests passed (4/4). ✅ (1) /login page renders correctly with 'Continue with Google' button (data-testid='login-google-btn') and phone/name form (Full Name input, Mobile Number input with +91 prefix, Continue button). NO crash, NO 'Application error'. ✅ (2) /profile correctly redirects to /login when NOT logged in (auth guard working - final URL: http://localhost:3000/login). ✅ (3) /signup page renders correctly with all form elements (data-testid='signup-fullname', 'signup-email', 'signup-mobile', 'signup-submit', 'signup-google-btn'). ✅ (4) CRITICAL: NO next-auth CLIENT_FETCH_ERROR found in console on any page. Benign 401 on /api/auth/me for logged-out users is EXPECTED and correctly handled. Custom Google auth (Emergent auth at https://auth.emergentagent.com) working correctly. SessionProvider removal successful - no more CLIENT_FETCH_ERROR to /api/auth/session. Auth implementation is production-ready."
 
+  - task: "Homepage Trust counters stuck at 0 on mobile (Counter animation not firing)"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/page.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "User reported (mobile screenshot, iOS Safari) that some Trust-section counters show '0+' instead of animating: '500+ Couples/businesses/brands' and '1000+ Portfolios Shot' showed 0+, while '700+ Corporate Clients' and '10+ Years of Craft' worked. Root cause: Counter used framer-motion useInView with margin '-80px' which intermittently failed to fire/complete on mobile, leaving counters at 0. FIX: rewrote Counter (page.js ~lines 30-78) to use native IntersectionObserver with (a) immediate in-view detection via getBoundingClientRect on mount, (b) guaranteed completion (setVal(to) at end), (c) a setInterval safety-net poll for mobile browsers that miss the IO callback, (d) clamped progress to [0,1]. Removed unused useInView import. Verify in MOBILE viewport (390x844) that ALL FOUR counters (counter-weddings=500+, counter-corp=700+, counter-port=1000+, counter-years=10+) animate to non-zero final values; none stuck at 0+."
+        -working: true
+        -agent: "testing"
+        -comment: "BUG FIX VERIFIED SUCCESSFULLY ✅ (All tests passed 2/2). Tested homepage Trust section counter animations on both mobile (390x844) and desktop (1440x900) viewports. MOBILE VIEWPORT (390x844): All four counters animated correctly to their final non-zero values: counter-weddings='500+', counter-corp='700+', counter-port='1,000+', counter-years='10+'. NO counters stuck at '0' or '0+'. DESKTOP VIEWPORT (1440x900): All four counters animated correctly to their final non-zero values: counter-weddings='500+', counter-corp='700+', counter-port='1,000+', counter-years='10+'. NO counters stuck at '0' or '0+'. The reported bug (counters stuck at 0+ on mobile/iOS Safari) is FIXED. The new Counter component implementation using native IntersectionObserver with immediate in-view detection, guaranteed completion, and mobile safety-net polling is working perfectly on both mobile and desktop. Screenshots captured: mobile-trust-counters.png and desktop-trust-counters.png. Bug fix is production-ready."
+
 test_plan:
   current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
+
+agent_communication:
+    -agent: "main"
+    -message: "Fixed homepage Trust counters stuck at '0+' on mobile. Rewrote the Counter component in /app/frontend/app/page.js to use a native IntersectionObserver (immediate in-view detection + guaranteed final value + mobile safety-net poll) instead of framer-motion useInView. Please TEST IN MOBILE VIEWPORT (390x844): load homepage, scroll to 'Trust' stats section (data-testid='trust-section'), confirm all four counters reach final values — counter-weddings=500+, counter-corp=700+, counter-port=1000+, counter-years=10+ — none stuck at 0. Also quick desktop sanity check."
+    -agent: "testing"
+    -message: "Homepage Trust counters bug fix verification COMPLETED SUCCESSFULLY ✅. All tests passed (2/2 viewports). MOBILE (390x844): All 4 counters show correct final values (500+, 700+, 1,000+, 10+) - NONE stuck at 0 or 0+. DESKTOP (1440x900): All 4 counters show correct final values (500+, 700+, 1,000+, 10+) - NONE stuck at 0 or 0+. The reported bug (some counters stuck at '0+' on mobile/iOS Safari) is FIXED. The new Counter component using native IntersectionObserver with immediate in-view detection, guaranteed completion, and mobile safety-net polling is working perfectly. Screenshots captured for both viewports. Bug fix is production-ready and verified."
