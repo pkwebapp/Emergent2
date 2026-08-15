@@ -13,11 +13,12 @@ import { SERVICE_SEO, imageAlt } from '@/lib/seo'
 
 const SLUG = 'boudoir-shoots'
 const IMG = {
+  hero: '/images/boudoir/hero.jpg',
   window: '/images/boudoir/window.jpg',
   drape: '/images/boudoir/drape.jpg',
   fabric: '/images/boudoir/fabric.jpg',
-  vanity: '/images/boudoir/vanity.jpg',
-  veil: '/images/boudoir/veil.jpg',
+  vanity: '/images/boudoir/vanity-indian.jpg',
+  veil: '/images/boudoir/bridal.jpg',
   maternity: '/images/boudoir/maternity.jpg',
   moody: '/images/boudoir/moody.jpg',
   album: '/images/boudoir/album.jpg',
@@ -66,6 +67,13 @@ const FAQS = [
   { q: 'Who sees my photos?', a: 'Only you and the retoucher working on your selects. Files are stored securely, delivered through a private password-protected gallery, and never used in our portfolio or marketing without your written consent.' },
   { q: 'What should I wear?', a: 'Whatever makes you feel confident — from elegant outfits and sarees to lingerie or a simple shirt. We do a wardrobe consultation before the shoot and plan looks together.' },
   { q: 'How much retouching is done?', a: 'Fine-art retouching that keeps you looking like yourself — skin is refined, not reshaped. You review the selects and approve the final edit.' },
+]
+
+const TESTIMONIALS = [
+  { name: 'Priya', tag: 'Bridal boudoir · Mumbai', quote: 'I was shaking when I walked in. An hour later I had forgotten the camera was even there. My husband teared up when he opened the album on our wedding morning.' },
+  { name: 'Meera', tag: 'Milestone shoot at 40', quote: 'The most seen I have felt in years. Nothing was rushed, nothing felt awkward — draped in my mother\'s saree, it was just… me.' },
+  { name: 'Ananya', tag: 'Maternity boudoir · Goa', quote: 'They photographed my saree-draped bump so gently, with so much patience. I look at those frames every single day.' },
+  { name: 'Sana', tag: 'Anniversary gift', quote: 'Everything stayed private, exactly as promised — the gallery, the files, all of it. That mattered to me more than anything else.' },
 ]
 
 const DEFAULT_PORTFOLIO = [
@@ -138,7 +146,7 @@ export default function BoudoirPageClient() {
       {/* ---------- Video Hero with parallax (UNCHANGED from template) ---------- */}
       <section ref={heroRef} className="relative min-h-[92svh] overflow-hidden bg-[#161514]">
         <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0">
-          <HeroMedia slot={`${SLUG}-banner`} fallbackImage={service.img} fallbackVideo={null} />
+          <HeroMedia slot={`${SLUG}-banner`} fallbackImage={IMG.hero} fallbackVideo={null} />
           <div className="absolute inset-0 bg-gradient-to-b from-[#161514]/40 via-transparent to-[#161514]/90" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#161514]/70 via-transparent to-transparent" />
         </motion.div>
@@ -420,8 +428,40 @@ export default function BoudoirPageClient() {
         </div>
       </section>
 
+      {/* ---------- Client Words (first-name-only testimonials) ---------- */}
+      <section className="pt-32 pb-24 md:pt-36 md:pb-28 bg-[#EEEAE1]" data-testid="boudoir-testimonials-section">
+        <div className="container mx-auto max-w-[1300px] px-6 md:px-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+            <div>
+              <div className="eyebrow mb-4 text-[#FF5B22]">Client Words</div>
+              <h2 className="font-cormorant text-5xl md:text-6xl leading-[1.05] text-[#161514] font-medium">
+                In their own <span className="italic text-[#FF5B22] font-normal">words.</span>
+              </h2>
+            </div>
+            <p className="text-[#8A857D] font-light max-w-xs text-sm leading-relaxed">First names only, shared with permission — because discretion doesn&apos;t end after the shoot.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {TESTIMONIALS.map((t, i) => (
+              <motion.figure key={i} {...reveal} transition={{ ...reveal.transition, delay: i * 0.07 }} className="rounded-3xl border border-[#DBD4C6] bg-[#E6E1D5]/60 p-8 md:p-10 flex flex-col" data-testid={`boudoir-testimonial-${t.name.toLowerCase()}`}>
+                <span className="font-cormorant text-5xl text-[#FF5B22]/70 leading-none" aria-hidden="true">“</span>
+                <blockquote className="mt-2 font-cormorant italic text-xl md:text-[1.45rem] leading-[1.55] text-[#161514] font-light">
+                  {t.quote}
+                </blockquote>
+                <figcaption className="mt-8 pt-5 border-t border-[#DBD4C6] flex items-center gap-4">
+                  <span className="w-10 h-10 rounded-full bg-[#161514] text-[#EEEAE1] grid place-content-center font-cormorant italic text-lg shrink-0">{t.name[0]}</span>
+                  <span>
+                    <span className="block text-sm font-semibold text-[#161514]">{t.name}</span>
+                    <span className="block text-[10px] tracking-[0.2em] uppercase text-[#8A857D] mt-0.5">{t.tag}</span>
+                  </span>
+                </figcaption>
+              </motion.figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ---------- Our Process (REDESIGNED: airy serif timeline) ---------- */}
-      <section className="pt-32 pb-24 md:pt-40 md:pb-32 bg-[#EEEAE1]" data-testid="boudoir-process-section">
+      <section className="py-24 md:py-32 bg-[#EEEAE1] border-t border-[#DBD4C6]/60" data-testid="boudoir-process-section">
         <div className="container mx-auto max-w-[1300px] px-6 md:px-10">
           <div className="text-center mb-20">
             <div className="eyebrow mb-4 text-[#FF5B22]">How It Unfolds</div>
