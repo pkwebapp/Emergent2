@@ -1,0 +1,29 @@
+{
+  "summary": "Re-tested Footer mobile-overflow fix at 360x800 and 390x844 across /services/weddings, /services/boudoir-shoots, /services/family-kids, /services/events, /booking, /client. Footer fix VERIFIED: footer width equals viewport on every page, contact column not cropped, Explore/Support columns still sit 2-up on mobile (same top, side-by-side), and desktop 1280 still shows the 4-column single-row layout. document.documentElement.scrollWidth == window.innerWidth on ALL tested pages (no horizontal scroll). However, the overflow probe [...document.querySelectorAll('*')].filter(el => rect.right > vw+1) is NOT empty on any page — remaining overflowing elements are all decorative absolute-positioned pointer-events-none blobs / hero video/img with `absolute inset-0` (object-cover) that are visually clipped by parent overflow-hidden containers and do NOT cause horizontal scroll. NO footer child overflows on any page.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Footer decorative glow", "issues": ["Footer contains a decorative div with classes 'absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[400px] rounded-full pointer-events-none' which reports as overflowing on mobile (right ~630-645 vs vw 360/390). It is clipped by parent overflow-hidden so it does NOT cause scroll, but it will keep the overflow-probe from ever returning empty. If the ‘probe must be empty’ metric is a strict requirement, cap this glow with max-w-full or wrap it in a container with overflow-hidden explicitly."]},
+      {"screen": "/services/weddings hero", "issues": ["Hero video/img elements with 'absolute inset-0 w-full h-full object-cover' report right>vw by ~27-30px due to object-cover scaling on very narrow widths; ~78-83 descendants flagged. No scroll impact (overflow-hidden parent). Cosmetic only."]},
+      {"screen": "/services/boudoir-shoots & /services/family-kids", "issues": ["Decorative div 'absolute -top-32 -right-24 w-[400px] h-[400px] rounded-full' bleeds beyond viewport by design; clipped by parent, does not scroll. Cosmetic only."]},
+      {"screen": "/booking", "issues": ["Multiple decorative pointer-events-none blur circles positioned with -right/-left offsets extend past viewport. All clipped by parent overflow-hidden; no horizontal scroll."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "PRIMARY GOAL ACHIEVED: Footer fix (grid grid-cols-12 gap-x-6 gap-y-10 md:gap-10) works — no footer overflow at 360 or 390, 2-up Explore/Support preserved, desktop 4-col layout preserved, no horizontal scroll on any page.",
+    "OPTIONAL (if strict overflow-probe==0 is required): Add overflow-x-hidden to the decorative wrapper around the footer glow div (w-[900px] pointer-events-none) OR replace w-[900px] with w-[900px] max-w-full. Same for the hero decorative blobs on booking/client/boudoir/family-kids pages."
+  ],
+  "critical_code_review_comments": [
+    "The 'overflow probe must be empty' metric is quite strict — decorative offscreen blobs (used for glow/blur effects) commonly extend past viewport by design and rely on parent overflow-hidden. If that metric is a hard requirement, prefer scrollWidth<=innerWidth as the real user-visible measure (which passes everywhere)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a", "frontend": "100% for footer fix; scrollWidth check 100%; strict overflow-probe metric fails due to decorative pointer-events-none blobs unrelated to the footer fix"},
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Per-page overflow probe counts (real mobile viewport via Playwright): weddings 83/78, boudoir 7/7, family-kids 7/7, events 2/2, booking 5/5, client 3/3 at 360/390. All remaining overflows are decorative absolute pointer-events-none elements OR hero video/img with object-cover — NONE inside the fixed footer grid. Footer widths equal viewport widths and its 4 children lay out as: [contact full-width, Explore col-6, Support col-6, brand/newsletter full-width] on mobile; desktop 1280 lays them out in a single row. document.documentElement.scrollWidth == innerWidth on every tested page.",
+  "rca of the issue": "Footer mobile overflow (iteration_5) fixed by changing 'grid grid-cols-12 gap-10' → 'grid grid-cols-12 gap-x-6 gap-y-10 md:gap-10'. gap-x-6 (24px) fits within the 360-48=312 available inner width for two col-span-6 children (2*144 + 24 = 312). Verified at both 360 and 390 widths; footer children right edge <= footer right edge on all tested pages."
+}

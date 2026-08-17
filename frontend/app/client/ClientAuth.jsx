@@ -62,7 +62,7 @@ export default function ClientAuth() {
       />
       <section className="pb-24 md:pb-32">
         <div className="container mx-auto max-w-[1100px] px-6 md:px-10">
-          <div className="grid grid-cols-12 gap-8">
+          <div className="flex flex-col gap-8 md:grid md:grid-cols-12">
             <div className="col-span-12 md:col-span-6 rounded-3xl border border-[#DBD4C6] bg-[#EEEAE1] p-8 md:p-10">
               <div className="w-12 h-12 rounded-xl bg-[#F3E4DC] text-[#FF5B22] grid place-content-center mb-6"><Lock size={20} /></div>
               <h2 className="display text-3xl">Sign in</h2>

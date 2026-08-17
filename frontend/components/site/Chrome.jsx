@@ -470,7 +470,7 @@ export function Footer() {
 
       <div className="container mx-auto max-w-[1400px] px-6 md:px-10 relative">
         {/* Main footer grid */}
-        <div className="grid grid-cols-12 gap-10">
+        <div className="grid grid-cols-12 gap-x-6 gap-y-10 md:gap-10">
           <div className="col-span-12 md:col-span-4">
             <Logo size="lg" />
             <p className="mt-5 text-[#8A857D] leading-relaxed max-w-sm">Based in Andheri West, Mumbai, PK Photography provides professional photography and videography services across Mumbai, Goa and destination locations. From weddings and corporate events to commercial, product and real estate photography, we help people and brands create visuals that leave a lasting impression.</p>

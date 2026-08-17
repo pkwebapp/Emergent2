@@ -143,7 +143,7 @@ export default function BookingPage() {
       <BookingHero />
       <section className="pb-24 md:pb-32">
         <div className="container mx-auto max-w-[1200px] px-6 md:px-10">
-          <div className="grid grid-cols-12 gap-8 md:gap-14">
+          <div className="flex flex-col gap-8 md:gap-14 lg:grid lg:grid-cols-12">
             <motion.form id="booking-form" data-testid="booking-form" action="/api/contact" method="post" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} onSubmit={submit} className="col-span-12 lg:col-span-7 rounded-3xl border border-[#DBD4C6] bg-[#EEEAE1] p-8 md:p-10 shadow-sm">
               <div className="eyebrow mb-2">Enquiry Form</div>
               <h2 className="display text-3xl md:text-4xl">A few quick details.</h2>

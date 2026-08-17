@@ -698,7 +698,7 @@ export default function ServicePageClient({ slug }) {
             <h2 className="display text-4xl md:text-6xl">End-to-end, <span className="text-[#FF5B22] italic font-medium">every detail.</span></h2>
           </div>
 
-          <div className="grid grid-cols-12 gap-8 md:gap-12 items-start">
+          <div className="flex flex-col gap-8 md:grid md:grid-cols-12 md:gap-12 md:items-start">
             {/* Tab pills */}
             <div className="col-span-12 md:col-span-5 lg:col-span-4">
               <div className="flex flex-col gap-2">
@@ -789,7 +789,7 @@ export default function ServicePageClient({ slug }) {
       {/* ---------- Why Choose Us ---------- */}
       <section className="py-20 md:py-28 bg-[#E6E1D5]">
         <div className="container mx-auto max-w-[1400px] px-6 md:px-10">
-          <div className="grid grid-cols-12 gap-10 md:gap-16 items-center">
+          <div className="flex flex-col gap-10 md:grid md:grid-cols-12 md:gap-16 md:items-center">
             <div className="col-span-12 md:col-span-5">
               <div className="eyebrow mb-3">Why Choose Us</div>
               <h2 className="display text-4xl md:text-6xl leading-[1.05]">Craft that <span className="text-[#FF5B22] italic font-medium">shows.</span></h2>
@@ -918,7 +918,7 @@ export default function ServicePageClient({ slug }) {
       {/* ---------- FAQs ---------- */}
       <section className="py-20 md:py-28 bg-[#E6E1D5]">
         <div className="container mx-auto max-w-[1200px] px-6 md:px-10">
-          <div className="grid grid-cols-12 gap-8 md:gap-12">
+          <div className="flex flex-col gap-8 md:grid md:grid-cols-12 md:gap-12">
             <div className="col-span-12 md:col-span-4">
               <div className="eyebrow mb-3">FAQs</div>
               <h2 className="display text-3xl md:text-5xl">Common <span className="text-[#FF5B22] italic font-medium">questions.</span></h2>
@@ -937,7 +937,7 @@ export default function ServicePageClient({ slug }) {
         <div className="container mx-auto max-w-[1400px] px-6 md:px-10">
           <div className="relative rounded-[36px] overflow-hidden bg-[#161514] text-white p-10 md:p-16">
             <div className="absolute -top-32 -right-24 w-[400px] h-[400px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(255,91,34,0.4), transparent 60%)' }} />
-            <div className="relative grid grid-cols-12 gap-8 items-center">
+            <div className="relative flex flex-col gap-8 md:grid md:grid-cols-12 md:gap-8 md:items-center">
               <div className="col-span-12 md:col-span-8">
                 <div className="eyebrow text-[#67E8F9] mb-4">Ready when you are</div>
                 <h2 className="display text-4xl md:text-6xl">Let's create your <span className="text-[#FF5B22] italic font-medium">{shortTitle.toLowerCase()}.</span></h2>

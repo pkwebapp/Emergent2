@@ -147,7 +147,7 @@ function Storytelling() {
     <section ref={ref} className="relative py-24 md:py-40 bg-[#FDFBF7] overflow-hidden">
       <div className="container mx-auto max-w-[1400px] px-6 md:px-10">
         <Divider />
-        <div className="grid grid-cols-12 gap-8 md:gap-16 items-center mt-12">
+        <div className="flex flex-col gap-8 md:gap-16 lg:grid lg:grid-cols-12 lg:items-center mt-12">
           <div className="col-span-12 lg:col-span-7 order-2 lg:order-1">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="eyebrow mb-6">Chapter One</motion.div>
             <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9 }} className="display text-4xl md:text-6xl lg:text-[6vw] leading-[1] tracking-tight">
@@ -206,7 +206,7 @@ function ServiceBlock({ block, reverse }) {
   const y = useTransform(scrollYProgress, [0, 1], ['-6%', '6%'])
   return (
     <div ref={ref} className="container mx-auto max-w-[1400px] px-6 md:px-10">
-      <div className={`grid grid-cols-12 gap-8 md:gap-16 items-center ${reverse ? 'lg:[direction:rtl]' : ''}`}>
+      <div className={`flex flex-col gap-8 md:gap-16 lg:grid lg:grid-cols-12 lg:items-center ${reverse ? 'lg:[direction:rtl]' : ''}`}>
         <motion.div style={{ y }} initial={{ opacity: 0, x: reverse ? 40 : -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-100px' }} transition={{ duration: 1 }} className={`col-span-12 lg:col-span-7 [direction:ltr]`}>
           <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl group">
             <Image src={block.img} alt={`${block.t} at wedding venue in candid cinematic style, Mumbai & Goa`} fill sizes="800px" className="object-cover transition-transform [transition-duration:1400ms] group-hover:scale-105" />
@@ -450,7 +450,7 @@ function WhyBlock({ block, idx }) {
   const isLeft = idx % 2 === 0
   return (
     <div ref={ref} className="container mx-auto max-w-[1200px] px-6 md:px-10">
-      <div className={`grid grid-cols-12 gap-8 md:gap-16 items-center ${isLeft ? '' : 'lg:[direction:rtl]'}`}>
+      <div className={`flex flex-col gap-8 md:gap-16 lg:grid lg:grid-cols-12 lg:items-center ${isLeft ? '' : 'lg:[direction:rtl]'}`}>
         <motion.div initial={{ opacity: 0, x: isLeft ? -30 : 30 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.9 }} className="col-span-12 lg:col-span-5 [direction:ltr]">
           <div className="text-[10px] tracking-[0.3em] uppercase text-[#FF5B22] font-bold">Reason {String(idx + 1).padStart(2, '0')}</div>
           <h3 className="display text-4xl md:text-5xl mt-3">{block.t}</h3>
@@ -626,7 +626,7 @@ function Testimonials() {
           <h2 className="display text-4xl md:text-6xl">Words from our <span className="font-cormorant italic text-[#FF5B22] font-light">couples.</span></h2>
         </div>
         <AnimatePresence mode="wait">
-          <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.8, ease: [0.7,0,0.2,1] }} className="grid grid-cols-12 gap-8 md:gap-14 items-center max-w-5xl mx-auto">
+          <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.8, ease: [0.7,0,0.2,1] }} className="flex flex-col gap-8 md:grid md:grid-cols-12 md:gap-14 md:items-center max-w-5xl mx-auto">
             <div className="col-span-12 md:col-span-5">
               <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl">
                 <Image src={items[i].img} alt={`${items[i].n} wedding client portrait at Mumbai or Goa venue in candid style, Mumbai & Goa`} fill sizes="400px" className="object-cover" />
@@ -658,7 +658,7 @@ function MumbaiSection() {
   return (
     <section className="relative py-24 md:py-32 bg-[#FDFBF7] overflow-hidden">
       <div className="container mx-auto max-w-[1400px] px-6 md:px-10">
-        <div className="grid grid-cols-12 gap-8 md:gap-16 items-center">
+        <div className="flex flex-col gap-8 md:gap-16 lg:grid lg:grid-cols-12 lg:items-center">
           <div className="col-span-12 lg:col-span-7">
             <div className="eyebrow mb-4">Wedding Photography Across Mumbai &amp; Goa</div>
             <h2 className="display text-4xl md:text-6xl leading-[1.05]">Mumbai &amp; Goa&apos;s trusted <span className="font-cormorant italic text-[#FF5B22] font-light">wedding photographer.</span></h2>
@@ -728,7 +728,7 @@ function FAQ() {
   return (
     <section className="py-24 md:py-32 bg-[#F5EFE6]">
       <div className="container mx-auto max-w-[1200px] px-6 md:px-10">
-        <div className="grid grid-cols-12 gap-8 md:gap-12">
+        <div className="flex flex-col gap-8 md:grid md:grid-cols-12 md:gap-12">
           <div className="col-span-12 md:col-span-4">
             <div className="eyebrow mb-3">Common Questions</div>
             <h2 className="display text-4xl md:text-5xl">You&apos;ve <span className="font-cormorant italic text-[#FF5B22] font-light">wondered.</span><br /> We&apos;ve <span className="font-cormorant italic text-[#FF5B22] font-light">answered.</span></h2>
