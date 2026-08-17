@@ -1,0 +1,51 @@
+{
+  "summary": "Frontend-only mobile layout testing on /services/boudoir-shoots at 360x800 and 390x844. Page-level horizontal scroll is prevented (documentElement.scrollWidth == innerWidth because <section> uses overflow-hidden and <body> is overflow-x:hidden), BUT text is still visibly CROPPED at the viewport edge in two sections. The recent fix (text-4xl sm:text-5xl + break-words) did NOT resolve the underlying overflow because the culprit is the grid column gaps, not the font size. Confidential badge and other section headings render fine.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "BoudoirPageClient.jsx — About section",
+        "issue": "H2 'Private, unhurried, entirely yours.' overflows and is clipped on the right edge at 360px and 390px viewports. Measured H2 width = 440px inside a container inner-width of only 342px. Section has overflow-hidden which masks the overflow but the last characters of 'yours.' are cut off at the right edge.",
+        "selector": "section > div.container > div.grid.grid-cols-12.gap-10.md:gap-16 > div.col-span-12.md:col-span-7 > h2",
+        "priority": "HIGH"
+      },
+      {
+        "component": "BoudoirPageClient.jsx — Why section",
+        "issue": "H2 'Trust, before anything else.' and the numbered items (01, 02, 03…) are clipped on BOTH edges at mobile widths. Measured H2 width = 528px vs viewport 360/390. The '01', '02' numeric prefixes sit at x<0 (off-screen left) and the last words of the H2 are cut off on the right. Same root cause as About section.",
+        "selector": "section (black bg, WHY WOMEN TRUST US) > div.container > div.grid.grid-cols-12.gap-12.md:gap-16",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "boudoir-shoots mobile (360 & 390)",
+        "issues": [
+          "Root cause: Sections use 'grid grid-cols-12 gap-10 md:gap-16' (About) and 'grid grid-cols-12 gap-12 md:gap-16' (Why). With 12 columns and 11 gaps of 40–64px, the minimum grid content-width is 11*40=440px to 11*64=704px. The container inner width on mobile is only ~342px (390 viewport - 24 px-6 each side), so col-span-12 children stretch beyond the container, overflowing the section. Section's overflow-hidden hides horizontal scroll but VISUALLY CROPS the headings.",
+          "The .container has computed left=-24 with px-6 (24px) padding, which is fine, but combined with too-large gaps the grid child columns overflow to width 440–528px.",
+          "Confidential badge 100% Confidential is fine (right edge at x=390 exactly). Not clipped.",
+          "Other section headings (Every detail, A session for every reason, In their own words, Four gentle steps, Quiet elegant frames) render fine because their layouts do not use grid-cols-12 with large gaps in the same way."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Fix About section grid: change 'grid grid-cols-12 gap-10 md:gap-16' to use a mobile-friendly layout — either 'flex flex-col md:grid md:grid-cols-12 md:gap-16' OR keep grid but use 'gap-0 md:gap-16' / 'gap-y-8 gap-x-0 md:gap-16' so mobile stacks without huge horizontal gaps. The col-span-12 child must not exceed the container width.",
+    "Fix Why section grid: same treatment for 'grid grid-cols-12 gap-12 md:gap-16'. Ensure the numbered list items (01, 02, ...) do not sit outside the container on mobile — currently the numeric prefix appears to use negative positioning or a col-span-1 that goes negative.",
+    "Audit every '<div class=grid grid-cols-12 gap-X>' occurrence in BoudoirPageClient.jsx and switch mobile behaviour to flex-col or reduce mobile gap to 0/2/4.",
+    "Consider removing 'overflow-hidden' from these <section> tags AFTER the grid fix so any future overflow becomes visible in testing rather than silently clipped."
+  ],
+  "critical_code_review_comments": [
+    "Reducing font-size + adding break-words does NOT fix layout overflow when the parent grid itself is wider than the viewport — the h2 was simply expanding to fill its (already-overflowing) grid column. The recent font-size fix is superficial.",
+    "Using 'grid grid-cols-12 gap-16' as the default (without md: prefix on gap) forces mobile viewports into an impossible layout because 11 * 64px = 704px of gap alone.",
+    "Multiple <section> elements have 'overflow-hidden' which masks these bugs during casual desktop QA — they only become visible on real mobile devices. Recommend removing overflow-hidden in dev and using a lint/test rule to catch layout overflow."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A", "frontend": "60%"},
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Re-test the boudoir-shoots page at viewports 360x800 and 390x844 after main agent fixes grid layouts. Verify (a) H2 'Private, unhurried, entirely yours.' bounding box width <= viewport width, (b) H2 'Trust, before anything else.' bounding box width <= viewport width, (c) '01','02','03','04' numbered prefixes in Why section have x >= 0, (d) run the overflow probe: document.querySelectorAll('*') where getBoundingClientRect().right > innerWidth+1 should return an empty list (currently returns 20+ elements). The page-level scrollWidth check alone is NOT sufficient because parent sections use overflow-hidden.",
+  "rca of the issue": "In BoudoirPageClient.jsx, the About and Why sections use 'grid grid-cols-12 gap-10' and 'grid grid-cols-12 gap-12' (with md:gap-16). On mobile the container inner width is ~342px but 12 columns with 11 gaps of 40–48px require min 440–528px, forcing children (col-span-12) to be wider than viewport. The section's overflow-hidden then visually crops the H2 text at the right edge. Reproduction: open the URL at 390x844, scroll to 'Private, unhurried, entirely yours.' — the trailing 's.' is clipped; scroll to 'Trust, before anything else.' — 'anything else.' is clipped on right and '01/02/03/04' prefixes are off-screen on left. Mitigation: replace grid-cols-12 gap-X with 'flex flex-col md:grid md:grid-cols-12 md:gap-16' on mobile, or set gap-0 md:gap-16."
+}

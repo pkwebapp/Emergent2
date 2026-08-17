@@ -1,0 +1,53 @@
+{
+  "summary": "Re-tested mobile layout fix for /services/boudoir-shoots at 360x800 and 390x844. All target metrics from iteration_3 HIGH issues are resolved: no horizontal scroll (document.scrollWidth === innerWidth at both widths), all section H2 headings render fully inside the viewport, and the 01-04 numbered prefixes in the Why section are on-screen. Desktop (1440) still renders 12-column grids correctly.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "no_horizontal_scroll": {
+      "360x800": "PASS (documentElement.scrollWidth=360, body.scrollWidth=360)",
+      "390x844": "PASS (documentElement.scrollWidth=390, body.scrollWidth=390)"
+    },
+    "H2_headings_in_viewport_at_360": {
+      "'Private, unhurried, entirely yours.'": "PASS left=24 right=336 (trailing 's.' visible)",
+      "'Every detail, held gently.'": "PASS left=24 right=336",
+      "'A session for every reason.'": "PASS left=24 right=336",
+      "'Trust, before anything else.'": "PASS left=24 right=336",
+      "'Everything you're wondering.' (FAQ)": "PASS left=24 right=336"
+    },
+    "why_number_prefixes_360": {
+      "01": "left=24 right=54 (on-screen)",
+      "02": "left=24 right=54 (on-screen)",
+      "03": "left=24 right=54 (on-screen)",
+      "04": "left=24 right=54 (on-screen)"
+    },
+    "overflow_probe_count": {
+      "360x800": 30,
+      "390x844": 19,
+      "note": "Elements returned by the overflow probe are (a) intentional decorative absolute-positioned background blur circles (w-[400px], w-[900px] with -top/-right negative offsets) and (b) the GLOBAL footer's md:col-span-4 children. Both are contained inside parents with overflow:hidden (verified: footer overflowX=hidden, parentOverflow=hidden), so they do NOT produce any horizontal page scroll. The BoudoirPageClient content sections (About, Covers, Audience, Why, Testimonials, Process, Portfolio, FAQ, Final CTA) all fit within the viewport."
+    },
+    "desktop_1440": {
+      "grid_cols_12_containers_found": 7,
+      "all_display_as_grid": true,
+      "result": "PASS - md:grid-cols-12 activates from md breakpoint up"
+    }
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Optional (not blocking): The global site Footer (not in BoudoirPageClient) uses grid-cols-12 with fixed gaps and relies on the parent overflow:hidden to visually clip content. Consider applying the same responsive flex-col md:grid pattern to the footer to prevent it from appearing squeezed at <768px."
+  ],
+  "critical_code_review_comments": [
+    "Fix is correct and minimal: flex flex-col gap-X md:grid md:grid-cols-12 md:gap-16 stacks children on mobile and restores 12-col grid on md+. Headings use text-4xl sm:text-5xl md:text-6xl break-words which prevents wrap-clipping.",
+    "Decorative blur blobs (absolute w-[400px]/w-[900px] with negative offsets) create overflow-probe noise. If a stricter zero-overflow guarantee is required, wrap the hero/section container in overflow-hidden explicitly (the outer <main>/body already contains them here, since scrollWidth==vw)."
+  ],
+  "updated_files": [],
+  "success_rate": {"frontend": "100%"},
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Boudoir mobile overflow issue is fixed. All content H2s and numbered prefixes are inside the viewport at 360 and 390 widths; no horizontal scroll on the page. Remaining overflow-probe hits are decorative background blobs + the global Footer, both clipped by overflow:hidden ancestors and not caused by BoudoirPageClient.",
+  "rca of the issue": "Original bug: grid grid-cols-12 with gap-16 forced 12 tracks + 11 large gaps to fit within <400px viewport, causing children (including h2 headings and the Why-section 01-04 numeric columns) to be pushed off-screen. Fix: change containers to 'flex flex-col gap-X md:grid md:grid-cols-12 md:gap-16' so mobile stacks children full-width; grid layout only kicks in at md (>=768). Verified via Playwright at 360x800 and 390x844 real viewports."
+}

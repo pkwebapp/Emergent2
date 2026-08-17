@@ -183,10 +183,10 @@ export default function BoudoirPageClient() {
       {/* ---------- About (REDESIGNED: split editorial, serif, portrait) ---------- */}
       <section className="py-24 md:py-36 bg-[#EEEAE1] overflow-hidden" data-testid="boudoir-about-section">
         <div className="container mx-auto max-w-[1300px] px-6 md:px-10">
-          <div className="grid grid-cols-12 gap-10 md:gap-16 items-center">
+          <div className="flex flex-col gap-10 md:grid md:grid-cols-12 md:gap-16 md:items-center">
             <motion.div {...reveal} className="col-span-12 md:col-span-7 order-2 md:order-1">
               <div className="eyebrow mb-5 text-[#FF5B22]">About This Service</div>
-              <h2 className="font-cormorant text-5xl md:text-7xl leading-[1.02] text-[#161514] font-medium">
+              <h2 className="font-cormorant text-4xl sm:text-5xl md:text-7xl leading-[1.05] md:leading-[1.02] text-[#161514] font-medium break-words">
                 Private, unhurried,<br />
                 <span className="italic text-[#FF5B22] font-normal">entirely yours.</span>
               </h2>
@@ -211,7 +211,7 @@ export default function BoudoirPageClient() {
                 <div className="absolute -bottom-8 -left-8 w-32 h-40 rounded-2xl overflow-hidden border-4 border-[#EEEAE1] shadow-xl hidden md:block">
                   <img src={IMG.fabric} alt="" aria-hidden="true" className="w-full h-full object-cover" />
                 </div>
-                <div className="absolute top-6 -right-3 md:-right-6 bg-[#161514] text-[#EEEAE1] rounded-full px-4 py-2 text-[10px] tracking-[0.2em] uppercase flex items-center gap-2 shadow-lg">
+                <div className="absolute top-4 right-2 md:top-6 md:-right-6 bg-[#161514] text-[#EEEAE1] rounded-full px-4 py-2 text-[10px] tracking-[0.2em] uppercase flex items-center gap-2 shadow-lg">
                   <Lock size={11} strokeWidth={1.5} className="text-[#FF5B22]" /> 100% Confidential
                 </div>
               </div>
@@ -276,12 +276,12 @@ export default function BoudoirPageClient() {
         <div className="container mx-auto max-w-[1300px] px-6 md:px-10">
           <div className="max-w-2xl mb-16">
             <div className="eyebrow mb-4 text-[#FF5B22]">What Your Session Includes</div>
-            <h2 className="font-cormorant text-5xl md:text-6xl leading-[1.05] text-[#161514] font-medium">
+            <h2 className="font-cormorant text-4xl sm:text-5xl md:text-6xl leading-[1.05] text-[#161514] font-medium break-words">
               Every detail, held <span className="italic text-[#FF5B22] font-normal">gently.</span>
             </h2>
           </div>
 
-          <div className="grid grid-cols-12 gap-5">
+          <div className="flex flex-col gap-5 md:grid md:grid-cols-12">
             {/* 01 · Session Styles — tall image card */}
             <motion.div {...reveal} className="col-span-12 md:col-span-4 relative rounded-3xl overflow-hidden border border-[#DBD4C6] group min-h-[460px]">
               <img src={COVERS[0].img} alt={localAlt('Silk and lace styling detail for a boudoir session')} className="absolute inset-0 w-full h-full object-cover transition-transform [transition-duration:1400ms] group-hover:scale-105" />
@@ -336,7 +336,7 @@ export default function BoudoirPageClient() {
 
             {/* 04 · Confidential Delivery — wide cream card with image */}
             <motion.div {...reveal} transition={{ ...reveal.transition, delay: 0.1 }} className="col-span-12 rounded-3xl bg-[#EEEAE1] border border-[#DBD4C6] overflow-hidden">
-              <div className="grid grid-cols-12 items-stretch">
+              <div className="flex flex-col md:grid md:grid-cols-12 md:items-stretch">
                 <div className="col-span-12 md:col-span-7 p-8 md:p-12 flex flex-col justify-center">
                   <span className="font-cormorant italic text-lg text-[#8A857D]">no. 04</span>
                   <h3 className="font-cormorant text-3xl md:text-4xl font-medium mt-1 text-[#161514]">{COVERS[3].t}</h3>
@@ -363,7 +363,7 @@ export default function BoudoirPageClient() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div>
               <div className="eyebrow mb-4 text-[#FF5B22]">Who Is This For?</div>
-              <h2 className="font-cormorant text-5xl md:text-6xl leading-[1.05] text-[#161514] font-medium">
+              <h2 className="font-cormorant text-4xl sm:text-5xl md:text-6xl leading-[1.05] text-[#161514] font-medium break-words">
                 A session for <span className="italic text-[#FF5B22] font-normal">every reason.</span>
               </h2>
             </div>
@@ -388,10 +388,10 @@ export default function BoudoirPageClient() {
       {/* ---------- Why Choose Us (REDESIGNED: dark intimate, numbered trust points) ---------- */}
       <section className="py-24 md:py-32 bg-[#161514] text-[#EEEAE1] overflow-hidden" data-testid="boudoir-why-section">
         <div className="container mx-auto max-w-[1300px] px-6 md:px-10">
-          <div className="grid grid-cols-12 gap-12 md:gap-16 items-center">
+          <div className="flex flex-col gap-12 md:grid md:grid-cols-12 md:gap-16 md:items-center">
             <div className="col-span-12 md:col-span-6">
               <div className="eyebrow mb-4 text-[#FF5B22]">Why Women Trust Us</div>
-              <h2 className="font-cormorant text-5xl md:text-6xl leading-[1.05] font-medium">
+              <h2 className="font-cormorant text-4xl sm:text-5xl md:text-6xl leading-[1.05] font-medium break-words">
                 Trust, before <span className="italic text-[#FF5B22] font-normal">anything else.</span>
               </h2>
               <div className="mt-14 space-y-0">
@@ -434,7 +434,7 @@ export default function BoudoirPageClient() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
             <div>
               <div className="eyebrow mb-4 text-[#FF5B22]">Client Words</div>
-              <h2 className="font-cormorant text-5xl md:text-6xl leading-[1.05] text-[#161514] font-medium">
+              <h2 className="font-cormorant text-4xl sm:text-5xl md:text-6xl leading-[1.05] text-[#161514] font-medium break-words">
                 In their own <span className="italic text-[#FF5B22] font-normal">words.</span>
               </h2>
             </div>
@@ -465,7 +465,7 @@ export default function BoudoirPageClient() {
         <div className="container mx-auto max-w-[1300px] px-6 md:px-10">
           <div className="text-center mb-20">
             <div className="eyebrow mb-4 text-[#FF5B22]">How It Unfolds</div>
-            <h2 className="font-cormorant text-5xl md:text-6xl leading-[1.05] text-[#161514] font-medium">
+            <h2 className="font-cormorant text-4xl sm:text-5xl md:text-6xl leading-[1.05] text-[#161514] font-medium break-words">
               Four gentle <span className="italic text-[#FF5B22] font-normal">steps.</span>
             </h2>
           </div>
@@ -527,7 +527,7 @@ export default function BoudoirPageClient() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-14">
             <div>
               <div className="eyebrow mb-4 text-[#FF5B22]">A Glimpse, With Consent</div>
-              <h2 className="font-cormorant text-5xl md:text-6xl leading-[1.05] text-[#161514] font-medium">
+              <h2 className="font-cormorant text-4xl sm:text-5xl md:text-6xl leading-[1.05] text-[#161514] font-medium break-words">
                 Quiet, elegant <span className="italic text-[#FF5B22] font-normal">frames.</span>
               </h2>
               <p className="mt-4 text-sm text-[#8A857D] font-light max-w-md">Every image here is shared with the written permission of the woman in it.</p>
@@ -565,7 +565,7 @@ export default function BoudoirPageClient() {
       {/* ---------- FAQs (REDESIGNED: minimal fine-line accordion) ---------- */}
       <section className="py-24 md:py-32 bg-[#E6E1D5]" data-testid="boudoir-faq-section">
         <div className="container mx-auto max-w-[1200px] px-6 md:px-10">
-          <div className="grid grid-cols-12 gap-10 md:gap-16">
+          <div className="flex flex-col gap-10 md:grid md:grid-cols-12 md:gap-16">
             <div className="col-span-12 md:col-span-4">
               <div className="eyebrow mb-4 text-[#FF5B22]">Asked, Quietly</div>
               <h2 className="font-cormorant text-4xl md:text-5xl leading-[1.08] text-[#161514] font-medium">
@@ -586,7 +586,7 @@ export default function BoudoirPageClient() {
         <div className="container mx-auto max-w-[1400px] px-6 md:px-10">
           <div className="relative rounded-[36px] overflow-hidden bg-[#161514] text-white p-10 md:p-16">
             <div className="absolute -top-32 -right-24 w-[400px] h-[400px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(255,91,34,0.4), transparent 60%)' }} />
-            <div className="relative grid grid-cols-12 gap-8 items-center">
+            <div className="relative flex flex-col gap-8 md:grid md:grid-cols-12 md:items-center">
               <div className="col-span-12 md:col-span-8">
                 <div className="eyebrow text-[#67E8F9] mb-4">Ready when you are</div>
                 <h2 className="display text-4xl md:text-6xl">Let&apos;s create your <span className="text-[#FF5B22] italic font-medium">boudoir shoots.</span></h2>
